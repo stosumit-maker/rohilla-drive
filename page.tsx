@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { supabase } from "../../supabaseClient";
+import { supabase } from "./app/supabaseClient";
 
 export default function CarPage() {
   const { id } = useParams<{ id: string }>();
