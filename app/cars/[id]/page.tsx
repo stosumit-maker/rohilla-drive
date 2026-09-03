@@ -137,9 +137,7 @@ export default function CarPage() {
   ) => {
     if (e.touches.length === 2) {
       pinchStart.current = {
-        distance: distanceBetweenTouches(
-          e.touches
-        ),
+        distance: distanceBetweenTouches(e.touches),
         zoom,
       };
 
@@ -274,7 +272,7 @@ I am interested in this car.`
 
   return (
     <main className="carPage">
-      <header>
+      <header className="carHeader">
         <div className="brand">
           <b>ROHILLA DRIVE</b>
           <small>by Rohilla Multibrand Cars</small>
@@ -294,6 +292,7 @@ I am interested in this car.`
             {currentPhoto ? (
               <>
                 <button
+                  type="button"
                   className="photoArrow left"
                   onClick={previousPhoto}
                   aria-label="Previous photo"
@@ -305,9 +304,11 @@ I am interested in this car.`
                   src={currentPhoto}
                   alt={`${c.brand} ${c.model}`}
                   onClick={openFullscreen}
+                  draggable={false}
                 />
 
                 <button
+                  type="button"
                   className="photoArrow right"
                   onClick={nextPhoto}
                   aria-label="Next photo"
@@ -316,6 +317,7 @@ I am interested in this car.`
                 </button>
 
                 <button
+                  type="button"
                   className="zoomButton"
                   onClick={openFullscreen}
                 >
@@ -336,6 +338,7 @@ I am interested in this car.`
               {photos.map(
                 (photo: any, index: number) => (
                   <button
+                    type="button"
                     key={photo.url || index}
                     className={
                       index === active
@@ -350,6 +353,7 @@ I am interested in this car.`
                     <img
                       src={photo.url}
                       alt={`Photo ${index + 1}`}
+                      draggable={false}
                     />
                   </button>
                 )
@@ -397,6 +401,7 @@ I am interested in this car.`
           <p>{c.public_notes}</p>
 
           <button
+            type="button"
             className="primary"
             onClick={wa}
           >
@@ -421,6 +426,7 @@ I am interested in this car.`
           onTouchEnd={handleFullscreenTouchEnd}
         >
           <button
+            type="button"
             className="closeViewer"
             onClick={(e) => {
               e.stopPropagation();
@@ -431,6 +437,7 @@ I am interested in this car.`
           </button>
 
           <button
+            type="button"
             className="fullscreenArrow left"
             onClick={(e) => {
               e.stopPropagation();
@@ -448,6 +455,7 @@ I am interested in this car.`
               className="fullscreenImage"
               src={currentPhoto}
               alt={`${c.brand} ${c.model}`}
+              draggable={false}
               style={{
                 transform:
                   `translate(${pos.x}px, ${pos.y}px) ` +
@@ -457,6 +465,7 @@ I am interested in this car.`
           </div>
 
           <button
+            type="button"
             className="fullscreenArrow right"
             onClick={(e) => {
               e.stopPropagation();
@@ -470,7 +479,7 @@ I am interested in this car.`
             className="zoomControls"
             onClick={(e) => e.stopPropagation()}
           >
-            <button onClick={zoomOut}>
+            <button type="button" onClick={zoomOut}>
               −
             </button>
 
@@ -478,11 +487,11 @@ I am interested in this car.`
               {Math.round(zoom * 100)}%
             </span>
 
-            <button onClick={zoomIn}>
+            <button type="button" onClick={zoomIn}>
               +
             </button>
 
-            <button onClick={resetZoom}>
+            <button type="button" onClick={resetZoom}>
               Reset
             </button>
           </div>
@@ -498,40 +507,83 @@ I am interested in this car.`
       )}
 
       <style jsx global>{`
-        * {
+        *,
+        *::before,
+        *::after {
           box-sizing: border-box;
         }
 
-        html,
-        body {
+        html {
+          width: 100%;
           max-width: 100%;
+          margin: 0;
+          padding: 0;
           overflow-x: hidden;
+          -webkit-text-size-adjust: 100%;
+          text-size-adjust: 100%;
+        }
+
+        body {
+          width: 100%;
+          max-width: 100%;
+          margin: 0;
+          padding: 0;
+          overflow-x: hidden;
+          -webkit-text-size-adjust: 100%;
+          text-size-adjust: 100%;
         }
 
         .carPage {
+          position: relative;
           width: 100%;
-          max-width: 100%;
+          max-width: 100vw;
+          min-width: 0;
+          margin: 0;
+          padding: 0;
           overflow-x: hidden;
         }
 
+        .carHeader {
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+          overflow: hidden;
+        }
+
+        .carHeader .brand {
+          min-width: 0;
+          max-width: 100%;
+        }
+
+        .carHeader a {
+          max-width: 100%;
+          overflow-wrap: anywhere;
+        }
+
         .carDetail {
+          width: 100%;
           max-width: 1200px;
+          min-width: 0;
           margin: 50px auto;
           padding: 0 24px;
           display: grid;
-          grid-template-columns: 1.25fr 0.75fr;
+          grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
           gap: 35px;
-          width: 100%;
+          overflow: hidden;
         }
 
         .photoColumn {
           min-width: 0;
           width: 100%;
+          max-width: 100%;
+          overflow: hidden;
         }
 
         .detailViewer {
           position: relative;
           width: 100%;
+          max-width: 100%;
+          min-width: 0;
           height: auto;
           overflow: hidden;
           border-radius: 18px;
@@ -544,10 +596,14 @@ I am interested in this car.`
         .detailViewer > img {
           display: block;
           width: 100%;
-          height: auto;
           max-width: 100%;
+          min-width: 0;
+          height: auto;
           object-fit: contain;
           cursor: zoom-in;
+          user-select: none;
+          -webkit-user-drag: none;
+          -webkit-touch-callout: none;
         }
 
         .photoArrow {
@@ -585,6 +641,7 @@ I am interested in this car.`
           color: white;
           font-size: 13px;
           line-height: normal;
+          white-space: nowrap;
         }
 
         .photoCounter {
@@ -603,8 +660,12 @@ I am interested in this car.`
           display: flex;
           gap: 8px;
           overflow-x: auto;
+          overflow-y: hidden;
           padding: 10px 0;
           width: 100%;
+          max-width: 100%;
+          min-width: 0;
+          touch-action: pan-x;
         }
 
         .thumb {
@@ -627,6 +688,8 @@ I am interested in this car.`
           height: 100%;
           object-fit: cover;
           display: block;
+          user-select: none;
+          -webkit-user-drag: none;
         }
 
         .swipeHint {
@@ -640,18 +703,29 @@ I am interested in this car.`
         .carInfo {
           min-width: 0;
           width: 100%;
+          max-width: 100%;
           padding: 15px;
+          overflow-wrap: anywhere;
         }
 
         .carInfo h1 {
           font-size: 42px;
           line-height: 1.05;
           overflow-wrap: anywhere;
+          word-break: break-word;
+          max-width: 100%;
         }
 
         .carInfo h2 {
           font-size: 32px;
           line-height: 1.1;
+          max-width: 100%;
+          overflow-wrap: anywhere;
+        }
+
+        .carInfo p {
+          max-width: 100%;
+          overflow-wrap: anywhere;
         }
 
         .specs {
@@ -659,6 +733,8 @@ I am interested in this car.`
           flex-wrap: wrap;
           gap: 10px;
           width: 100%;
+          max-width: 100%;
+          min-width: 0;
         }
 
         .specs span {
@@ -666,6 +742,7 @@ I am interested in this car.`
           padding: 8px 12px;
           border-radius: 20px;
           white-space: nowrap;
+          max-width: 100%;
         }
 
         .big {
@@ -673,6 +750,7 @@ I am interested in this car.`
           margin-top: 14px;
           text-align: center;
           padding: 14px;
+          max-width: 100%;
         }
 
         .fullscreenViewer {
@@ -680,22 +758,30 @@ I am interested in this car.`
           inset: 0;
           z-index: 99999;
           width: 100vw;
+          max-width: 100vw;
           height: 100vh;
+          max-height: 100vh;
+          margin: 0;
+          padding: 0;
           background: rgba(0, 0, 0, 0.96);
           display: flex;
           align-items: center;
           justify-content: center;
           overflow: hidden;
           touch-action: none;
+          overscroll-behavior: none;
         }
 
         .fullscreenImageWrap {
           width: 100%;
+          max-width: 100%;
           height: 100%;
+          max-height: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
           overflow: hidden;
+          touch-action: none;
         }
 
         .fullscreenImage {
@@ -706,6 +792,7 @@ I am interested in this car.`
           object-fit: contain;
           user-select: none;
           -webkit-user-drag: none;
+          -webkit-touch-callout: none;
           transform-origin: center center;
           will-change: transform;
         }
@@ -804,12 +891,13 @@ I am interested in this car.`
 
         @media (max-width: 800px) {
           .carDetail {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
             width: 100%;
             max-width: 760px;
             margin: 28px auto;
             padding: 0 16px;
             gap: 18px;
+            overflow: hidden;
           }
 
           .carInfo {
@@ -827,20 +915,44 @@ I am interested in this car.`
         }
 
         @media (max-width: 600px) {
-          .carDetail {
+          .carPage {
             width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+          }
+
+          .carDetail {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            width: 100%;
+            max-width: 100%;
+            margin: 20px auto;
             padding-left: 12px;
             padding-right: 12px;
+            gap: 16px;
+            overflow: hidden;
+          }
+
+          .photoColumn {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
           }
 
           .detailViewer {
             width: 100%;
+            max-width: 100%;
+            min-width: 0;
             height: auto;
             border-radius: 14px;
+            overflow: hidden;
+            touch-action: pan-x;
           }
 
           .detailViewer > img {
             width: 100%;
+            max-width: 100%;
             height: auto;
           }
 
