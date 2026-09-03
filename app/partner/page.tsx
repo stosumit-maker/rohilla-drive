@@ -109,7 +109,14 @@ export default function PartnerPage() {
       return;
     }
 
-    setRequests((data || []) as Request[]);
+    setRequests(
+      (data || []).map((item: any) => ({
+        ...item,
+        vehicle: Array.isArray(item.vehicle)
+          ? item.vehicle[0] || null
+          : item.vehicle,
+      }))
+    );
   }
 
   async function updateStatus(id: string, status: string) {
@@ -418,7 +425,9 @@ I am contacting you regarding your service request.`;
                       <option key={status} value={status}>
                         {status
                           .replace("_", " ")
-                          .replace(/\b\w/g, (x) => x.toUpperCase())}
+                          .replace(/\b\w/g, (x) =>
+                            x.toUpperCase()
+                          )}
                       </option>
                     ))}
                   </select>
