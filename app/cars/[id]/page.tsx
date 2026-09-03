@@ -7,7 +7,6 @@ import { supabase } from "../../../app/supabaseClient";
 export default function CarPage() {
   const { id } = useParams<{ id: string }>();
   const [c, setC] = useState<any>(null);
-  const [i, setI] = useState(0);
 
   const db = supabase();
 
@@ -62,51 +61,26 @@ I am interested in this car.`
 
       <section className="carDetail">
         <div>
-          <div className="mainPhoto">
-            {photos[i]?.url ? (
-              <img src={photos[i].url} />
+          <div className="mainPhoto swipeGallery">
+            {photos.length ? (
+              photos.map((p: any) => (
+                <img
+                  key={p.url}
+                  src={p.url}
+                  alt={`${c.brand} ${c.model}`}
+                />
+              ))
             ) : (
               <span>🚘</span>
             )}
           </div>
 
-          <div className="thumbs">
-            {photos.map((p: any, n: number) => (
-              <button key={p.url} onClick={() => setI(n)}>
-                <img src={p.url} />
-              </button>
-            ))}
-          </div>
+          {photos.length > 1 && (
+            <p className="swipeHint">
+              ← Swipe left or right to view all photos →
+            </p>
+          )}
         </div>
 
         <div className="carInfo">
-          <label>ROHILLA DRIVE</label>
-
-          <h1>
-            {c.brand} {c.model} {c.variant}
-          </h1>
-
-          <div className="specs">
-            <span>{c.year}</span>
-            <span>{Number(c.km).toLocaleString()} km</span>
-            <span>{c.fuel}</span>
-            <span>{c.owner_count} Owner</span>
-            <span>{c.city}</span>
-          </div>
-
-          <h2>₹{Number(c.asking_price).toLocaleString("en-IN")}</h2>
-
-          <p>{c.public_notes}</p>
-
-          <button className="primary" onClick={wa}>
-            WhatsApp Enquiry
-          </button>
-
-          <a className="call big" href="tel:7015260003">
-            Call 7015260003
-          </a>
-        </div>
-      </section>
-    </main>
-  );
-}
+         
