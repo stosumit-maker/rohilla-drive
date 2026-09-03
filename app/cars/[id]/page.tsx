@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { supabase } from "../../../app/supabaseClient";
 
@@ -10,6 +10,15 @@ export default function CarPage() {
   const [c, setC] = useState<any>(null);
   const [active, setActive] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
+
+  const [zoom, setZoom] = useState(1);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const pinchStart = useRef<{
+    distance: number;
+    zoom: number;
+  } | null>(null);
 
   const db = supabase();
 
@@ -38,14 +47,180 @@ export default function CarPage() {
 
   const currentPhoto = photos[active]?.url;
 
+  const resetZoom = () => {
+    setZoom(1);
+    setPos({ x: 0, y: 0 });
+  };
+
+  const openFullscreen = () => {
+    resetZoom();
+    setFullscreen(true);
+  };
+
+  const closeFullscreen = () => {
+    resetZoom();
+    setFullscreen(false);
+  };
+
   const nextPhoto = () => {
     if (!photos.length) return;
+    resetZoom();
     setActive((prev) => (prev + 1) % photos.length);
   };
 
   const previousPhoto = () => {
     if (!photos.length) return;
+    resetZoom();
     setActive((prev) => (prev - 1 + photos.length) % photos.length);
+  };
+
+  const handleNormalTouchStart = (
+    e: React.TouchEvent<HTMLDivElement>
+  ) => {
+    if (e.touches.length === 1) {
+      touchStart.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+    }
+  };
+
+  const handleNormalTouchEnd = (
+    e: React.TouchEvent<HTMLDivElement>
+  ) => {
+    if (!touchStart.current || e.changedTouches.length !== 1) return;
+
+    const endX = e.changedTouches[0].clientX;
+    const diffX = endX - touchStart.current.x;
+
+    touchStart.current = null;
+
+    if (Math.abs(diffX) > 60) {
+      if (diffX < 0) nextPhoto();
+      else previousPhoto();
+    }
+  };
+
+  const distanceBetweenTouches = (
+    touches: React.TouchList
+  ) => {
+    if (touches.length < 2) return 0;
+
+    const dx =
+      touches[0].clientX - touches[1].clientX;
+    const dy =
+      touches[0].clientY - touches[1].clientY;
+
+    return Math.sqrt(dx * dx + dy * dy);
+  };
+
+  const handleFullscreenTouchStart = (
+    e: React.TouchEvent<HTMLDivElement>
+  ) => {
+    if (e.touches.length === 2) {
+      pinchStart.current = {
+        distance: distanceBetweenTouches(e.touches),
+        zoom,
+      };
+    } else if (e.touches.length === 1 && zoom > 1) {
+      touchStart.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+    }
+  };
+
+  const handleFullscreenTouchMove = (
+    e: React.TouchEvent<HTMLDivElement>
+  ) => {
+    if (e.touches.length === 2 && pinchStart.current) {
+      const distance = distanceBetweenTouches(e.touches);
+
+      if (distance > 0) {
+        const ratio =
+          distance / pinchStart.current.distance;
+
+        const newZoom = Math.min(
+          4,
+          Math.max(
+            1,
+            pinchStart.current.zoom * ratio
+          )
+        );
+
+        setZoom(newZoom);
+
+        if (newZoom === 1) {
+          setPos({ x: 0, y: 0 });
+        }
+      }
+
+      return;
+    }
+
+    if (
+      e.touches.length === 1 &&
+      zoom > 1 &&
+      touchStart.current
+    ) {
+      const dx =
+        e.touches[0].clientX -
+        touchStart.current.x;
+
+      const dy =
+        e.touches[0].clientY -
+        touchStart.current.y;
+
+      setPos((old) => ({
+        x: old.x + dx,
+        y: old.y + dy,
+      }));
+
+      touchStart.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+    }
+  };
+
+  const handleFullscreenTouchEnd = (
+    e: React.TouchEvent<HTMLDivElement>
+  ) => {
+    if (e.touches.length < 2) {
+      pinchStart.current = null;
+    }
+
+    if (zoom <= 1 && e.changedTouches.length === 1) {
+      if (!touchStart.current) return;
+
+      const endX = e.changedTouches[0].clientX;
+      const diffX = endX - touchStart.current.x;
+
+      if (Math.abs(diffX) > 70) {
+        if (diffX < 0) nextPhoto();
+        else previousPhoto();
+      }
+    }
+
+    if (e.touches.length === 0) {
+      touchStart.current = null;
+    }
+  };
+
+  const zoomIn = () => {
+    setZoom((old) => Math.min(4, old + 0.5));
+  };
+
+  const zoomOut = () => {
+    setZoom((old) => {
+      const next = Math.max(1, old - 0.5);
+
+      if (next === 1) {
+        setPos({ x: 0, y: 0 });
+      }
+
+      return next;
+    });
   };
 
   const wa = () =>
@@ -76,7 +251,11 @@ I am interested in this car.`
 
       <section className="carDetail">
         <div>
-          <div className="detailViewer">
+          <div
+            className="detailViewer"
+            onTouchStart={handleNormalTouchStart}
+            onTouchEnd={handleNormalTouchEnd}
+          >
             {currentPhoto ? (
               <>
                 <button
@@ -90,7 +269,7 @@ I am interested in this car.`
                 <img
                   src={currentPhoto}
                   alt={`${c.brand} ${c.model}`}
-                  onClick={() => setFullscreen(true)}
+                  onClick={openFullscreen}
                 />
 
                 <button
@@ -103,9 +282,9 @@ I am interested in this car.`
 
                 <button
                   className="zoomButton"
-                  onClick={() => setFullscreen(true)}
+                  onClick={openFullscreen}
                 >
-                  ⛶ View Fullscreen
+                  ⛶ Fullscreen
                 </button>
 
                 <div className="photoCounter">
@@ -122,8 +301,15 @@ I am interested in this car.`
               {photos.map((photo: any, index: number) => (
                 <button
                   key={photo.url || index}
-                  className={index === active ? "thumb active" : "thumb"}
-                  onClick={() => setActive(index)}
+                  className={
+                    index === active
+                      ? "thumb active"
+                      : "thumb"
+                  }
+                  onClick={() => {
+                    resetZoom();
+                    setActive(index);
+                  }}
                 >
                   <img
                     src={photo.url}
@@ -136,7 +322,7 @@ I am interested in this car.`
 
           {photos.length > 1 && (
             <p className="swipeHint">
-              ← Swipe photos • Tap photo for full screen & zoom →
+              ← Swipe photos • Tap photo to zoom →
             </p>
           )}
         </div>
@@ -150,13 +336,20 @@ I am interested in this car.`
 
           <div className="specs">
             <span>{c.year}</span>
-            <span>{Number(c.km).toLocaleString()} km</span>
+            <span>
+              {Number(c.km).toLocaleString()} km
+            </span>
             <span>{c.fuel}</span>
             <span>{c.owner_count} Owner</span>
             <span>{c.city}</span>
           </div>
 
-          <h2>₹{Number(c.asking_price).toLocaleString("en-IN")}</h2>
+          <h2>
+            ₹
+            {Number(c.asking_price).toLocaleString(
+              "en-IN"
+            )}
+          </h2>
 
           <p>{c.public_notes}</p>
 
@@ -164,7 +357,10 @@ I am interested in this car.`
             WhatsApp Enquiry
           </button>
 
-          <a className="call big" href="tel:7015260003">
+          <a
+            className="call big"
+            href="tel:7015260003"
+          >
             Call 7015260003
           </a>
         </div>
@@ -173,11 +369,17 @@ I am interested in this car.`
       {fullscreen && currentPhoto && (
         <div
           className="fullscreenViewer"
-          onClick={() => setFullscreen(false)}
+          onClick={closeFullscreen}
+          onTouchStart={handleFullscreenTouchStart}
+          onTouchMove={handleFullscreenTouchMove}
+          onTouchEnd={handleFullscreenTouchEnd}
         >
           <button
             className="closeViewer"
-            onClick={() => setFullscreen(false)}
+            onClick={(e) => {
+              e.stopPropagation();
+              closeFullscreen();
+            }}
           >
             ✕
           </button>
@@ -192,12 +394,19 @@ I am interested in this car.`
             ‹
           </button>
 
-          <img
-            className="fullscreenImage"
-            src={currentPhoto}
-            alt={`${c.brand} ${c.model} fullscreen`}
+          <div
+            className="fullscreenImageWrap"
             onClick={(e) => e.stopPropagation()}
-          />
+          >
+            <img
+              className="fullscreenImage"
+              src={currentPhoto}
+              alt={`${c.brand} ${c.model}`}
+              style={{
+                transform: `translate(${pos.x}px, ${pos.y}px) scale(${zoom})`,
+              }}
+            />
+          </div>
 
           <button
             className="fullscreenArrow right"
@@ -209,15 +418,267 @@ I am interested in this car.`
             ›
           </button>
 
+          <div
+            className="zoomControls"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button onClick={zoomOut}>−</button>
+
+            <span>
+              {Math.round(zoom * 100)}%
+            </span>
+
+            <button onClick={zoomIn}>+</button>
+
+            <button onClick={resetZoom}>
+              Reset
+            </button>
+          </div>
+
           <div className="fullscreenCounter">
             {active + 1} / {photos.length}
           </div>
 
           <p className="fullscreenHint">
-            Swipe • Pinch to zoom • Tap ✕ to close
+            Swipe photos • Pinch to zoom • Drag photo
           </p>
         </div>
       )}
+
+      <style jsx global>{`
+        .detailViewer {
+          position: relative;
+          width: 100%;
+          height: 420px;
+          max-height: 55vh;
+          overflow: hidden;
+          border-radius: 18px;
+          background: #f1f3f6;
+          touch-action: pan-x;
+        }
+
+        .detailViewer > img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
+          cursor: zoom-in;
+        }
+
+        .photoArrow {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 3;
+          width: 42px;
+          height: 42px;
+          border: 0;
+          border-radius: 50%;
+          background: rgba(0, 0, 0, 0.55);
+          color: white;
+          font-size: 32px;
+          line-height: 35px;
+        }
+
+        .photoArrow.left {
+          left: 12px;
+        }
+
+        .photoArrow.right {
+          right: 12px;
+        }
+
+        .zoomButton {
+          position: absolute;
+          bottom: 12px;
+          left: 50%;
+          transform: translateX(-50%);
+          border: 0;
+          border-radius: 20px;
+          padding: 9px 15px;
+          background: rgba(0, 0, 0, 0.7);
+          color: white;
+          font-size: 13px;
+        }
+
+        .photoCounter {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          padding: 6px 10px;
+          border-radius: 15px;
+          background: rgba(0, 0, 0, 0.65);
+          color: white;
+          font-size: 12px;
+        }
+
+        .detailThumbs {
+          display: flex;
+          gap: 8px;
+          overflow-x: auto;
+          padding: 10px 0;
+        }
+
+        .thumb {
+          flex: 0 0 70px;
+          width: 70px;
+          height: 55px;
+          padding: 0;
+          border: 2px solid transparent;
+          border-radius: 8px;
+          overflow: hidden;
+          background: #eee;
+        }
+
+        .thumb.active {
+          border-color: #1f5eff;
+        }
+
+        .thumb img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .fullscreenViewer {
+          position: fixed;
+          inset: 0;
+          z-index: 99999;
+          background: rgba(0, 0, 0, 0.96);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          touch-action: none;
+        }
+
+        .fullscreenImageWrap {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+        }
+
+        .fullscreenImage {
+          max-width: 92vw;
+          max-height: 82vh;
+          width: auto;
+          height: auto;
+          object-fit: contain;
+          user-select: none;
+          -webkit-user-drag: none;
+          transform-origin: center center;
+          will-change: transform;
+        }
+
+        .closeViewer {
+          position: absolute;
+          top: 18px;
+          right: 18px;
+          z-index: 10;
+          width: 42px;
+          height: 42px;
+          border: 0;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.18);
+          color: white;
+          font-size: 20px;
+        }
+
+        .fullscreenArrow {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 10;
+          width: 46px;
+          height: 46px;
+          border: 0;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.18);
+          color: white;
+          font-size: 38px;
+        }
+
+        .fullscreenArrow.left {
+          left: 12px;
+        }
+
+        .fullscreenArrow.right {
+          right: 12px;
+        }
+
+        .zoomControls {
+          position: absolute;
+          bottom: 48px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 10;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 7px 10px;
+          border-radius: 25px;
+          background: rgba(0, 0, 0, 0.7);
+        }
+
+        .zoomControls button {
+          min-width: 34px;
+          height: 34px;
+          border: 0;
+          border-radius: 18px;
+          background: rgba(255, 255, 255, 0.18);
+          color: white;
+          font-size: 18px;
+        }
+
+        .zoomControls span {
+          min-width: 50px;
+          text-align: center;
+          color: white;
+          font-size: 13px;
+        }
+
+        .fullscreenCounter {
+          position: absolute;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          color: white;
+          font-size: 13px;
+          z-index: 10;
+        }
+
+        .fullscreenHint {
+          position: absolute;
+          bottom: 15px;
+          left: 50%;
+          transform: translateX(-50%);
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 12px;
+          white-space: nowrap;
+          z-index: 10;
+        }
+
+        @media (max-width: 600px) {
+          .detailViewer {
+            height: 390px;
+            max-height: 52vh;
+            border-radius: 14px;
+          }
+
+          .carDetail {
+            gap: 18px;
+          }
+
+          .fullscreenImage {
+            max-width: 96vw;
+            max-height: 78vh;
+          }
+        }
+      `}</style>
     </main>
   );
-}
+    }
