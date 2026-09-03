@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type TouchEvent } from "react";
 import { useParams } from "next/navigation";
 import { supabase } from "../../../app/supabaseClient";
 
@@ -10,7 +10,6 @@ export default function CarPage() {
   const [c, setC] = useState<any>(null);
   const [active, setActive] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
-
   const [zoom, setZoom] = useState(1);
   const [pos, setPos] = useState({ x: 0, y: 0 });
 
@@ -65,18 +64,16 @@ export default function CarPage() {
   const nextPhoto = () => {
     if (!photos.length) return;
     resetZoom();
-    setActive((prev) => (prev + 1) % photos.length);
+    setActive((old) => (old + 1) % photos.length);
   };
 
   const previousPhoto = () => {
     if (!photos.length) return;
     resetZoom();
-    setActive((prev) => (prev - 1 + photos.length) % photos.length);
+    setActive((old) => (old - 1 + photos.length) % photos.length);
   };
 
-  const handleNormalTouchStart = (
-    e: React.TouchEvent<HTMLDivElement>
-  ) => {
+  const handleNormalTouchStart = (e: TouchEvent<HTMLDivElement>) => {
     if (e.touches.length === 1) {
       touchStart.current = {
         x: e.touches[0].clientX,
@@ -85,13 +82,11 @@ export default function CarPage() {
     }
   };
 
-  const handleNormalTouchEnd = (
-    e: React.TouchEvent<HTMLDivElement>
-  ) => {
+  const handleNormalTouchEnd = (e: TouchEvent<HTMLDivElement>) => {
     if (!touchStart.current || e.changedTouches.length !== 1) return;
 
-    const endX = e.changedTouches[0].clientX;
-    const diffX = endX - touchStart.current.x;
+    const diffX =
+      e.changedTouches[0].clientX - touchStart.current.x;
 
     touchStart.current = null;
 
@@ -101,28 +96,30 @@ export default function CarPage() {
     }
   };
 
-  const distanceBetweenTouches = (
-    touches: React.TouchList
-  ) => {
+  const distanceBetweenTouches = (touches: TouchList) => {
     if (touches.length < 2) return 0;
 
-    const dx =
-      touches[0].clientX - touches[1].clientX;
-    const dy =
-      touches[0].clientY - touches[1].clientY;
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
 
     return Math.sqrt(dx * dx + dy * dy);
   };
 
   const handleFullscreenTouchStart = (
-    e: React.TouchEvent<HTMLDivElement>
+    e: TouchEvent<HTMLDivElement>
   ) => {
     if (e.touches.length === 2) {
       pinchStart.current = {
         distance: distanceBetweenTouches(e.touches),
         zoom,
       };
+      touchStart.current = null;
     } else if (e.touches.length === 1 && zoom > 1) {
+      touchStart.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+    } else if (e.touches.length === 1) {
       touchStart.current = {
         x: e.touches[0].clientX,
         y: e.touches[0].clientY,
@@ -131,7 +128,7 @@ export default function CarPage() {
   };
 
   const handleFullscreenTouchMove = (
-    e: React.TouchEvent<HTMLDivElement>
+    e: TouchEvent<HTMLDivElement>
   ) => {
     if (e.touches.length === 2 && pinchStart.current) {
       const distance = distanceBetweenTouches(e.touches);
@@ -184,17 +181,20 @@ export default function CarPage() {
   };
 
   const handleFullscreenTouchEnd = (
-    e: React.TouchEvent<HTMLDivElement>
+    e: TouchEvent<HTMLDivElement>
   ) => {
     if (e.touches.length < 2) {
       pinchStart.current = null;
     }
 
-    if (zoom <= 1 && e.changedTouches.length === 1) {
-      if (!touchStart.current) return;
-
-      const endX = e.changedTouches[0].clientX;
-      const diffX = endX - touchStart.current.x;
+    if (
+      zoom <= 1 &&
+      e.changedTouches.length === 1 &&
+      touchStart.current
+    ) {
+      const diffX =
+        e.changedTouches[0].clientX -
+        touchStart.current.x;
 
       if (Math.abs(diffX) > 70) {
         if (diffX < 0) nextPhoto();
@@ -223,7 +223,7 @@ export default function CarPage() {
     });
   };
 
-  const wa = () =>
+  const wa = () => {
     window.open(
       `https://wa.me/917015260003?text=${encodeURIComponent(
         `ROHILLA DRIVE CAR ENQUIRY
@@ -237,6 +237,7 @@ I am interested in this car.`
       )}`,
       "_blank"
     );
+  };
 
   return (
     <main>
@@ -403,7 +404,9 @@ I am interested in this car.`
               src={currentPhoto}
               alt={`${c.brand} ${c.model}`}
               style={{
-                transform: `translate(${pos.x}px, ${pos.y}px) scale(${zoom})`,
+                transform:
+                  `translate(${pos.x}px, ${pos.y}px) ` +
+                  `scale(${zoom})`,
               }}
             />
           </div>
@@ -449,8 +452,8 @@ I am interested in this car.`
         .detailViewer {
           position: relative;
           width: 100%;
-          height: 420px;
-          max-height: 55vh;
+          aspect-ratio: 16 / 10;
+          min-height: 250px;
           overflow: hidden;
           border-radius: 18px;
           background: #f1f3f6;
@@ -564,7 +567,7 @@ I am interested in this car.`
 
         .fullscreenImage {
           max-width: 92vw;
-          max-height: 82vh;
+          max-height: 72vh;
           width: auto;
           height: auto;
           object-fit: contain;
@@ -593,13 +596,13 @@ I am interested in this car.`
           top: 50%;
           transform: translateY(-50%);
           z-index: 10;
-          width: 46px;
-          height: 46px;
+          width: 44px;
+          height: 44px;
           border: 0;
           border-radius: 50%;
           background: rgba(255, 255, 255, 0.18);
           color: white;
-          font-size: 38px;
+          font-size: 34px;
         }
 
         .fullscreenArrow.left {
@@ -612,32 +615,32 @@ I am interested in this car.`
 
         .zoomControls {
           position: absolute;
-          bottom: 48px;
+          bottom: 42px;
           left: 50%;
           transform: translateX(-50%);
-          z-index: 10;
+          z-index: 20;
           display: flex;
           align-items: center;
           gap: 8px;
-          padding: 7px 10px;
-          border-radius: 25px;
-          background: rgba(0, 0, 0, 0.7);
+          padding: 8px;
+          border-radius: 30px;
+          background: rgba(0, 0, 0, 0.65);
         }
 
         .zoomControls button {
-          min-width: 34px;
-          height: 34px;
+          min-width: 38px;
+          height: 38px;
           border: 0;
-          border-radius: 18px;
+          border-radius: 20px;
           background: rgba(255, 255, 255, 0.18);
           color: white;
-          font-size: 18px;
+          font-weight: 700;
         }
 
         .zoomControls span {
-          min-width: 50px;
-          text-align: center;
           color: white;
+          min-width: 55px;
+          text-align: center;
           font-size: 13px;
         }
 
@@ -646,36 +649,71 @@ I am interested in this car.`
           top: 20px;
           left: 50%;
           transform: translateX(-50%);
-          color: white;
-          font-size: 13px;
           z-index: 10;
+          color: white;
+          background: rgba(0, 0, 0, 0.55);
+          padding: 6px 12px;
+          border-radius: 20px;
+          font-size: 12px;
         }
 
         .fullscreenHint {
           position: absolute;
-          bottom: 15px;
+          bottom: 12px;
           left: 50%;
           transform: translateX(-50%);
+          z-index: 10;
           color: rgba(255, 255, 255, 0.8);
           font-size: 12px;
+          margin: 0;
           white-space: nowrap;
-          z-index: 10;
+        }
+
+        @media (max-width: 800px) {
+          .carDetail {
+            grid-template-columns: 1fr !important;
+            width: 100%;
+            max-width: 760px;
+            margin: 28px auto;
+            padding: 0 16px;
+            gap: 18px;
+          }
+
+          .detailViewer {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            min-height: 0;
+            border-radius: 16px;
+          }
+
+          .carInfo {
+            padding: 8px 2px;
+          }
+
+          .carInfo h1 {
+            font-size: 32px;
+            line-height: 1.1;
+          }
         }
 
         @media (max-width: 600px) {
           .detailViewer {
-            height: 390px;
-            max-height: 52vh;
-            border-radius: 14px;
+            aspect-ratio: 16 / 10;
           }
 
-          .carDetail {
-            gap: 18px;
+          .thumb {
+            flex-basis: 64px;
+            width: 64px;
+            height: 50px;
           }
 
           .fullscreenImage {
-            max-width: 96vw;
-            max-height: 78vh;
+            max-width: 92vw;
+            max-height: 70vh;
+          }
+
+          .fullscreenHint {
+            font-size: 11px;
           }
         }
       `}</style>
