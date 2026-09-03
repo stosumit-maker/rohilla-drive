@@ -1,6 +1,6 @@
 "use client";
 import {useEffect,useState} from 'react';
-import {supabase} from '../supabaseClient';
+import {supabase} from './supabaseClient';
 export default function Partner(){const db=supabase();const [s,setS]=useState<any>(null);const [m,setM]=useState('');const [jobs,setJobs]=useState<any[]>([]);const [role,setRole]=useState('partner');
 useEffect(()=>{db.auth.getSession().then(async({data})=>{setS(data.session);if(data.session){const p=await db.from('profiles').select('role,name').eq('id',data.session.user.id).single();setRole(p.data?.role||'partner');load(data.session.user.id)}})},[]);
 async function load(uid:string){const {data}=await db.from('service_requests').select('*').eq('assigned_partner_id',uid).order('created_at',{ascending:false});setJobs(data||[])}
