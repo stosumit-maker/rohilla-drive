@@ -83,4 +83,33 @@ I am interested in this car.`
         </div>
 
         <div className="carInfo">
-         
+          <label>ROHILLA DRIVE</label>
+
+          <h1>
+            {c.brand} {c.model} {c.variant}
+          </h1>
+
+          <div className="specs">
+            <span>{c.year}</span>
+            <span>{Number(c.km).toLocaleString()} km</span>
+            <span>{c.fuel}</span>
+            <span>{c.owner_count} Owner</span>
+            <span>{c.city}</span>
+          </div>
+
+          <h2>₹{Number(c.asking_price).toLocaleString("en-IN")}</h2>
+
+          <p>{c.public_notes}</p>
+
+          <button className="primary" onClick={wa}>
+            WhatsApp Enquiry
+          </button>
+
+          <a className="call big" href="tel:7015260003">
+            Call 7015260003
+          </a>
+        </div>
+      </section>
+    </main>
+  );
+}
