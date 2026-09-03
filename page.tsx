@@ -2,25 +2,34 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { supabase } from "../../../app/supabaseClient";
+import { supabase } from "../../supabaseClient";
 
 export default function CarPage() {
   const { id } = useParams<{ id: string }>();
-  const [c, setC] = useState<any>(null);
-  const [i, setI] = useState(0);
+
+  const [car, setCar] = useState<any>(null);
+  const [activePhoto, setActivePhoto] = useState(0);
 
   const db = supabase();
 
   useEffect(() => {
-    db.from("vehicles")
-      .select("*,vehicle_photos(url,sort_order)")
-      .eq("id", id)
-      .eq("status", "published")
-      .single()
-      .then(({ data }) => setC(data));
+    async function loadCar() {
+      const { data } = await db
+        .from("vehicles")
+        .select("*, vehicle_photos(url, sort_order)")
+        .eq("id", id)
+        .eq("status", "published")
+        .single();
+
+      setCar(data);
+    }
+
+    if (id) {
+      loadCar();
+    }
   }, [id]);
 
-  if (!c) {
+  if (!car) {
     return (
       <main>
         <div className="section">
@@ -30,24 +39,25 @@ export default function CarPage() {
     );
   }
 
-  const photos = (c.vehicle_photos || []).sort(
+  const photos = (car.vehicle_photos || []).sort(
     (a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0)
   );
 
-  const wa = () =>
+  const whatsappEnquiry = () => {
+    const message = `ROHILLA DRIVE CAR ENQUIRY
+Vehicle: ${car.brand} ${car.model} ${car.variant}
+Year: ${car.year}
+KM: ${car.km}
+Price: ₹${car.asking_price}
+City: ${car.city}
+Vehicle ID: ${car.id}
+I am interested in this car.`;
+
     window.open(
-      `https://wa.me/917015260003?text=${encodeURIComponent(
-        `ROHILLA DRIVE CAR ENQUIRY
-Vehicle: ${c.brand} ${c.model} ${c.variant}
-Year: ${c.year}
-KM: ${c.km}
-Price: ₹${c.asking_price}
-City: ${c.city}
-Vehicle ID: ${c.id}
-I am interested in this car.`
-      )}`,
+      `https://wa.me/917015260003?text=${encodeURIComponent(message)}`,
       "_blank"
     );
+  };
 
   return (
     <main>
@@ -63,42 +73,55 @@ I am interested in this car.`
       <section className="carDetail">
         <div>
           <div className="mainPhoto">
-            {photos[i]?.url ? (
-              <img src={photos[i].url} />
+            {photos[activePhoto]?.url ? (
+              <img
+                src={photos[activePhoto].url}
+                alt={`${car.brand} ${car.model}`}
+              />
             ) : (
               <span>🚘</span>
             )}
           </div>
 
-          <div className="thumbs">
-            {photos.map((p: any, n: number) => (
-              <button key={p.url} onClick={() => setI(n)}>
-                <img src={p.url} />
-              </button>
-            ))}
-          </div>
+          {photos.length > 0 && (
+            <div className="thumbs">
+              {photos.map((photo: any, index: number) => (
+                <button
+                  key={`${photo.url}-${index}`}
+                  onClick={() => setActivePhoto(index)}
+                >
+                  <img
+                    src={photo.url}
+                    alt={`${car.brand} ${car.model} ${index + 1}`}
+                  />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="carInfo">
           <label>ROHILLA DRIVE</label>
 
           <h1>
-            {c.brand} {c.model} {c.variant}
+            {car.brand} {car.model} {car.variant}
           </h1>
 
           <div className="specs">
-            <span>{c.year}</span>
-            <span>{Number(c.km).toLocaleString()} km</span>
-            <span>{c.fuel}</span>
-            <span>{c.owner_count} Owner</span>
-            <span>{c.city}</span>
+            <span>{car.year}</span>
+            <span>{Number(car.km).toLocaleString()} km</span>
+            <span>{car.fuel}</span>
+            <span>{car.owner_count} Owner</span>
+            <span>{car.city}</span>
           </div>
 
-          <h2>₹{Number(c.asking_price).toLocaleString("en-IN")}</h2>
+          <h2>
+            ₹{Number(car.asking_price).toLocaleString("en-IN")}
+          </h2>
 
-          <p>{c.public_notes}</p>
+          {car.public_notes && <p>{car.public_notes}</p>}
 
-          <button className="primary" onClick={wa}>
+          <button className="primary" onClick={whatsappEnquiry}>
             WhatsApp Enquiry
           </button>
 
