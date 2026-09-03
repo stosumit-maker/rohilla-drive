@@ -6,7 +6,10 @@ import { supabase } from "../../../app/supabaseClient";
 
 export default function CarPage() {
   const { id } = useParams<{ id: string }>();
+
   const [c, setC] = useState<any>(null);
+  const [active, setActive] = useState(0);
+  const [fullscreen, setFullscreen] = useState(false);
 
   const db = supabase();
 
@@ -29,9 +32,21 @@ export default function CarPage() {
     );
   }
 
-  const photos = (c.vehicle_photos || []).sort(
+  const photos = [...(c.vehicle_photos || [])].sort(
     (a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0)
   );
+
+  const currentPhoto = photos[active]?.url;
+
+  const nextPhoto = () => {
+    if (!photos.length) return;
+    setActive((prev) => (prev + 1) % photos.length);
+  };
+
+  const previousPhoto = () => {
+    if (!photos.length) return;
+    setActive((prev) => (prev - 1 + photos.length) % photos.length);
+  };
 
   const wa = () =>
     window.open(
@@ -61,23 +76,67 @@ I am interested in this car.`
 
       <section className="carDetail">
         <div>
-          <div className="mainPhoto swipeGallery">
-            {photos.length ? (
-              photos.map((p: any) => (
+          <div className="detailViewer">
+            {currentPhoto ? (
+              <>
+                <button
+                  className="photoArrow left"
+                  onClick={previousPhoto}
+                  aria-label="Previous photo"
+                >
+                  ‹
+                </button>
+
                 <img
-                  key={p.url}
-                  src={p.url}
+                  src={currentPhoto}
                   alt={`${c.brand} ${c.model}`}
+                  onClick={() => setFullscreen(true)}
                 />
-              ))
+
+                <button
+                  className="photoArrow right"
+                  onClick={nextPhoto}
+                  aria-label="Next photo"
+                >
+                  ›
+                </button>
+
+                <button
+                  className="zoomButton"
+                  onClick={() => setFullscreen(true)}
+                >
+                  ⛶ View Fullscreen
+                </button>
+
+                <div className="photoCounter">
+                  {active + 1} / {photos.length}
+                </div>
+              </>
             ) : (
               <span>🚘</span>
             )}
           </div>
 
           {photos.length > 1 && (
+            <div className="detailThumbs">
+              {photos.map((photo: any, index: number) => (
+                <button
+                  key={photo.url || index}
+                  className={index === active ? "thumb active" : "thumb"}
+                  onClick={() => setActive(index)}
+                >
+                  <img
+                    src={photo.url}
+                    alt={`Photo ${index + 1}`}
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+
+          {photos.length > 1 && (
             <p className="swipeHint">
-              ← Swipe left or right to view all photos →
+              ← Swipe photos • Tap photo for full screen & zoom →
             </p>
           )}
         </div>
@@ -110,6 +169,55 @@ I am interested in this car.`
           </a>
         </div>
       </section>
+
+      {fullscreen && currentPhoto && (
+        <div
+          className="fullscreenViewer"
+          onClick={() => setFullscreen(false)}
+        >
+          <button
+            className="closeViewer"
+            onClick={() => setFullscreen(false)}
+          >
+            ✕
+          </button>
+
+          <button
+            className="fullscreenArrow left"
+            onClick={(e) => {
+              e.stopPropagation();
+              previousPhoto();
+            }}
+          >
+            ‹
+          </button>
+
+          <img
+            className="fullscreenImage"
+            src={currentPhoto}
+            alt={`${c.brand} ${c.model} fullscreen`}
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          <button
+            className="fullscreenArrow right"
+            onClick={(e) => {
+              e.stopPropagation();
+              nextPhoto();
+            }}
+          >
+            ›
+          </button>
+
+          <div className="fullscreenCounter">
+            {active + 1} / {photos.length}
+          </div>
+
+          <p className="fullscreenHint">
+            Swipe • Pinch to zoom • Tap ✕ to close
+          </p>
+        </div>
+      )}
     </main>
   );
 }
