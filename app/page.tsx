@@ -176,7 +176,13 @@ export default function Home() {
               <option>Hybrid</option>
             </select>
 
-            <button onClick={() => document.getElementById("cars")?.scrollIntoView({ behavior: "smooth" })}>
+            <button
+              onClick={() =>
+                document
+                  .getElementById("cars")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
               Search Cars
             </button>
           </div>
@@ -211,17 +217,27 @@ export default function Home() {
                 (a, b) => (a.sort_order || 0) - (b.sort_order || 0)
               );
 
-              const image = photos[0]?.url;
-
               return (
                 <article className="card" key={car.id}>
-                  <div className={`photo ${image ? "real" : ""}`}>
-                    {image ? (
-                      <img src={image} alt={`${car.brand} ${car.model}`} />
+                  <div className="photo real swipeGallery">
+                    {photos.length ? (
+                      photos.map((photo, index) => (
+                        <img
+                          key={photo.url || index}
+                          src={photo.url}
+                          alt={`${car.brand} ${car.model} photo ${index + 1}`}
+                        />
+                      ))
                     ) : (
                       <span>🚘</span>
                     )}
                   </div>
+
+                  {photos.length > 1 && (
+                    <div className="swipeHint">
+                      ← Swipe →
+                    </div>
+                  )}
 
                   <div className="body">
                     <label>ROHILLA DRIVE</label>
@@ -233,7 +249,8 @@ export default function Home() {
                     {car.variant && <p>{car.variant}</p>}
 
                     <small>
-                      {car.year} • {Number(car.km).toLocaleString("en-IN")} km •{" "}
+                      {car.year} •{" "}
+                      {Number(car.km).toLocaleString("en-IN")} km •{" "}
                       {car.fuel}
                       {car.owner_count
                         ? ` • ${car.owner_count} Owner`
