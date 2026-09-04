@@ -590,7 +590,7 @@ I am interested in this car.`
           background: #f1f3f6;
           display: block;
           line-height: 0;
-          touch-action: pan-x;
+          touch-action: pan-y;
         }
 
         .detailViewer > img {
