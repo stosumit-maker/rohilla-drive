@@ -1,9 +1,10 @@
 import "./style.css";
+import "./brand.css";
 
 export const metadata = {
-  title: "ROHILLA DRIVE — Cars & Automobile Network",
+  title: "ROHILLA DRIVE — One Platform for the Entire Vehicle Life",
   description:
-    "Buy, sell, exchange, find cars and access automobile services with ROHILLA DRIVE.",
+    "Buy, verify, drive, maintain, protect and sell through the ROHILLA DRIVE automobile network.",
   manifest: "/manifest.webmanifest",
 };
 
