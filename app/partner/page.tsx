@@ -3,7 +3,7 @@ import {useEffect,useState} from 'react';
 import {supabase} from '../supabaseClient';
 type Request={id:string;customer_name:string;category:string;vehicle_location:string|null;customer_location:string|null;details:string|null;preferred_time:string|null;status:string;created_at:string;vehicle?:{brand:string;model:string;variant:string|null;year:number|null}|null};
 const statuses=['new','assigned','accepted','in_progress','completed','cancelled'];
-const providerCategories=['Workshop / Repairs','Car Inspection','Finance DSA','Insurance','RC / RTO Assistance','Car Detailing','Roadside Assistance','Self-Drive Car Rental','Taxi / Cab Service','Chauffeur Service','Fleet / Corporate Mobility','Vehicle Delivery / Logistics','EV Services','Tyres / Battery','Other Automobile Service'];
+const providerCategories=['Workshop / Repairs','Car Inspection','Finance DSA','Insurance','RC / RTO Assistance','Car Detailing','Roadside Assistance','Self-Drive Car Rental','Taxi / Cab Service','Chauffeur Service','Fleet / Corporate Mobility','Vehicle Delivery / Logistics','EV Services','Tyres / Battery','Registered Vehicle Scrapping Facility (RVSF)','Local Vehicle Recycler / Scrap Buyer','Other Automobile Service'];
 export default function PartnerPage(){
  const db=supabase();const [session,setSession]=useState<any>(null),[partner,setPartner]=useState<any>(null),[requests,setRequests]=useState<Request[]>([]),[loading,setLoading]=useState(true),[message,setMessage]=useState(''),[filter,setFilter]=useState('all'),[mode,setMode]=useState<'login'|'signup'|'forgot'>('login');
  useEffect(()=>{start()},[]);
