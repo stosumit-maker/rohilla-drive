@@ -3,45 +3,33 @@ header{position:relative}
 header .brand{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:1px;min-width:170px}
 header .rdLogo{content:url('/rohilla-drive-logo-light.svg');width:168px;height:auto;display:block}
 header .brand small{font-size:9px;line-height:1.15;letter-spacing:.8px;color:#64748b;white-space:nowrap;margin-left:2px}
-.hero{position:relative;overflow:hidden}
+.hero{position:relative;overflow:hidden;padding-top:58px!important;padding-bottom:58px!important}
 .hero:before{content:"शुभ जन्माष्टमी • ROHILLA DRIVE";position:absolute;right:18px;top:18px;padding:7px 12px;border:1px solid rgba(215,181,109,.5);border-radius:999px;color:var(--rd-gold);font-size:12px;font-weight:700;letter-spacing:.5px;background:rgba(7,17,31,.55)}
 .heroText>span{color:var(--rd-blue);font-weight:800;letter-spacing:1px}
 .heroText h1{max-width:850px}
 .heroText h1 .lifeLine{display:block;background:linear-gradient(90deg,var(--rd-blue),var(--rd-mint));-webkit-background-clip:text;background-clip:text;color:transparent}
 .heroText .heroSub{font-size:18px;font-weight:700}
-.positioning{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.positioning span{padding:7px 11px;border:1px solid rgba(21,151,255,.25);border-radius:999px;font-size:12px;font-weight:700}
-.mobility{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.mobility button{min-height:82px}
-.vehicleVerticals{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.vehicleVerticals button{min-height:150px;padding:20px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:7px}.vehicleVerticals button span{font-size:30px}.vehicleVerticals button b{font-size:17px}.vehicleVerticals button small{font-size:13px;line-height:1.45;opacity:.75}
-.brandPromise{margin:0 0 8px;font-size:16px;font-weight:700}.rdFooterLogo{width:180px;max-width:70%;margin-bottom:12px}
+.positioning{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.positioning span{padding:6px 10px;border:1px solid rgba(21,151,255,.25);border-radius:999px;font-size:11px;font-weight:700}
+.actionSection{padding-top:18px!important;padding-bottom:18px!important}.primaryActions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.primaryActions button,.primaryActions a{min-height:78px;border-radius:16px;padding:12px;display:flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;font-weight:800;background:#fff;color:#0f172a;border:1px solid #e5e7eb;box-shadow:0 6px 16px rgba(15,23,42,.05)}.primaryActions span{font-size:22px}.primaryActions b{font-size:14px}
+.inventorySection{padding-top:30px!important;padding-bottom:34px!important}.compactSection{padding-top:30px!important;padding-bottom:30px!important}.compactHead{margin-bottom:13px!important}.compactHead h2{font-size:25px!important}.compactHead p{margin:0;font-size:14px}.textLink{font-weight:800;text-decoration:none;font-size:13px;color:#2563eb}
+.compactServices{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.compactServices button{min-height:58px;padding:10px 12px;background:#fff;color:#0f172a;border:1px solid #e5e7eb;text-align:left;display:flex;align-items:center;gap:8px}.compactServices span{font-size:18px}.compactServices b{font-size:13px}
+.vehicleVerticals{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.vehicleVerticals button{min-height:150px;padding:20px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:7px}.vehicleVerticals button span{font-size:30px}.vehicleVerticals button b{font-size:17px}.vehicleVerticals button small{font-size:13px;line-height:1.45;opacity:.75}.compactNetwork{grid-template-columns:repeat(6,1fr)!important;gap:8px!important;margin-top:0!important}.compactNetwork button{min-height:66px!important;padding:10px!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:7px!important;text-align:center!important}.compactNetwork button span{font-size:20px!important}.compactNetwork button b{font-size:12px!important;line-height:1.2}
+.mobility{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.mobility button{min-height:82px}.compactMobility{grid-template-columns:repeat(6,1fr)!important;gap:8px!important;margin-top:0!important}.compactMobility button{min-height:58px!important;padding:10px!important;display:flex;align-items:center;justify-content:center;gap:7px}.compactMobility span{font-size:18px}.compactMobility b{font-size:12px}
+.brandPromise{margin:0 0 8px;font-size:16px;font-weight:700}.rdFooterLogo{width:180px;max-width:70%;margin-bottom:12px}.compactAbout{padding-top:28px!important;padding-bottom:28px!important}.compactAbout .about{padding-top:0!important}.compactAbout .about p{max-width:900px;margin-bottom:0}
 .dark .aboutGrid>div{background:#111b2c;border-color:#26364d;color:#fff;box-shadow:none}.dark .aboutGrid h3{color:#fff}.dark .aboutGrid p{color:#a9b7c9}
 footer{display:flex;align-items:center;gap:28px;flex-wrap:wrap}footer .rdFooterLogo{margin:0}footer p{margin:0;line-height:1.5}
-/* Allow normal page scrolling even when a finger starts on a vehicle photo. */
-.swipeGallery{touch-action:pan-x pan-y!important;scroll-snap-type:x proximity!important;overscroll-behavior-x:contain}
-.carPage .detailViewer,.carPage .detailViewer>img{touch-action:pan-x pan-y!important}
-/* All social links use their real SVG icons; no text/background-image replacement. */
-.topActions .socialIcons a,.footerSocial .socialIcons a{font-size:0;background-image:none!important;background-repeat:no-repeat}
-.footerSocial{margin-top:14px}.footerSocial .socialIcons{margin:0}
+.swipeGallery{touch-action:pan-x pan-y!important;scroll-snap-type:x proximity!important;overscroll-behavior-x:contain}.carPage .detailViewer,.carPage .detailViewer>img{touch-action:pan-x pan-y!important}
+.topActions .socialIcons a,.footerSocial .socialIcons a{font-size:0;background-image:none!important;background-repeat:no-repeat}.footerSocial{margin-top:14px}.footerSocial .socialIcons{margin:0}
+@media(max-width:900px){.compactNetwork,.compactMobility{grid-template-columns:repeat(3,1fr)!important}.compactServices{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:720px){
- header{height:auto!important;min-height:72px;padding:9px 14px!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}
- header .brand{min-width:0;gap:0}
- header .rdLogo{width:132px;max-width:100%}
- header .brand small{font-size:8px;letter-spacing:.35px;margin-top:1px;white-space:nowrap}
- .topActions{gap:6px!important;justify-self:end}
- .topActions .socialIcons{margin:0!important;gap:5px!important}
- .topActions .socialIcons a{width:31px!important;height:31px!important}
- .topActions .socialIcons svg{width:17px!important;height:17px!important}
- .topActions .waTop{display:none!important}
- .hero{padding:34px 5% 46px!important}
- .hero:before{position:static;display:block;float:none;width:max-content;max-width:100%;margin:0 0 24px;padding:6px 10px;font-size:10px;letter-spacing:.2px}
- .heroText>span{display:block;font-size:11px!important;line-height:1.65;letter-spacing:1.5px!important}
- .hero h1{font-size:42px!important;line-height:1.03!important;margin:14px 0 12px!important}
- .heroText .heroSub{font-size:17px!important;line-height:1.55!important;margin-top:20px}
- .hero p{font-size:16px!important;line-height:1.55!important}
- .positioning{gap:7px;margin-top:18px}.positioning span{font-size:11px;padding:7px 10px;letter-spacing:1px!important}
- .mobility,.vehicleVerticals{grid-template-columns:1fr 1fr}.vehicleVerticals button{min-height:125px;padding:14px}
- .about{padding-top:20px!important}.aboutGrid{gap:12px!important;margin-top:18px!important}.aboutGrid>div{padding:17px!important;border-radius:15px!important;min-height:0!important}.aboutGrid h3{font-size:18px;margin-bottom:5px}.aboutGrid p{font-size:14px;line-height:1.5}
- footer{display:block;padding:30px 5%!important}footer .rdFooterLogo{width:170px;margin-bottom:16px}footer p{font-size:14px;margin:8px 0}footer a{font-size:18px}.footerSocial .socialIcons a{width:36px;height:36px}
- .floatingWa{right:14px!important;bottom:18px!important;padding:11px 16px!important;font-size:14px!important;box-shadow:0 8px 24px rgba(0,0,0,.22)!important}
+ header{height:auto!important;min-height:72px;padding:9px 14px!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}header .brand{min-width:0;gap:0}header .rdLogo{width:132px;max-width:100%}header .brand small{font-size:8px;letter-spacing:.35px;margin-top:1px;white-space:nowrap}.topActions{gap:6px!important;justify-self:end}.topActions .socialIcons{margin:0!important;gap:5px!important}.topActions .socialIcons a{width:31px!important;height:31px!important}.topActions .socialIcons svg{width:17px!important;height:17px!important}.topActions .waTop{display:none!important}
+ .hero{padding:30px 5% 36px!important}.hero:before{position:static;display:block;float:none;width:max-content;max-width:100%;margin:0 0 18px;padding:6px 10px;font-size:10px;letter-spacing:.2px}.heroText>span{display:block;font-size:10px!important;line-height:1.55;letter-spacing:1.3px!important}.hero h1{font-size:38px!important;line-height:1.03!important;margin:12px 0 10px!important}.heroText .heroSub{font-size:16px!important;line-height:1.45!important;margin:14px 0 8px}.hero p{font-size:15px!important;line-height:1.5!important}.positioning{gap:6px;margin-top:12px}.positioning span{font-size:10px;padding:6px 8px;letter-spacing:.7px!important}
+ .actionSection{padding:12px 4%!important}.primaryActions{grid-template-columns:repeat(4,1fr);gap:6px}.primaryActions button,.primaryActions a{min-height:64px;padding:7px 4px;gap:3px;flex-direction:column;border-radius:13px}.primaryActions span{font-size:20px}.primaryActions b{font-size:10px;line-height:1.15;text-align:center}
+ .inventorySection,.compactSection{padding-left:4%!important;padding-right:4%!important}.inventorySection{padding-top:24px!important;padding-bottom:26px!important}.compactSection{padding-top:24px!important;padding-bottom:24px!important}.compactHead{display:flex!important;align-items:end!important;gap:8px!important}.compactHead h2{font-size:22px!important;margin-bottom:4px!important}.compactHead p{font-size:12px;line-height:1.35}.textLink{font-size:11px;white-space:nowrap}
+ .compactServices{grid-template-columns:repeat(2,1fr);gap:7px}.compactServices button{min-height:50px;padding:8px 9px}.compactServices span{font-size:16px}.compactServices b{font-size:11px}
+ .compactNetwork,.compactMobility{grid-template-columns:repeat(3,1fr)!important;gap:6px!important}.compactNetwork button,.compactMobility button{min-height:52px!important;padding:7px 5px!important;gap:4px!important}.compactNetwork button span,.compactMobility span{font-size:16px!important}.compactNetwork button b,.compactMobility b{font-size:10px!important}
+ .compactAbout{padding:22px 5%!important}.compactAbout h2{font-size:23px}.compactAbout p{font-size:13px;line-height:1.5}.about{padding-top:0!important}
+ footer{display:block;padding:28px 5%!important}footer .rdFooterLogo{width:160px;margin-bottom:14px}footer p{font-size:13px;margin:7px 0}footer a{font-size:17px}.footerSocial .socialIcons a{width:34px;height:34px}.floatingWa{right:14px!important;bottom:18px!important;padding:11px 16px!important;font-size:14px!important;box-shadow:0 8px 24px rgba(0,0,0,.22)!important}
 }
-@media(max-width:390px){header .rdLogo{width:118px}.topActions .socialIcons a{width:29px!important;height:29px!important}.hero h1{font-size:38px!important}.mobility,.vehicleVerticals{grid-template-columns:1fr}}
+@media(max-width:390px){header .rdLogo{width:118px}.topActions .socialIcons a{width:29px!important;height:29px!important}.hero h1{font-size:35px!important}.primaryActions b{font-size:9px}.compactNetwork button b,.compactMobility b{font-size:9px!important}}
