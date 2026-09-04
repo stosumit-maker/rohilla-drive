@@ -43,11 +43,11 @@ export default function VerifyVehicle() {
   }
 
   return <main>
-    <header><div className="brand"><b>ROHILLA DRIVE</b><small>Vehicle Verification Desk</small></div><a className="call" href="/">← Back to Cars</a></header>
+    <header><div className="brand"><b>ROHILLA DRIVE</b><small>Vehicle Verification Desk</small></div><a className="call" href="/">← Back to Rohilla Drive</a></header>
     <section className="hero"><div className="heroText"><span>ROHILLA DRIVE • VEHICLE VERIFICATION</span><h1>Verify a vehicle<br/>before you buy.</h1><p>Request a structured verification covering official vehicle information, challans and available compliance records. We never label a vehicle “clear” where an official record is unavailable.</p></div></section>
     <section className="section"><div className="card" style={{maxWidth:720,margin:"0 auto"}}><div className="body">
       {submitted ? <div className="success"><h2>Request submitted ✓</h2><p>Verification ID: <b>{submitted}</b></p><p>ROHILLA DRIVE will process the request and coordinate any required verification or documents. Government fees and Rohilla Drive service fees will be shown separately before payment.</p><a className="call" href="/">Back to Rohilla Drive</a></div> : <>
-        <h2>Full Vehicle Verification</h2><p>Enter the registration number. Customer contact details remain with Rohilla Drive and are not exposed to service providers.</p>
+        <h2>Full Vehicle Verification</h2><p>Enter the registration number. Customer contact details remain with Rohilla Drive and are not exposed to outside Partners.</p>
         <form className="adminForm" onSubmit={submit}><input value={vehicle} onChange={e=>setVehicle(e.target.value)} placeholder="Vehicle number e.g. HR02AB1234" required/><input value={name} onChange={e=>setName(e.target.value)} placeholder="Your name (optional)"/><input value={phone} onChange={e=>setPhone(e.target.value)} placeholder="Mobile number" inputMode="tel" required/><button disabled={busy}>{busy?"Submitting…":"Start Verification"}</button></form>
       </>}
     </div></div></section>
