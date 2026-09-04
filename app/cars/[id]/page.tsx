@@ -117,7 +117,7 @@ export default function CarPage() {
   };
 
   const distanceBetweenTouches = (
-    TouchEvent<HTMLDivElement>["touches"]
+    touches: TouchEvent<HTMLDivElement>["touches"]
   ) => {
     if (touches.length < 2) return 0;
 
