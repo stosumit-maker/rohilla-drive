@@ -105,7 +105,23 @@ export default function Home() {
               aria-label="Instagram"
               className="instagram"
             >
-              ◎
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle
+                  cx="17.5"
+                  cy="6.5"
+                  r="1"
+                  fill="currentColor"
+                  stroke="none"
+                />
+              </svg>
             </a>
 
             <a
@@ -115,7 +131,13 @@ export default function Home() {
               aria-label="Facebook"
               className="facebook"
             >
-              f
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="currentColor"
+              >
+                <path d="M14 8h3V4h-3c-3.3 0-5 2-5 5v2H6v4h3v5h4v-5h3.5l.5-4H13V9c0-.7.3-1 1-1Z" />
+              </svg>
             </a>
 
             <a
@@ -125,7 +147,13 @@ export default function Home() {
               aria-label="YouTube"
               className="youtube"
             >
-              ▶
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="currentColor"
+              >
+                <path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.8 2.8 0 0 0-2 2C1.9 9 1.9 12 1.9 12s0 3 .5 4.8a2.8 2.8 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.8 2.8 0 0 0 2-2c.5-1.8.5-4.8.5-4.8s0-3-.5-4.8ZM10 15.5v-7l6 3.5-6 3.5Z" />
+              </svg>
             </a>
           </div>
 
@@ -424,27 +452,58 @@ I am interested in this car.`
               href="https://www.instagram.com/rohillamultibrandcars/"
               target="_blank"
               rel="noreferrer"
+              aria-label="Instagram"
               className="instagram"
             >
-              ◎
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle
+                  cx="17.5"
+                  cy="6.5"
+                  r="1"
+                  fill="currentColor"
+                  stroke="none"
+                />
+              </svg>
             </a>
 
             <a
               href="https://www.facebook.com/"
               target="_blank"
               rel="noreferrer"
+              aria-label="Facebook"
               className="facebook"
             >
-              f
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="currentColor"
+              >
+                <path d="M14 8h3V4h-3c-3.3 0-5 2-5 5v2H6v4h3v5h4v-5h3.5l.5-4H13V9c0-.7.3-1 1-1Z" />
+              </svg>
             </a>
 
             <a
               href="https://www.youtube.com/"
               target="_blank"
               rel="noreferrer"
+              aria-label="YouTube"
               className="youtube"
             >
-              ▶
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="currentColor"
+              >
+                <path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.8 2.8 0 0 0-2 2C1.9 9 1.9 12 1.9 12s0 3 .5 4.8a2.8 2.8 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.8 2.8 0 0 0 2-2c.5-1.8.5-4.8.5-4.8s0-3-.5-4.8ZM10 15.5v-7l6 3.5-6 3.5Z" />
+              </svg>
             </a>
           </div>
         </div>
@@ -489,4 +548,4 @@ I am interested in this car.`
       )}
     </main>
   );
-}
+      }
