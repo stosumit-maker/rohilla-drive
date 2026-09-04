@@ -1,5 +1,6 @@
 import "./style.css";
 import "./brand.css";
+import "./trusted-assist.css";
 
 export const metadata = {
   title: "ROHILLA DRIVE — One Platform for the Entire Vehicle Life",
