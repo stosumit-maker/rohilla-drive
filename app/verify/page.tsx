@@ -40,6 +40,8 @@ export default function VerifyVehicle() {
     setBusy(false);
     if (error) { alert(error.message); return; }
     setSubmitted(data.id);
+    const wa=`ROHILLA DRIVE VERIFICATION REQUEST\n\nVehicle: ${reg}\nVerification ID: ${data.id}\nName: ${name.trim()||'Customer'}\nPhone: ${phone.trim()}\n\nThe request is already saved with ROHILLA DRIVE.`;
+    window.location.href=`https://wa.me/917015260003?text=${encodeURIComponent(wa)}`;
   }
 
   return <main>
@@ -48,7 +50,7 @@ export default function VerifyVehicle() {
     <section className="section"><div className="card" style={{maxWidth:720,margin:"0 auto"}}><div className="body">
       {submitted ? <div className="success"><h2>Request submitted ✓</h2><p>Verification ID: <b>{submitted}</b></p><p>ROHILLA DRIVE will process the request and coordinate any required verification or documents. Government fees and Rohilla Drive service fees will be shown separately before payment.</p><a className="call" href="/">Back to Rohilla Drive</a></div> : <>
         <h2>Full Vehicle Verification</h2><p>Enter the registration number. Customer contact details remain with Rohilla Drive and are not exposed to outside Partners.</p>
-        <form className="adminForm" onSubmit={submit}><input value={vehicle} onChange={e=>setVehicle(e.target.value)} placeholder="Vehicle number e.g. HR02AB1234" required/><input value={name} onChange={e=>setName(e.target.value)} placeholder="Your name (optional)"/><input value={phone} onChange={e=>setPhone(e.target.value)} placeholder="Mobile number" inputMode="tel" required/><button disabled={busy}>{busy?"Submitting…":"Start Verification"}</button></form>
+        <form className="adminForm" onSubmit={submit}><input value={vehicle} onChange={e=>setVehicle(e.target.value)} placeholder="Vehicle number e.g. HR02AB1234" required/><input value={name} onChange={e=>setName(e.target.value)} placeholder="Your name (optional)"/><input value={phone} onChange={e=>setPhone(e.target.value)} placeholder="Mobile number" inputMode="tel" required/><button disabled={busy}>{busy?"Submitting…":"Save Request & Continue on WhatsApp"}</button></form>
       </>}
     </div></div></section>
     <section className="section"><div className="head"><div><h2>What we check</h2><p>Only information that can be legitimately verified is reported.</p></div></div><div className="services">{checks.map(([icon,title,text])=><div className="card" key={title}><div className="body"><h3>{icon} {title}</h3><p>{text}</p></div></div>)}</div></section>
