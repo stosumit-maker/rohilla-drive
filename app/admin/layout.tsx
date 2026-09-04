@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../supabaseClient";
 
 const VAPID_PUBLIC_KEY="BCu-RuCf1vdiAr6eUOnZRKYTaBTqAdmknc0LtfXQO1kH4IGBM6lcw3VlwN2D26cTWPo2Iei7SyQUcLeWiR5cGXA";
-
 type Counts={sales:number;services:number;dealers:number;partners:number;verification:number;dealerVehicles:number};
 const emptyCounts:Counts={sales:0,services:0,dealers:0,partners:0,verification:0,dealerVehicles:0};
 
@@ -21,60 +20,69 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  const [counts,setCounts]=useState<Counts>(emptyCounts);
  const [pushEnabled,setPushEnabled]=useState(false);
  const [note,setNote]=useState("");
-
- useEffect(()=>{
-  let timer:number|undefined;
-  async function start(){
-   const {data:{session}}=await db.auth.getSession();
-   if(!session)return;
-   const {data:aal}=await db.auth.mfa.getAuthenticatorAssuranceLevel();
-   if(aal?.currentLevel!=="aal2")return;
-   const {data:isAdmin}=await db.rpc("is_admin");
-   if(!isAdmin)return;
-   setReady(true);
-   await loadCounts();
-   await checkPush();
-   timer=window.setInterval(loadCounts,30000);
-  }
-  start();
-  return()=>{if(timer)window.clearInterval(timer)};
- },[]);
+ const refreshRef=useRef<number|undefined>(undefined);
+ const gateRef=useRef<number|undefined>(undefined);
 
  async function countQuery(query:any){const {count}=await query;return count||0}
  async function loadCounts(){
   const [sales,services,dealers,partners,verification,dealerVehicles]=await Promise.all([
-   countQuery(db.from("leads").select("id",{count:"exact",head:true}).eq("status","new")),
-   countQuery(db.from("service_requests").select("id",{count:"exact",head:true}).eq("status","new")),
+   countQuery(db.from("leads").select("id",{count:"exact",head:true}).in("status",["new","contacted","qualified"])),
+   countQuery(db.from("service_requests").select("id",{count:"exact",head:true}).in("status",["new","assigned","accepted","in_progress"])),
    countQuery(db.from("dealer_applications").select("id",{count:"exact",head:true}).in("status",["new","reviewing"])),
    countQuery(db.from("collaboration_requests").select("id",{count:"exact",head:true}).in("status",["new","reviewing"])),
-   countQuery(db.from("vehicle_verification_orders").select("id",{count:"exact",head:true}).in("status",["submitted","pending","processing"])),
+   countQuery(db.from("vehicle_verification_orders").select("id",{count:"exact",head:true}).in("status",["submitted","pending","processing","in_progress"])),
    countQuery(db.from("vehicles").select("id",{count:"exact",head:true}).eq("status","draft").not("partner_id","is",null))
   ]);
   setCounts({sales,services,dealers,partners,verification,dealerVehicles});
  }
 
  async function checkPush(){
-  if(!("serviceWorker" in navigator)||!("PushManager" in window))return;
-  const reg=await navigator.serviceWorker.getRegistration("/admin-sw.js");
-  const sub=await reg?.pushManager.getSubscription();
+  if(!("serviceWorker" in navigator)||!("PushManager" in window)||!("Notification" in window))return;
+  if(Notification.permission!=="granted"){setPushEnabled(false);return}
+  const reg=await navigator.serviceWorker.register("/admin-sw.js",{scope:"/"});
+  const sub=await reg.pushManager.getSubscription();
   setPushEnabled(Boolean(sub));
  }
 
+ useEffect(()=>{
+  let cancelled=false;
+  async function gate(){
+   const {data:{session}}=await db.auth.getSession();
+   if(!session||cancelled)return;
+   const {data:aal}=await db.auth.mfa.getAuthenticatorAssuranceLevel();
+   if(aal?.currentLevel!=="aal2"){
+    gateRef.current=window.setTimeout(gate,2500);
+    return;
+   }
+   const {data:isAdmin}=await db.rpc("is_admin");
+   if(!isAdmin||cancelled)return;
+   setReady(true);
+   await Promise.all([loadCounts(),checkPush()]);
+   refreshRef.current=window.setInterval(loadCounts,30000);
+  }
+  gate();
+  return()=>{cancelled=true;if(gateRef.current)window.clearTimeout(gateRef.current);if(refreshRef.current)window.clearInterval(refreshRef.current)};
+ },[]);
+
  async function enablePush(){
   try{
+   setNote("");
    if(!("serviceWorker" in navigator)||!("PushManager" in window)||!("Notification" in window)){setNote("Phone push is not supported in this browser.");return}
    const permission=await Notification.requestPermission();
-   if(permission!=="granted"){setNote("Notification permission was not allowed.");return}
+   if(permission!=="granted"){setNote("Notification permission was not allowed. Chrome Site settings में Notifications allow करके दोबारा try करें.");return}
    const reg=await navigator.serviceWorker.register("/admin-sw.js",{scope:"/"});
    await navigator.serviceWorker.ready;
    let sub=await reg.pushManager.getSubscription();
-   if(!sub){sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC_KEY)})}
+   if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC_KEY)});
    const json=sub.toJSON();
    const {data:{session}}=await db.auth.getSession();
    if(!session||!json.keys?.p256dh||!json.keys?.auth){setNote("Could not save phone alert subscription.");return}
    const {error}=await db.from("admin_push_subscriptions").upsert({admin_user_id:session.user.id,endpoint:sub.endpoint,p256dh:json.keys.p256dh,auth:json.keys.auth,user_agent:navigator.userAgent,updated_at:new Date().toISOString()},{onConflict:"endpoint"});
    if(error){setNote(error.message);return}
-   setPushEnabled(true);setNote("Phone alerts enabled ✓");
+   setPushEnabled(true);
+   setNote("Phone alerts enabled ✓ Sending test…");
+   const test=await db.rpc("test_rohilla_admin_push");
+   setNote(test.error?`Phone alerts enabled, test failed: ${test.error.message}`:"Phone alerts enabled ✓ Test notification sent.");
   }catch(err:any){setNote(err?.message||"Could not enable phone alerts.")}
  }
 
@@ -82,7 +90,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
   setNote("Sending test alert…");
   const {data,error}=await db.rpc("test_rohilla_admin_push");
   if(error){setNote(error.message);return}
-  setNote(data?"Test alert sent ✓":"Test alert could not be sent.");
+  setNote(data?"Test notification sent ✓":"Test notification could not be sent.");
  }
 
  const total=Object.values(counts).reduce((sum,n)=>sum+n,0);
