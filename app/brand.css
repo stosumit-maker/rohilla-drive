@@ -18,6 +18,7 @@ header .brand small{font-size:9px;line-height:1.15;letter-spacing:.8px;color:#64
 footer{display:flex;align-items:center;gap:28px;flex-wrap:wrap}footer .rdFooterLogo{margin:0}footer p{margin:0;line-height:1.5}
 /* Allow normal page scrolling even when a finger starts on a vehicle photo. */
 .swipeGallery{touch-action:pan-x pan-y!important;scroll-snap-type:x proximity!important;overscroll-behavior-x:contain}
+.carPage .detailViewer,.carPage .detailViewer>img{touch-action:pan-x pan-y!important}
 /* All social links use their real SVG icons; no text/background-image replacement. */
 .topActions .socialIcons a,.footerSocial .socialIcons a{font-size:0;background-image:none!important;background-repeat:no-repeat}
 .footerSocial{margin-top:14px}.footerSocial .socialIcons{margin:0}
