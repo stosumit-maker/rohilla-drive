@@ -1,0 +1,2 @@
+export const metadata={title:"Language Bridge",description:"Multilingual vehicle and mobility assistance across Indian languages and regions through Rohilla Drive.",alternates:{canonical:"/language-assist"},openGraph:{url:"/language-assist",title:"Rohilla Language Bridge | ROHILLA DRIVE",description:"Speak or type in your language and coordinate a vehicle requirement across states through Rohilla Drive."}};
+export default function Layout({children}:{children:React.ReactNode}){return children}
