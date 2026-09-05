@@ -6,6 +6,8 @@ const site = "https://www.rohilladrive.com";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     { url: site, changeFrequency: "daily", priority: 1 },
+    { url: `${site}/new-vehicles`, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${site}/business-hub`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${site}/verify`, changeFrequency: "weekly", priority: 0.85 },
   ];
 
