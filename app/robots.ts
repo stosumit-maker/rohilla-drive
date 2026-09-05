@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const site = "https://rohilladrivedeployfinal.vercel.app";
+const site = "https://www.rohilladrive.com";
 
 export default function robots(): MetadataRoute.Robots {
   return {
