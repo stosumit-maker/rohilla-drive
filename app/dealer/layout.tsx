@@ -6,11 +6,13 @@ export default function DealerLayout({children}:{children:React.ReactNode}){
  const path=usePathname();
  return <>
   {children}
+  <div style={{position:"fixed",left:12,bottom:58,zIndex:9997,padding:"5px 9px",borderRadius:999,background:"rgba(17,24,39,.92)",color:"#f4d38a",fontSize:10,fontWeight:800}}>ROHILLA DRIVE • One network. Every vehicle. Every language.</div>
   <div style={{position:"fixed",left:12,bottom:14,zIndex:9998,display:"flex",gap:8,flexWrap:"wrap",maxWidth:"calc(100vw - 24px)"}}>
    {path!=="/dealer"&&<a href="/dealer" style={pill}>Dealer Home</a>}
-   {path!=="/dealer/new-opportunities"&&<a href="/dealer/new-opportunities" style={{...pill,background:"#172554",color:"#dbeafe",border:"1px solid #60a5fa"}}>✨ New Vehicle Leads</a>}
+   {path!=="/dealer/new-opportunities"&&<a href="/dealer/new-opportunities" style={{...pill,background:"#172554",color:"#dbeafe",border:"1px solid #60a5fa"}}>✨ OEM / New Vehicle Leads</a>}
    {path!=="/dealer/finance"&&<a href="/dealer/finance" style={{...pill,background:"#173326",color:"#f4d38a",border:"1px solid #d7b56d"}}>Finance • Margin • RC</a>}
    {path!=="/dealer/growth"&&<a href="/dealer/growth" style={{...pill,background:"#2a2110",color:"#f4d38a",border:"1px solid #d7b56d"}}>✨ Growth / AI</a>}
+   {path!=="/dealer/language"&&<a href="/dealer/language" style={{...pill,background:"#312e81",color:"#eef2ff",border:"1px solid #818cf8"}}>🌐 Language Desk</a>}
    <a href="/business-hub" style={pill}>Business Hub</a>
   </div>
  </>;
