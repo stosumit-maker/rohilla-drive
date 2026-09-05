@@ -7,6 +7,7 @@ export default function PublicQuickLinks(){
  if(path.startsWith("/admin")||path.startsWith("/dealer")||path.startsWith("/partner")||path.startsWith("/reset-password"))return null;
  return <div style={{position:"fixed",right:12,bottom:72,zIndex:9000,display:"flex",flexDirection:"column",gap:8,alignItems:"flex-end"}}>
   <a href="/assistant" style={{...base,background:"#2a2110",color:"#f4d38a",border:"1px solid #d7b56d"}}>🎙️ Ask Rohilla AI</a>
+  <a href="/language-assist" style={{...base,background:"#312e81",color:"#eef2ff",border:"1px solid #818cf8"}}>🌐 Language Bridge</a>
   <a href="/new-vehicles" style={{...base,background:"#173326",color:"#f4d38a",border:"1px solid #d7b56d"}}>✨ New Vehicle Assist</a>
   <a href="/business-hub" style={{...base,background:"#111827",color:"#fff",border:"1px solid #475569"}}>🤝 Business Hub</a>
  </div>
