@@ -1,21 +1,27 @@
-export const metadata={title:"Rohilla Business Hub",description:"Join the Rohilla Drive automotive business network as a dealer, workshop, inspector, finance/insurance professional, mobility operator, recycler or other automotive business.",alternates:{canonical:"/business-hub"},openGraph:{url:"/business-hub",title:"Rohilla Business Hub | ROHILLA DRIVE",description:"Dealer, new-vehicle dealership, service, mobility and automotive business network."}};
+import CustomerBackBar from "../components/CustomerBackBar";
 
-const businessTypes=[
- ["Vehicle Dealer / Pre-Owned","Regular inventory, dealer submissions, finance/margin/RC tools, sourcing and future AI growth tools.","/dealer"],
- ["New Vehicle Dealership / Sales Team","Receive structured new-vehicle requirements, test-drive/quote opportunities and multi-brand demand routing.","/dealer"],
- ["Workshop / Repairs / Detailing","Receive assigned jobs, manage work status and build a verified service profile.","/partner"],
- ["Inspection / Verification","Vehicle inspection and verification assignments through the Rohilla network.","/partner"],
- ["Finance / Insurance / RC-RTO","Qualified customer requirements with controlled handoff and workflow tracking.","/partner"],
- ["Taxi / Self-Drive / Chauffeur / Fleet","Mobility and corporate/fleet requirements routed through one business network.","/partner"],
- ["Commercial / Transport / Logistics","Commercial vehicle, delivery, fleet and transporter opportunities.","/partner"],
- ["EV / Tyres / Battery / RSA","Future mobility, roadside and vehicle-support services.","/partner"],
- ["RVSF / Recycler / Scrap Buyer","Responsible end-of-life vehicle and recycler quote opportunities.","/partner"],
- ["Other Automotive Business","If your business touches the vehicle lifecycle, apply and let Rohilla Drive classify the right workflow.","/partner"]
+export const metadata={title:"Rohilla Business Hub",description:"Join the Rohilla Drive automotive business network as an OEM/authorised new vehicle dealer, pre-owned dealer, workshop, inspector, finance/insurance professional, mobility operator, recycler or other automotive business.",alternates:{canonical:"/business-hub"},openGraph:{url:"/business-hub",title:"Rohilla Business Hub | ROHILLA DRIVE",description:"OEM/new-vehicle dealership, pre-owned, service, mobility and automotive business network."}};
+
+type BusinessType={name:string;desc:string;register:string;login:string;portal:string};
+const partner=(category:string)=>`/join/partner?category=${encodeURIComponent(category)}`;
+const businessTypes:BusinessType[]=[
+ {name:"OEM / Authorised New Vehicle Dealer",desc:"OEM dealership, authorised showroom or sales team: receive structured new-vehicle demand, quote/test-drive opportunities and multi-brand customer routing.",register:"/join/oem",login:"/dealer",portal:"Dealer / OEM Portal"},
+ {name:"Pre-Owned / Used Vehicle Dealer",desc:"Regular inventory, dealer submissions, sourcing, finance/margin/RC tools and Rohilla Intelligence growth workflows.",register:"/join/preowned",login:"/dealer",portal:"Dealer Portal"},
+ {name:"Workshop / Repairs / Detailing",desc:"Receive assigned jobs, manage work status and build a verified service profile.",register:partner("Workshop / Repairs"),login:"/partner",portal:"Service Provider Portal"},
+ {name:"Inspection / Verification",desc:"Vehicle inspection and verification assignments through the Rohilla network.",register:partner("Car Inspection"),login:"/partner",portal:"Inspection Partner Portal"},
+ {name:"Finance / Insurance / RC-RTO",desc:"Qualified customer requirements with controlled handoff and workflow tracking.",register:partner("Finance DSA"),login:"/partner",portal:"Business Partner Portal"},
+ {name:"Taxi / Self-Drive / Chauffeur / Fleet",desc:"Mobility and corporate/fleet requirements routed through one business network.",register:partner("Fleet / Corporate Mobility"),login:"/partner",portal:"Mobility Partner Portal"},
+ {name:"Commercial / Transport / Logistics",desc:"Commercial vehicle, delivery, fleet and transporter opportunities.",register:partner("Vehicle Delivery / Logistics"),login:"/partner",portal:"Logistics Partner Portal"},
+ {name:"EV / Tyres / Battery / RSA",desc:"Future mobility, roadside and vehicle-support services.",register:partner("EV Services"),login:"/partner",portal:"Service Partner Portal"},
+ {name:"RVSF / Recycler / Scrap Buyer",desc:"Responsible end-of-life vehicle and recycler quote opportunities.",register:partner("Registered Vehicle Scrapping Facility (RVSF)"),login:"/partner",portal:"Recycler / RVSF Portal"},
+ {name:"Multilingual / Cross-State Business",desc:"Serve customers across language and state boundaries using Rohilla Language Bridge and translated communication tools.",register:"/join/partner",login:"/partner",portal:"Business Hub Partner Portal"},
+ {name:"Other Automotive Business",desc:"If your business touches the vehicle lifecycle, apply and let Rohilla Drive classify the right workflow.",register:partner("Other Automobile Service"),login:"/partner",portal:"Business Hub Partner Portal"}
 ];
 
 export default function BusinessHub(){return <main>
- <header><div className="brand"><b>ROHILLA DRIVE</b><small>ROHILLA BUSINESS HUB</small></div><div className="row"><a className="call" href="/">Customer Website</a><a className="call" href="/new-vehicles">New Vehicle Assistance</a></div></header>
- <section className="hero"><div className="heroText"><span>B2B AUTOMOTIVE NETWORK</span><h1>Do business with Rohilla Drive — not just list on it.</h1><p>Dealer, new-car dealership, workshop, inspector, finance/insurance professional, mobility operator, transporter, RVSF or another automotive business: choose the role that matches your work and enter the right portal.</p></div></section>
- <section className="section"><div className="grid">{businessTypes.map(([name,desc,href])=><article className="application" key={name}><h2>{name}</h2><p>{desc}</p><a className="call" href={href}>View / Join →</a></article>)}</div></section>
- <section className="section dark"><div className="about"><h2>One network, separate permissions.</h2><p>Customers do not need a Dealer account to buy, sell or request a service. Dealers get dealer tools. Service and mobility businesses get Business Hub workflows. Rohilla Drive Admin remains the network control layer.</p><p>Advanced marketing automation, social publishing, Google Ads control and Rohilla Intelligence will only activate for accounts and channels that are officially connected and authorised.</p></div></section>
+ <CustomerBackBar/>
+ <header><div className="brand"><b>ROHILLA DRIVE</b><small>ROHILLA BUSINESS HUB</small></div><div className="row"><a className="call" href="/new-vehicles">New Vehicle Assistance</a><a className="call" href="/language-assist">Language Bridge</a></div></header>
+ <section className="hero"><div className="heroText"><span>B2B AUTOMOTIVE NETWORK</span><h1>Do business with Rohilla Drive — not just list on it.</h1><p>OEM/authorised new vehicle dealer, pre-owned dealer, workshop, inspector, finance/insurance professional, mobility operator, transporter, RVSF or another automotive business: choose your role and register directly from this page.</p><p><b>One network. Every vehicle. Every language.</b></p><div className="row"><a className="call" href="/join/oem">Create OEM / New Vehicle Dealer Account</a><a className="call" href="/join/preowned">Create Pre-Owned Dealer Account</a><a className="call" href="/join/partner">Create Service / Partner Account</a></div></div></section>
+ <section className="section"><div className="grid">{businessTypes.map(item=><article className="application" key={item.name}><h2>{item.name}</h2><p>{item.desc}</p><div className="row"><a className="call" href={item.register}>Create Account / Register</a><a className="call" href={item.login}>Login</a></div><small>{item.portal}</small></article>)}</div></section>
+ <section className="section dark"><div className="about"><h2>No link-request step.</h2><p>Businesses can open the exact registration form or login directly from Rohilla Business Hub. No manual registration link needs to be sent.</p><p>Customer contact and private business data remain permission-controlled inside Rohilla Drive.</p></div></section>
  </main>}

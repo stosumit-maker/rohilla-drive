@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { supabase } from "../supabaseClient";
 
 const VAPID_PUBLIC_KEY="BCu-RuCf1vdiAr6eUOnZRKYTaBTqAdmknc0LtfXQO1kH4IGBM6lcw3VlwN2D26cTWPo2Iei7SyQUcLeWiR5cGXA";
-type Counts={sales:number;services:number;dealers:number;partners:number;verification:number;dealerVehicles:number};
-const emptyCounts:Counts={sales:0,services:0,dealers:0,partners:0,verification:0,dealerVehicles:0};
+type Counts={sales:number;services:number;dealers:number;partners:number;verification:number;dealerVehicles:number;dealRooms:number};
+const emptyCounts:Counts={sales:0,services:0,dealers:0,partners:0,verification:0,dealerVehicles:0,dealRooms:0};
 
 function urlBase64ToUint8Array(base64String:string){
  const padding="=".repeat((4-base64String.length%4)%4);
@@ -25,15 +25,16 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
 
  async function countQuery(query:any){const {count}=await query;return count||0}
  async function loadCounts(){
-  const [sales,services,dealers,partners,verification,dealerVehicles]=await Promise.all([
+  const [sales,services,dealers,partners,verification,dealerVehicles,dealRooms]=await Promise.all([
    countQuery(db.from("leads").select("id",{count:"exact",head:true}).in("status",["new","contacted","qualified"])),
    countQuery(db.from("service_requests").select("id",{count:"exact",head:true}).in("status",["new","assigned","accepted","in_progress"])),
    countQuery(db.from("dealer_applications").select("id",{count:"exact",head:true}).in("status",["new","reviewing"])),
    countQuery(db.from("collaboration_requests").select("id",{count:"exact",head:true}).in("status",["new","reviewing"])),
    countQuery(db.from("vehicle_verification_orders").select("id",{count:"exact",head:true}).in("status",["submitted","pending","processing","in_progress"])),
-   countQuery(db.from("vehicles").select("id",{count:"exact",head:true}).eq("status","draft").not("partner_id","is",null))
+   countQuery(db.from("vehicles").select("id",{count:"exact",head:true}).eq("status","draft").not("partner_id","is",null)),
+   countQuery(db.from("deal_rooms").select("id",{count:"exact",head:true}).not("status","in",'("closed","cancelled")'))
   ]);
-  setCounts({sales,services,dealers,partners,verification,dealerVehicles});
+  setCounts({sales,services,dealers,partners,verification,dealerVehicles,dealRooms});
  }
 
  async function checkPush(){
@@ -99,8 +100,8 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
   {ready&&<div style={{position:"sticky",top:0,zIndex:9999,background:"linear-gradient(135deg,#0b1322,#1d2738)",color:"#fff",borderBottom:"1px solid rgba(215,181,109,.7)",boxShadow:"0 8px 24px rgba(0,0,0,.15)",padding:"9px 12px"}}>
    <div style={{maxWidth:1200,margin:"0 auto",display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
     <strong style={{color:"#f4d38a",letterSpacing:.5}}>PENDING TASKS: {total}</strong>
-    <span style={{fontSize:12}}>Sales {counts.sales}</span><span style={{fontSize:12}}>Services {counts.services}</span><span style={{fontSize:12}}>Dealer Apps {counts.dealers}</span><span style={{fontSize:12}}>Partner Apps {counts.partners}</span><span style={{fontSize:12}}>Verify {counts.verification}</span><span style={{fontSize:12}}>Dealer Vehicles {counts.dealerVehicles}</span>
-    <div style={{width:"100%",display:"flex",gap:6,flexWrap:"wrap"}}><a href="/admin" style={navStyle}>Control Room</a><a href="/admin/new-vehicles" style={{...navStyle,border:"1px solid #60a5fa",color:"#dbeafe"}}>✨ New Vehicle Desk</a><a href="/admin/finance" style={navStyle}>Purchase / Sale / Margin / RC</a><a href="/admin/poster-scan" style={navStyle}>Smart Poster Scan</a><a href="/admin/verification" style={navStyle}>Verification Desk</a><a href="/admin/growth" style={{...navStyle,border:"1px solid #d7b56d",color:"#f4d38a"}}>✨ Growth / AI</a><a href="/admin/connections" style={navStyle}>Connections</a><a href="/business-hub" style={navStyle}>Business Hub</a><a href="/new-vehicles" style={navStyle}>Customer New Vehicle Flow</a></div>
+    <span style={{fontSize:12}}>Sales {counts.sales}</span><span style={{fontSize:12}}>Services {counts.services}</span><span style={{fontSize:12}}>Dealer Apps {counts.dealers}</span><span style={{fontSize:12}}>Partner Apps {counts.partners}</span><span style={{fontSize:12}}>Verify {counts.verification}</span><span style={{fontSize:12}}>Dealer Vehicles {counts.dealerVehicles}</span><span style={{fontSize:12}}>Deal Rooms {counts.dealRooms}</span>
+    <div style={{width:"100%",display:"flex",gap:6,flexWrap:"wrap"}}><a href="/admin" style={navStyle}>Control Room</a><a href="/admin/new-vehicles" style={{...navStyle,border:"1px solid #60a5fa",color:"#dbeafe"}}>✨ OEM / New Vehicle Desk</a><a href="/admin/deal-rooms" style={{...navStyle,border:"1px solid #fca5a5",color:"#fee2e2"}}>🤝 Deal Rooms</a><a href="/admin/finance" style={navStyle}>Purchase / Sale / Margin / RC</a><a href="/admin/poster-scan" style={navStyle}>Smart Poster Scan</a><a href="/admin/vehicle-ai" style={{...navStyle,border:"1px solid #c084fc",color:"#f3e8ff"}}>🧠 Vehicle AI</a><a href="/admin/verification" style={navStyle}>Verification Desk</a><a href="/admin/growth" style={{...navStyle,border:"1px solid #d7b56d",color:"#f4d38a"}}>✨ Growth / AI</a><a href="/admin/language" style={{...navStyle,border:"1px solid #818cf8",color:"#eef2ff"}}>🌐 Language Desk</a><a href="/admin/connections" style={navStyle}>Connections</a><a href="/business-hub" style={navStyle}>Business Hub</a><a href="/new-vehicles" style={navStyle}>Customer New Vehicle Flow</a></div>
     <div style={{marginLeft:"auto",display:"flex",gap:6,flexWrap:"wrap"}}>
      <button onClick={loadCounts} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700}}>Refresh</button>
      <button onClick={enablePush} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #d7b56d",background:pushEnabled?"#173326":"#2a2110",color:"#f4d38a",fontWeight:800}}>{pushEnabled?"🔔 Phone Alerts ON":"🔔 Enable Phone Alerts"}</button>

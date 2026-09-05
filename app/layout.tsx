@@ -3,8 +3,10 @@ import "./brand.css";
 import "./trusted-assist.css";
 import type { Metadata } from "next";
 import PublicQuickLinks from "./PublicQuickLinks";
+import LanguageExperience from "./components/LanguageExperience";
 
 const site = "https://www.rohilladrive.com";
+const languages={"en-IN":"/en","hi-IN":"/hi","pa-IN":"/pa","kn-IN":"/kn","ta-IN":"/ta","te-IN":"/te","ml-IN":"/ml","mr-IN":"/mr","gu-IN":"/gu","bn-IN":"/bn","or-IN":"/or","ur-IN":"/ur","x-default":"/"};
 
 export const metadata: Metadata = {
   metadataBase: new URL(site),
@@ -15,7 +17,7 @@ export const metadata: Metadata = {
   description:
     "Buy, sell, verify, maintain, protect and manage vehicles through ROHILLA DRIVE in Ambala City and the growing Rohilla automotive network.",
   applicationName: "ROHILLA DRIVE",
-  alternates: { canonical: "/" },
+  alternates: { canonical: "/", languages },
   manifest: "/manifest.webmanifest",
   openGraph: {
     type: "website",
@@ -77,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
         {children}
+        <LanguageExperience />
         <PublicQuickLinks />
       </body>
     </html>
