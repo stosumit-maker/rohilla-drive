@@ -1,4 +1,4 @@
-export const metadata={title:"Rohilla Business Hub",description:"Join the Rohilla Drive automotive business network as a dealer, workshop, inspector, finance/insurance professional, mobility operator, recycler or other automotive business."};
+export const metadata={title:"Rohilla Business Hub",description:"Join the Rohilla Drive automotive business network as a dealer, workshop, inspector, finance/insurance professional, mobility operator, recycler or other automotive business.",alternates:{canonical:"/business-hub"},openGraph:{url:"/business-hub",title:"Rohilla Business Hub | ROHILLA DRIVE",description:"Dealer, new-vehicle dealership, service, mobility and automotive business network."}};
 
 const businessTypes=[
  ["Vehicle Dealer / Pre-Owned","Regular inventory, dealer submissions, finance/margin/RC tools, sourcing and future AI growth tools.","/dealer"],
