@@ -1,16 +1,17 @@
 -- ROHILLA DRIVE: multilingual + Growth Engine V2
--- Prepared on feature branch. Apply at launch after preview QA.
+-- Additive migration: prepares V2 without replacing the current production planner.
 
 insert into public.platform_connections(platform,connection_status,capabilities)
 values
  ('translation','not_connected','["translate_text","detect_language","localize_content"]'::jsonb),
+ ('realtime_translation','not_connected','["browser_live_interpretation","speech_to_speech_translation","translated_transcripts"]'::jsonb),
  ('speech','not_connected','["speech_to_text","text_to_speech","streaming_voice"]'::jsonb),
  ('telephony','not_connected','["inbound_call","outbound_call","bidirectional_audio_stream","live_call_translation"]'::jsonb),
  ('multimodal_ai','not_connected','["vehicle_vision","rc_understanding","plate_privacy","creative_generation","reasoning"]'::jsonb),
  ('whatsapp','not_connected','["translated_message_draft","approved_send","conversation_handoff"]'::jsonb)
 on conflict (platform) do update set capabilities=excluded.capabilities,updated_at=now();
 
-create or replace function public.plan_rohilla_daily_growth()
+create or replace function public.plan_rohilla_daily_growth_v2()
 returns integer
 language plpgsql
 security definer
