@@ -1,12 +1,42 @@
 import "./style.css";
 import "./brand.css";
 import "./trusted-assist.css";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "ROHILLA DRIVE — One Platform for the Entire Vehicle Life",
+const site = "https://www.rohilladrive.com";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(site),
+  title: {
+    default: "ROHILLA DRIVE — Complete Vehicle & Mobility Network",
+    template: "%s | ROHILLA DRIVE",
+  },
   description:
-    "Buy, verify, drive, maintain, protect and sell through the ROHILLA DRIVE automobile network.",
+    "Buy, sell, verify, maintain, protect and manage vehicles through ROHILLA DRIVE in Ambala City and the growing Rohilla automotive network.",
+  applicationName: "ROHILLA DRIVE",
+  alternates: { canonical: "/" },
   manifest: "/manifest.webmanifest",
+  openGraph: {
+    type: "website",
+    url: site,
+    siteName: "ROHILLA DRIVE",
+    title: "ROHILLA DRIVE — Complete Vehicle & Mobility Network",
+    description:
+      "New and pre-owned vehicles, verification, services, Trusted Assist, dealers and automotive partners through one connected network.",
+    images: [{ url: "/rohilla-drive-logo.svg", alt: "ROHILLA DRIVE" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ROHILLA DRIVE — Complete Vehicle & Mobility Network",
+    description:
+      "Buy, sell, verify and manage the complete vehicle life through Rohilla Drive.",
+    images: ["/rohilla-drive-logo.svg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
 };
 
 export const viewport = {
@@ -16,14 +46,37 @@ export const viewport = {
   userScalable: false,
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": ["Organization", "AutomotiveBusiness"],
+  name: "ROHILLA DRIVE",
+  alternateName: "Rohilla Multibrand Cars",
+  url: site,
+  logo: `${site}/rohilla-drive-logo.svg`,
+  telephone: "+91-7015260003",
+  areaServed: "India",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Ambala City",
+    addressRegion: "Haryana",
+    addressCountry: "IN",
+  },
+  sameAs: [
+    "https://www.instagram.com/rohillamultibrandcars/",
+    "https://youtube.com/shorts/hqYTgiIaEko",
+  ],
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        {children}
+      </body>
     </html>
   );
 }
