@@ -94,11 +94,13 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  }
 
  const total=Object.values(counts).reduce((sum,n)=>sum+n,0);
+ const navStyle={padding:"7px 10px",borderRadius:999,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700,textDecoration:"none",fontSize:12} as const;
  return <>
   {ready&&<div style={{position:"sticky",top:0,zIndex:9999,background:"linear-gradient(135deg,#0b1322,#1d2738)",color:"#fff",borderBottom:"1px solid rgba(215,181,109,.7)",boxShadow:"0 8px 24px rgba(0,0,0,.15)",padding:"9px 12px"}}>
    <div style={{maxWidth:1200,margin:"0 auto",display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
     <strong style={{color:"#f4d38a",letterSpacing:.5}}>PENDING TASKS: {total}</strong>
     <span style={{fontSize:12}}>Sales {counts.sales}</span><span style={{fontSize:12}}>Services {counts.services}</span><span style={{fontSize:12}}>Dealer Apps {counts.dealers}</span><span style={{fontSize:12}}>Partner Apps {counts.partners}</span><span style={{fontSize:12}}>Verify {counts.verification}</span><span style={{fontSize:12}}>Dealer Vehicles {counts.dealerVehicles}</span>
+    <div style={{width:"100%",display:"flex",gap:6,flexWrap:"wrap"}}><a href="/admin" style={navStyle}>Control Room</a><a href="/admin/finance" style={navStyle}>Purchase / Sale / Margin / RC</a><a href="/admin/poster-scan" style={navStyle}>Smart Poster Scan</a><a href="/admin/verification" style={navStyle}>Verification Desk</a></div>
     <div style={{marginLeft:"auto",display:"flex",gap:6,flexWrap:"wrap"}}>
      <button onClick={loadCounts} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700}}>Refresh</button>
      <button onClick={enablePush} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #d7b56d",background:pushEnabled?"#173326":"#2a2110",color:"#f4d38a",fontWeight:800}}>{pushEnabled?"🔔 Phone Alerts ON":"🔔 Enable Phone Alerts"}</button>
