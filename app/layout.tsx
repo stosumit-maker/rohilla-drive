@@ -3,6 +3,7 @@ import "./brand.css";
 import "./trusted-assist.css";
 import type { Metadata } from "next";
 import PublicQuickLinks from "./PublicQuickLinks";
+import PublicBackNavigation from "./components/PublicBackNavigation";
 
 const site = "https://www.rohilladrive.com";
 
@@ -76,6 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
+        <PublicBackNavigation />
         {children}
         <PublicQuickLinks />
       </body>
