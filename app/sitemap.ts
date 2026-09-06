@@ -7,6 +7,7 @@ const locales=["en","hi","pa","kn","ta","te","ml","mr","gu","bn","or","ur"];
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     { url: site, changeFrequency: "daily", priority: 1 },
+    { url: `${site}/about`, changeFrequency: "monthly", priority: 0.95 },
     ...locales.map(locale=>({url:`${site}/${locale}`,changeFrequency:"weekly" as const,priority:0.9})),
     { url: `${site}/inventory`, changeFrequency: "daily", priority: 0.98 },
     { url: `${site}/assistant`, changeFrequency: "weekly", priority: 0.95 },
