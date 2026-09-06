@@ -13,7 +13,7 @@ const languages={"en-IN":"/en","hi-IN":"/hi","pa-IN":"/pa","kn-IN":"/kn","ta-IN"
 export const metadata: Metadata = {
   metadataBase: new URL(site),
   title: { default: "ROHILLA DRIVE — Complete Vehicle & Mobility Network", template: "%s | ROHILLA DRIVE" },
-  description: "Official ROHILLA DRIVE website by Rohilla Multibrand Cars, Ambala City. Discover new and pre-owned vehicles, verification, services, Trusted Assist and the complete vehicle and mobility network.",
+  description: "Official ROHILLA DRIVE by Rohilla Multibrand Cars, Ambala City. Buy, sell, verify and discover new or pre-owned vehicles and automotive services.",
   applicationName: "ROHILLA DRIVE",
   alternates: { canonical: "/", languages },
   manifest: "/manifest.webmanifest",
