@@ -34,7 +34,7 @@ const organizationSchema = {
   telephone: "+91-7015260003",
   areaServed: "India",
   address: { "@type": "PostalAddress", addressLocality: "Ambala City", addressRegion: "Haryana", addressCountry: "IN" },
-  sameAs: ["https://www.instagram.com/rohillamultibrandcars/","https://youtube.com/@sumitrohilla983"],
+  sameAs: ["https://www.instagram.com/rohillamultibrandcars/","https://www.facebook.com/profile.php?id=100094277025442","https://youtube.com/@sumitrohilla983"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
