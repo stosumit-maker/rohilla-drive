@@ -24,13 +24,13 @@ export const metadata: Metadata = {
     siteName: "ROHILLA DRIVE",
     title: "ROHILLA DRIVE — Complete Vehicle & Mobility Network",
     description: "Official website of ROHILLA DRIVE by Rohilla Multibrand Cars. New and pre-owned vehicles, verification, services, Trusted Assist, dealers and automotive partners through one connected network.",
-    images: [{ url: "/icon", width: 512, height: 512, alt: "ROHILLA DRIVE official website" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "ROHILLA DRIVE official website" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "ROHILLA DRIVE — Complete Vehicle & Mobility Network",
     description: "Official ROHILLA DRIVE website. Buy, sell, verify and manage the complete vehicle life through one connected network.",
-    images: ["/icon"],
+    images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
 };
