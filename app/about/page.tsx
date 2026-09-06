@@ -3,14 +3,14 @@ import type { Metadata } from "next";
 const site = "https://www.rohilladrive.com";
 
 export const metadata: Metadata = {
-  title: "About Rohilla Drive — Official Automotive Network",
-  description: "Official information about ROHILLA DRIVE by Rohilla Multibrand Cars in Ambala City, Haryana: new and pre-owned vehicles, selling, verification, services and automotive business connections.",
+  title: { absolute: "About ROHILLA DRIVE | Official Automotive Network" },
+  description: "Learn about ROHILLA DRIVE by Rohilla Multibrand Cars, Ambala City—our network for new and pre-owned vehicles, selling, verification and services.",
   alternates: { canonical: "/about" },
   openGraph: {
     type: "website",
     url: `${site}/about`,
-    title: "About ROHILLA DRIVE — Official Automotive Network",
-    description: "Official Rohilla Drive brand and business information from Ambala City, Haryana.",
+    title: "About ROHILLA DRIVE | Official Automotive Network",
+    description: "Official Rohilla Drive brand and automotive network information from Ambala City, Haryana.",
   },
 };
 
