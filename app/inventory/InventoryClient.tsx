@@ -1,0 +1,27 @@
+"use client";
+import {useEffect,useMemo,useState} from "react";
+import {supabase} from "../supabaseClient";
+
+type Vehicle={id:string;brand:string;model:string;variant?:string;year:number;km:number;fuel:string;owner_count?:number;asking_price:number;city?:string;vehicle_type?:string;vehicle_photos?:{url:string;sort_order?:number}[]};
+
+export default function InventoryClient(){
+ const db=supabase();
+ const [cars,setCars]=useState<Vehicle[]>([]),[loading,setLoading]=useState(true),[search,setSearch]=useState(""),[fuel,setFuel]=useState("All"),[type,setType]=useState("All"),[city,setCity]=useState("All");
+ useEffect(()=>{(async()=>{const {data}=await db.from("vehicles").select("*,vehicle_photos(url,sort_order)").eq("status","published").order("created_at",{ascending:false});setCars((data||[]) as Vehicle[]);setLoading(false)})()},[]);
+ const cities=useMemo(()=>["All",...Array.from(new Set(cars.map(c=>c.city).filter(Boolean) as string[])).sort()],[cars]);
+ const filtered=useMemo(()=>{const q=search.trim().toLowerCase();return cars.filter(car=>{const hay=`${car.brand} ${car.model} ${car.variant||""} ${car.year} ${car.city||""}`.toLowerCase();return(!q||hay.includes(q))&&(fuel==="All"||car.fuel===fuel)&&(type==="All"||(car.vehicle_type||"car")===type)&&(city==="All"||car.city===city)})},[cars,search,fuel,type,city]);
+ function whatsapp(car:Vehicle){const text=`Hello Rohilla Drive, I am interested in ${car.brand} ${car.model} ${car.variant||""} (${car.year}) listed at ₹${Number(car.asking_price).toLocaleString("en-IN")}. Vehicle ID: ${car.id}`;window.open(`https://wa.me/917015260003?text=${encodeURIComponent(text)}`,"_blank")}
+ return <main>
+  <section className="hero" style={{paddingTop:45,paddingBottom:45}}><div className="heroText"><span>ROHILLA DRIVE INVENTORY</span><h1>Find the right vehicle.<br/><span className="lifeLine">Keep the homepage simple.</span></h1><p>Search the complete published inventory here by brand, model, year, fuel, category or city.</p></div></section>
+  <section className="section" style={{paddingTop:24}}>
+   <div className="search" style={{gridTemplateColumns:"2fr repeat(3,minmax(130px,1fr))"}}>
+    <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Brand, model, variant, year or city..."/>
+    <select value={type} onChange={e=>setType(e.target.value)}><option value="All">All vehicle types</option><option value="car">Cars / SUVs</option><option value="two_wheeler">Two-Wheelers</option><option value="commercial">Commercial</option><option value="tractor_agri">Tractor / Agri</option><option value="ev">EV</option><option value="fleet">Fleet</option><option value="other">Other</option></select>
+    <select value={fuel} onChange={e=>setFuel(e.target.value)}><option>All</option><option>Petrol</option><option>Diesel</option><option>CNG</option><option>Electric</option><option>Hybrid</option></select>
+    <select value={city} onChange={e=>setCity(e.target.value)}>{cities.map(x=><option key={x}>{x}</option>)}</select>
+   </div>
+   <div className="head" style={{marginTop:24}}><div><h2>Available Inventory</h2><p>{loading?"Loading vehicles...":`${filtered.length} matching vehicle${filtered.length===1?"":"s"}`}</p></div><a className="call" href="/sell">Sell / List Your Vehicle</a></div>
+   {loading?<p>Loading inventory...</p>:filtered.length===0?<div className="card"><div className="body"><h3>No matching vehicles found</h3><p>Try another search or send us your requirement.</p><a className="call" href="/assistant">Ask Rohilla Assistant</a></div></div>:<div className="grid">{filtered.map(car=>{const photos=[...(car.vehicle_photos||[])].sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));return <article className="card" key={car.id}><div className="photo real swipeGallery">{photos.length?photos.map((p,i)=><img key={p.url||i} src={p.url} alt={`${car.brand} ${car.model} photo ${i+1}`}/>):<span>🚘</span>}</div>{photos.length>1&&<div className="swipeHint">← Swipe →</div>}<div className="body"><label>{String(car.vehicle_type||"car").replaceAll("_"," ")}</label><h3>{car.brand} {car.model}</h3>{car.variant&&<p>{car.variant}</p>}<small>{car.year} • {Number(car.km||0).toLocaleString("en-IN")} km • {car.fuel}{car.city?` • ${car.city}`:""}</small><strong>₹{Number(car.asking_price).toLocaleString("en-IN")}</strong><a className="call" href={`/cars/${car.id}`} style={{display:"block",textAlign:"center",marginBottom:8}}>View Full Details</a><button onClick={()=>whatsapp(car)}>Enquire on WhatsApp</button></div></article>})}</div>}
+  </section>
+ </main>
+}
