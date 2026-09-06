@@ -4,6 +4,7 @@ import "./trusted-assist.css";
 import type { Metadata } from "next";
 import PublicQuickLinks from "./PublicQuickLinks";
 import PublicBackNavigation from "./components/PublicBackNavigation";
+import OfficialIdentityStrip from "./components/OfficialIdentityStrip";
 import LanguageExperience from "./components/LanguageExperience";
 import HomeExperienceEnhancer from "./components/HomeExperienceEnhancer";
 
@@ -29,14 +30,17 @@ const organizationSchema = {
   "@type": ["Organization", "AutomotiveBusiness"],
   "@id": `${site}/#organization`,
   name: "ROHILLA DRIVE",
-  alternateName: ["Rohilla Drive", "Rohilla Multibrand Cars"],
-  description: "ROHILLA DRIVE is a vehicle and mobility network by Rohilla Multibrand Cars in Ambala City, Haryana, connecting new and pre-owned vehicles, verification, automotive services, Trusted Assist and mobility support.",
+  legalName: "Rohilla Multibrand Cars",
+  alternateName: ["Rohilla Drive", "Rohilla Multibrand Cars", "rohilladrive.com"],
+  description: "ROHILLA DRIVE is the official vehicle and mobility network by Rohilla Multibrand Cars in Ambala City, Haryana, connecting new and pre-owned vehicles, verification, automotive services, Trusted Assist and mobility support.",
   url: `${site}/`,
+  mainEntityOfPage: `${site}/about`,
   logo: `${site}/rohilla-drive-logo.svg`,
   telephone: "+91-7015260003",
   contactPoint: [{ "@type": "ContactPoint", telephone: "+91-7015260003", contactType: "customer service", areaServed: "IN", availableLanguage: ["English", "Hindi", "Punjabi"] }],
   areaServed: "India",
   address: { "@type": "PostalAddress", addressLocality: "Ambala City", addressRegion: "Haryana", addressCountry: "IN" },
+  knowsAbout: ["new vehicles","pre-owned vehicles","vehicle verification","automotive services","vehicle selling","vehicle mobility","RC transfer","inspection"],
   sameAs: ["https://www.instagram.com/rohillamultibrandcars/","https://www.facebook.com/profile.php?id=100094277025442","https://youtube.com/@sumitrohilla983"],
 };
 
@@ -49,6 +53,11 @@ const websiteSchema = {
   alternateName: ["ROHILLA DRIVE", "Rohilla Multibrand Cars", "rohilladrive.com"],
   publisher: { "@id": `${site}/#organization` },
   inLanguage: ["en-IN", "hi-IN", "pa-IN", "kn-IN", "ta-IN", "te-IN", "ml-IN", "mr-IN", "gu-IN", "bn-IN", "or-IN", "ur-IN"],
+  potentialAction: {
+    "@type": "SearchAction",
+    target: `${site}/inventory?q={search_term_string}`,
+    "query-input": "required name=search_term_string",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -56,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
     <PublicBackNavigation />
+    <OfficialIdentityStrip />
     {children}
     <HomeExperienceEnhancer />
     <LanguageExperience />
