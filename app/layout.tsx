@@ -18,8 +18,20 @@ export const metadata: Metadata = {
   applicationName: "ROHILLA DRIVE",
   alternates: { canonical: "/", languages },
   manifest: "/manifest.webmanifest",
-  openGraph: { type: "website", url: site, siteName: "ROHILLA DRIVE", title: "ROHILLA DRIVE — Complete Vehicle & Mobility Network", description: "Official website of ROHILLA DRIVE by Rohilla Multibrand Cars. New and pre-owned vehicles, verification, services, Trusted Assist, dealers and automotive partners through one connected network.", images: [{ url: "/rohilla-drive-logo.svg", alt: "ROHILLA DRIVE" }] },
-  twitter: { card: "summary_large_image", title: "ROHILLA DRIVE — Complete Vehicle & Mobility Network", description: "Official ROHILLA DRIVE website. Buy, sell, verify and manage the complete vehicle life through one connected network.", images: ["/rohilla-drive-logo.svg"] },
+  openGraph: {
+    type: "website",
+    url: `${site}/`,
+    siteName: "ROHILLA DRIVE",
+    title: "ROHILLA DRIVE — Complete Vehicle & Mobility Network",
+    description: "Official website of ROHILLA DRIVE by Rohilla Multibrand Cars. New and pre-owned vehicles, verification, services, Trusted Assist, dealers and automotive partners through one connected network.",
+    images: [{ url: "/icon", width: 512, height: 512, alt: "ROHILLA DRIVE official website" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ROHILLA DRIVE — Complete Vehicle & Mobility Network",
+    description: "Official ROHILLA DRIVE website. Buy, sell, verify and manage the complete vehicle life through one connected network.",
+    images: ["/icon"],
+  },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
 };
 
@@ -35,13 +47,18 @@ const organizationSchema = {
   description: "ROHILLA DRIVE is the official vehicle and mobility network by Rohilla Multibrand Cars in Ambala City, Haryana, connecting new and pre-owned vehicles, verification, automotive services, Trusted Assist and mobility support.",
   url: `${site}/`,
   mainEntityOfPage: `${site}/about`,
-  logo: `${site}/rohilla-drive-logo.svg`,
+  logo: `${site}/icon`,
   telephone: "+91-7015260003",
   contactPoint: [{ "@type": "ContactPoint", telephone: "+91-7015260003", contactType: "customer service", areaServed: "IN", availableLanguage: ["English", "Hindi", "Punjabi"] }],
   areaServed: "India",
   address: { "@type": "PostalAddress", addressLocality: "Ambala City", addressRegion: "Haryana", addressCountry: "IN" },
   knowsAbout: ["new vehicles","pre-owned vehicles","vehicle verification","automotive services","vehicle selling","vehicle mobility","RC transfer","inspection"],
-  sameAs: ["https://www.instagram.com/rohillamultibrandcars/","https://www.facebook.com/profile.php?id=100094277025442","https://youtube.com/@sumitrohilla983"],
+  sameAs: [
+    "https://www.instagram.com/rohillamultibrandcars/",
+    "https://www.facebook.com/profile.php?id=100094277025442",
+    "https://youtube.com/@sumitrohilla983",
+    "https://github.com/stosumit-maker/rohilla-drive"
+  ],
 };
 
 const websiteSchema = {
@@ -49,8 +66,8 @@ const websiteSchema = {
   "@type": "WebSite",
   "@id": `${site}/#website`,
   url: `${site}/`,
-  name: "Rohilla Drive",
-  alternateName: ["ROHILLA DRIVE", "Rohilla Multibrand Cars", "rohilladrive.com"],
+  name: "ROHILLA DRIVE",
+  alternateName: ["Rohilla Drive", "Rohilla Multibrand Cars", "rohilladrive.com"],
   publisher: { "@id": `${site}/#organization` },
   inLanguage: ["en-IN", "hi-IN", "pa-IN", "kn-IN", "ta-IN", "te-IN", "ml-IN", "mr-IN", "gu-IN", "bn-IN", "or-IN", "ur-IN"],
   potentialAction: {
