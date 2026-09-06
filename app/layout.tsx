@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import PublicQuickLinks from "./PublicQuickLinks";
 import PublicBackNavigation from "./components/PublicBackNavigation";
 import LanguageExperience from "./components/LanguageExperience";
+import HomeExperienceEnhancer from "./components/HomeExperienceEnhancer";
 
 const site = "https://www.rohilladrive.com";
 const languages={"en-IN":"/en","hi-IN":"/hi","pa-IN":"/pa","kn-IN":"/kn","ta-IN":"/ta","te-IN":"/te","ml-IN":"/ml","mr-IN":"/mr","gu-IN":"/gu","bn-IN":"/bn","or-IN":"/or","ur-IN":"/ur","x-default":"/"};
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
     <PublicBackNavigation />
     {children}
+    <HomeExperienceEnhancer />
     <LanguageExperience />
     <PublicQuickLinks />
   </body></html>;
