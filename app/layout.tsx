@@ -17,10 +17,6 @@ export const metadata: Metadata = {
   applicationName: "ROHILLA DRIVE",
   alternates: { canonical: "/", languages },
   manifest: "/manifest.webmanifest",
-  icons: {
-    icon: [{ url: "/favicon.png", type: "image/png", sizes: "512x512" }],
-    apple: [{ url: "/favicon.png", type: "image/png", sizes: "512x512" }],
-  },
   openGraph: { type: "website", url: site, siteName: "ROHILLA DRIVE", title: "ROHILLA DRIVE — Complete Vehicle & Mobility Network", description: "Official website of ROHILLA DRIVE by Rohilla Multibrand Cars. New and pre-owned vehicles, verification, services, Trusted Assist, dealers and automotive partners through one connected network.", images: [{ url: "/rohilla-drive-logo.svg", alt: "ROHILLA DRIVE" }] },
   twitter: { card: "summary_large_image", title: "ROHILLA DRIVE — Complete Vehicle & Mobility Network", description: "Official ROHILLA DRIVE website. Buy, sell, verify and manage the complete vehicle life through one connected network.", images: ["/rohilla-drive-logo.svg"] },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
