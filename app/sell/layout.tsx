@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sell Your Vehicle Online | ROHILLA DRIVE",
+  title: "Sell Your Vehicle Online",
   description:
     "Sell or list your car, bike, commercial vehicle, tractor or EV with ROHILLA DRIVE. Submit your vehicle details for review and next-step assistance.",
   alternates: {
