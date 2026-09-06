@@ -1,4 +1,17 @@
-# ROHILLA DRIVE — FINAL CROSS-CHECKED LAUNCH PACKAGE
+# ROHILLA DRIVE — Complete Vehicle & Mobility Network
+
+**Official public website:** https://www.rohilladrive.com/
+
+ROHILLA DRIVE is the official vehicle and automotive network by **Rohilla Multibrand Cars, Ambala City, Haryana, India**. The platform connects customers, individual sellers, OEM/authorised new-vehicle dealers, pre-owned dealers and automotive/service businesses across new vehicles, used vehicles, verification, services, mobility support and vehicle-life workflows.
+
+**Brand identity:** ROHILLA DRIVE / Rohilla Drive  
+**Official domain:** rohilladrive.com  
+**Phone:** +91 70152 60003  
+**Instagram:** https://www.instagram.com/rohillamultibrandcars/  
+**Facebook:** https://www.facebook.com/profile.php?id=100094277025442  
+**YouTube:** https://youtube.com/@sumitrohilla983
+
+ROHILLA DRIVE is **not a driving school or ride-booking app**. It is an automotive vehicle-and-services network.
 
 ## Public and role portals
 - Customer: `/` — public, no login.
