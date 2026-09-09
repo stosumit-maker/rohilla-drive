@@ -1,5 +1,6 @@
 import "./style.css";
 import "./brand.css";
+import "./portal.css";
 import "./trusted-assist.css";
 import type { Metadata } from "next";
 import PublicQuickLinks from "./PublicQuickLinks";
