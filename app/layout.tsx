@@ -7,6 +7,7 @@ import PublicBackNavigation from "./components/PublicBackNavigation";
 import OfficialIdentityStrip from "./components/OfficialIdentityStrip";
 import LanguageExperience from "./components/LanguageExperience";
 import HomeExperienceEnhancer from "./components/HomeExperienceEnhancer";
+import LegalFooter from "./components/LegalFooter";
 
 const site = "https://www.rohilladrive.com";
 const languages={"en-IN":"/en","hi-IN":"/hi","pa-IN":"/pa","kn-IN":"/kn","ta-IN":"/ta","te-IN":"/te","ml-IN":"/ml","mr-IN":"/mr","gu-IN":"/gu","bn-IN":"/bn","or-IN":"/or","ur-IN":"/ur","x-default":"/"};
@@ -42,7 +43,6 @@ const organizationSchema = {
   "@type": ["Organization", "AutomotiveBusiness"],
   "@id": `${site}/#organization`,
   name: "ROHILLA DRIVE",
-  legalName: "Rohilla Multibrand Cars",
   alternateName: ["Rohilla Drive", "Rohilla Multibrand Cars", "rohilladrive.com"],
   description: "ROHILLA DRIVE is the official vehicle and mobility network by Rohilla Multibrand Cars in Ambala City, Haryana, connecting new and pre-owned vehicles, verification, automotive services, Trusted Assist and mobility support.",
   url: `${site}/`,
@@ -84,6 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <PublicBackNavigation />
     <OfficialIdentityStrip />
     {children}
+    <LegalFooter />
     <HomeExperienceEnhancer />
     <LanguageExperience />
     <PublicQuickLinks />
