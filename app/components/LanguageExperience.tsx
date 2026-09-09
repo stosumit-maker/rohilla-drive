@@ -26,14 +26,14 @@ export default function LanguageExperience(){
 
  useEffect(()=>{
   const saved=localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  if(saved){setCode(saved);setHasSaved(true)}else setShow(true);
- },[]);
+  if(saved){setCode(saved);setHasSaved(true)}else if(!privatePortal)setShow(true);
+ },[privatePortal]);
 
  useEffect(()=>{
   document.documentElement.lang=language.translationCode;
   window.dispatchEvent(new CustomEvent("rohilla-language-change",{detail:language}));
   if(code==="en-IN")return;
-  if(privatePortal){setNote("Language saved. Use the secure Language Desk for customer conversations.");return}
+  if(privatePortal){setNote("");return}
   translateVisiblePage(code);
   const root=document.querySelector("main");if(!root)return;
   const observer=new MutationObserver(()=>{if(debounce.current)window.clearTimeout(debounce.current);debounce.current=window.setTimeout(()=>translateVisiblePage(code),450)});
@@ -67,6 +67,8 @@ export default function LanguageExperience(){
   localStorage.setItem(LANGUAGE_STORAGE_KEY,next);
   setCode(next);setHasSaved(true);setShow(false);
  }
+
+ if(privatePortal)return null;
 
  return <>
   <button onClick={()=>setShow(true)} aria-label="Choose language" data-no-translate style={{position:"fixed",right:12,top:72,zIndex:10020,border:"1px solid #d7b56d",background:"#111827",color:"#f4d38a",borderRadius:999,padding:"8px 11px",fontWeight:800,boxShadow:"0 6px 20px rgba(0,0,0,.2)"}}>🌐 {language.nativeName}</button>
