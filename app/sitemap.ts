@@ -3,7 +3,7 @@ import { supabase } from "./supabaseClient";
 
 const site = "https://www.rohilladrive.com";
 const locales=["en","hi","pa","kn","ta","te","ml","mr","gu","bn","or","ur"];
-const refreshed = new Date("2026-09-06T13:35:00Z");
+const refreshed = new Date("2026-09-09T09:30:00Z");
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
@@ -20,6 +20,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${site}/join/preowned`, lastModified: refreshed, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site}/join/partner`, lastModified: refreshed, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site}/verify`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.85 },
+    { url: `${site}/terms`, lastModified: refreshed, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${site}/privacy`, lastModified: refreshed, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${site}/disclaimer`, lastModified: refreshed, changeFrequency: "monthly", priority: 0.5 },
   ];
 
   try {
