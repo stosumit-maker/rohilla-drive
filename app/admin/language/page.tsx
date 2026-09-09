@@ -1,2 +1,2 @@
 import TranslatorDesk from "../../components/TranslatorDesk";
-export default function AdminLanguage(){return <TranslatorDesk title="Founder / Admin Multilingual Communication" defaultOperator="hi-IN" actorRole="admin"/>}
+export default function AdminLanguage(){return <TranslatorDesk title="Language & Communications Operations" defaultOperator="hi-IN" actorRole="admin"/>}
