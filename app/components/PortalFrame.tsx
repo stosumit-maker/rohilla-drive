@@ -34,7 +34,7 @@ export default function PortalFrame({portal,nav,children}:Props){
     <div className="portal-suite-actions">
      <span className="portal-secure">SECURE WORKSPACE</span>
      <button type="button" className="portal-ghost" onClick={()=>router.back()}>Back</button>
-     <Link className="portal-ghost" href="/">Customer Site</Link>
+     <Link className="portal-ghost" href="/">Public Website</Link>
     </div>
    </div>
    <nav className="portal-suite-nav" aria-label={`${portalNames[portal]} navigation`}>
