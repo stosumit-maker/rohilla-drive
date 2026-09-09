@@ -1,6 +1,7 @@
 import "./style.css";
 import "./brand.css";
 import "./trusted-assist.css";
+import "./portal.css";
 import type { Metadata } from "next";
 import PublicQuickLinks from "./PublicQuickLinks";
 import PublicBackNavigation from "./components/PublicBackNavigation";
@@ -8,6 +9,7 @@ import OfficialIdentityStrip from "./components/OfficialIdentityStrip";
 import LanguageExperience from "./components/LanguageExperience";
 import HomeExperienceEnhancer from "./components/HomeExperienceEnhancer";
 import LegalFooter from "./components/LegalFooter";
+import PortalExperience from "./components/PortalExperience";
 
 const site = "https://www.rohilladrive.com";
 const languages={"en-IN":"/en","hi-IN":"/hi","pa-IN":"/pa","kn-IN":"/kn","ta-IN":"/ta","te-IN":"/te","ml-IN":"/ml","mr-IN":"/mr","gu-IN":"/gu","bn-IN":"/bn","or-IN":"/or","ur-IN":"/ur","x-default":"/"};
@@ -81,6 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return <html lang="en"><body>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+    <PortalExperience />
     <PublicBackNavigation />
     <OfficialIdentityStrip />
     {children}
