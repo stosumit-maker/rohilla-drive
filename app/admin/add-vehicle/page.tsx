@@ -15,14 +15,14 @@ const numOrNull=(v:any)=>v===""||v===undefined||v===null?null:Number(v);
 
 export default function AdminAddVehicle(){
  const db=supabase();
- const [ready,setReady]=useState(false),[msg,setMsg]=useState("Checking Admin access…"),[busy,setBusy]=useState(false),[files,setFiles]=useState<File[]>([]);
+ const [ready,setReady]=useState(false),[msg,setMsg]=useState("Checking administrator access…"),[busy,setBusy]=useState(false),[files,setFiles]=useState<File[]>([]);
  const [f,setF]=useState<any>({vehicle_type:"car",status:"draft"});
  useEffect(()=>{gate()},[]);
  async function gate(){
   const {data:{session}}=await db.auth.getSession();
-  if(!session){setMsg("Admin login required. Open Control Room first.");return}
+  if(!session){setMsg("Administrator login required.");return}
   const [{data:aal},{data:isAdmin}]=await Promise.all([db.auth.mfa.getAuthenticatorAssuranceLevel(),db.rpc("is_admin")]);
-  if(aal?.currentLevel!=="aal2"||!isAdmin){setMsg("Admin + Authenticator verification required. Open Control Room first.");return}
+  if(aal?.currentLevel!=="aal2"||!isAdmin){setMsg("Administrator authentication is required.");return}
   setReady(true);setMsg("");
  }
  async function uploadPhotos(vehicleId:string,chosen:File[]){
@@ -38,7 +38,7 @@ export default function AdminAddVehicle(){
  }
  async function add(e:React.FormEvent){
   e.preventDefault();if(!files.length){setMsg("Add at least one vehicle photo.");return}
-  setBusy(true);setMsg("Saving vehicle as draft and uploading photos…");
+  setBusy(true);setMsg("Saving vehicle record and uploading photos…");
   const payload:any={
    vehicle_type:f.vehicle_type||"car",brand:f.brand?.trim(),model:f.model?.trim(),variant:f.variant?.trim()||null,
    year:numOrNull(f.year),km:numOrNull(f.km),fuel:f.fuel?.trim()||null,transmission:f.transmission?.trim()||null,
@@ -57,16 +57,16 @@ export default function AdminAddVehicle(){
     if(published.error)throw new Error(published.error.message);
    }
    setF({vehicle_type:"car",status:"draft"});setFiles([]);setBusy(false);
-   setMsg(f.status==="published"?"Vehicle published live ✓":"Vehicle saved as draft ✓");
+   setMsg(f.status==="published"?"Vehicle published successfully.":"Vehicle saved as draft.");
   }catch(err:any){
-   setBusy(false);setMsg(`${err?.message||"Photo upload failed."} Vehicle has been kept as draft so incomplete data is not published.`);
+   setBusy(false);setMsg(`${err?.message||"Photo upload failed."} The vehicle remains in draft status.`);
   }
  }
- if(!ready)return <main className="section"><h1>Multi-Category Add Vehicle</h1><p>{msg}</p><a className="call" href="/admin">Open Admin Control Room</a></main>;
+ if(!ready)return <main className="section"><h1>Inventory Management</h1><p>{msg}</p><a className="call" href="/admin">Back to Administration</a></main>;
  const commercial=["commercial","fleet"].includes(f.vehicle_type);
  return <main>
-  <section className="hero" style={{paddingTop:36,paddingBottom:36}}><div className="heroText"><span>ROHILLA DRIVE ADMIN</span><h1>Multi-Category Vehicle Publisher</h1><p>Cars, two-wheelers, commercial vehicles, tractors/agri, EVs and fleet inventory from one secure Admin flow.</p></div></section>
-  <section className="section" style={{paddingTop:24}}><div className="head"><div><h2>Add Vehicle</h2><p>The vehicle is always created as draft first. It becomes public only after all selected photos upload successfully.</p></div><a className="call" href="/admin">Back to Control Room</a></div>
+  <section className="hero" style={{paddingTop:36,paddingBottom:36}}><div className="heroText"><span>ROHILLA DRIVE ADMIN</span><h1>Inventory Management</h1><p>Create and publish vehicle records across passenger, two-wheeler, commercial, agriculture, EV and fleet categories.</p></div></section>
+  <section className="section" style={{paddingTop:24}}><div className="head"><div><h2>Add Vehicle</h2><p>New records are created as drafts first. Publication occurs only after the selected photos are uploaded successfully.</p></div><a className="call" href="/admin">Administration</a></div>
    <form className="adminForm" onSubmit={add}>
     <select required value={f.vehicle_type||"car"} onChange={e=>setF({...f,vehicle_type:e.target.value})}>{vehicleTypes.map(([v,l])=><option key={v} value={v}>{l}</option>)}</select>
     <input required placeholder="Brand" value={f.brand||""} onChange={e=>setF({...f,brand:e.target.value})}/>
@@ -95,12 +95,12 @@ export default function AdminAddVehicle(){
      <input type="number" min="0" placeholder="Claimed / practical range km" value={f.range_km||""} onChange={e=>setF({...f,range_km:e.target.value})}/>
     </>}
     <textarea placeholder="Description / features / condition" value={f.notes||""} onChange={e=>setF({...f,notes:e.target.value})}/>
-    <label className="upload">Vehicle photos — 1 to 50+<input required multiple accept="image/*" type="file" onChange={e=>setFiles(Array.from(e.target.files||[]))}/></label>
+    <label className="upload">Vehicle photos<input required multiple accept="image/*" type="file" onChange={e=>setFiles(Array.from(e.target.files||[]))}/></label>
     <select value={f.status||"draft"} onChange={e=>setF({...f,status:e.target.value})}><option value="draft">Save as Draft</option><option value="published">Publish after successful photo upload</option></select>
     <button disabled={busy}>{busy?"Saving…":f.status==="published"?"Upload & Publish":"Upload & Save Draft"}</button>
    </form>
    {msg&&<div className="notice" style={{marginTop:12}}>{msg}</div>}
   </section>
-  <section className="section dark"><div className="about"><h2>Safety rule</h2><p>No incomplete vehicle is published. The record starts as draft, photos are uploaded, and only then can the Admin-selected publish action make it public.</p></div></section>
+  <section className="section dark"><div className="about"><h2>Publication control</h2><p>Incomplete records remain private drafts. A vehicle is published only after the selected media upload succeeds and the publication option has been intentionally selected.</p></div></section>
  </main>
 }

@@ -1,11 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { supabase } from "../supabaseClient";
+import {useEffect,useRef,useState} from "react";
+import {usePathname} from "next/navigation";
+import {supabase} from "../supabaseClient";
 
 const VAPID_PUBLIC_KEY="BCu-RuCf1vdiAr6eUOnZRKYTaBTqAdmknc0LtfXQO1kH4IGBM6lcw3VlwN2D26cTWPo2Iei7SyQUcLeWiR5cGXA";
 type Counts={sales:number;services:number;dealers:number;partners:number;verification:number;dealerVehicles:number;dealRooms:number};
 const emptyCounts:Counts={sales:0,services:0,dealers:0,partners:0,verification:0,dealerVehicles:0,dealRooms:0};
+const navLinks=[
+ {href:"/admin",label:"Dashboard"},
+ {href:"/admin/add-vehicle",label:"Inventory"},
+ {href:"/admin/revenue",label:"Revenue & Collections"},
+ {href:"/admin/new-vehicles",label:"New Vehicle Leads"},
+ {href:"/admin/deal-rooms",label:"Deal Management"},
+ {href:"/admin/finance",label:"Transactions & RC"},
+ {href:"/admin/poster-scan",label:"Listing Intake"},
+ {href:"/admin/vehicle-ai",label:"Vehicle Intelligence"},
+ {href:"/admin/verification",label:"Verification"},
+ {href:"/admin/growth",label:"Marketing Studio"},
+ {href:"/admin/language",label:"Language Operations"},
+ {href:"/admin/connections",label:"Integrations"}
+];
 
 function urlBase64ToUint8Array(base64String:string){
  const padding="=".repeat((4-base64String.length%4)%4);
@@ -16,6 +31,7 @@ function urlBase64ToUint8Array(base64String:string){
 
 export default function AdminLayout({children}:{children:React.ReactNode}){
  const db=supabase();
+ const path=usePathname();
  const [ready,setReady]=useState(false);
  const [counts,setCounts]=useState<Counts>(emptyCounts);
  const [pushEnabled,setPushEnabled]=useState(false);
@@ -68,48 +84,60 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  async function enablePush(){
   try{
    setNote("");
-   if(!("serviceWorker" in navigator)||!("PushManager" in window)||!("Notification" in window)){setNote("Phone push is not supported in this browser.");return}
+   if(!("serviceWorker" in navigator)||!("PushManager" in window)||!("Notification" in window)){setNote("Browser notifications are not supported on this device.");return}
    const permission=await Notification.requestPermission();
-   if(permission!=="granted"){setNote("Notification permission was not allowed. Chrome Site settings में Notifications allow करके दोबारा try करें.");return}
+   if(permission!=="granted"){setNote("Notification permission is blocked. Enable notifications in browser site settings and try again.");return}
    const reg=await navigator.serviceWorker.register("/admin-sw.js",{scope:"/"});
    await navigator.serviceWorker.ready;
    let sub=await reg.pushManager.getSubscription();
    if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC_KEY)});
    const json=sub.toJSON();
    const {data:{session}}=await db.auth.getSession();
-   if(!session||!json.keys?.p256dh||!json.keys?.auth){setNote("Could not save phone alert subscription.");return}
+   if(!session||!json.keys?.p256dh||!json.keys?.auth){setNote("Could not save the alert subscription.");return}
    const {error}=await db.from("admin_push_subscriptions").upsert({admin_user_id:session.user.id,endpoint:sub.endpoint,p256dh:json.keys.p256dh,auth:json.keys.auth,user_agent:navigator.userAgent,updated_at:new Date().toISOString()},{onConflict:"endpoint"});
    if(error){setNote(error.message);return}
    setPushEnabled(true);
-   setNote("Phone alerts enabled ✓ Sending test…");
+   setNote("Admin alerts enabled. Sending a test notification…");
    const test=await db.rpc("test_rohilla_admin_push");
-   setNote(test.error?`Phone alerts enabled, test failed: ${test.error.message}`:"Phone alerts enabled ✓ Test notification sent.");
-  }catch(err:any){setNote(err?.message||"Could not enable phone alerts.")}
+   setNote(test.error?`Alerts enabled; test failed: ${test.error.message}`:"Admin alerts enabled. Test notification sent.");
+  }catch(err:any){setNote(err?.message||"Could not enable admin alerts.")}
  }
 
  async function testPush(){
-  setNote("Sending test alert…");
+  setNote("Sending test notification…");
   const {data,error}=await db.rpc("test_rohilla_admin_push");
   if(error){setNote(error.message);return}
-  setNote(data?"Test notification sent ✓":"Test notification could not be sent.");
+  setNote(data?"Test notification sent.":"Test notification could not be sent.");
  }
 
  const total=Object.values(counts).reduce((sum,n)=>sum+n,0);
- const navStyle={padding:"7px 10px",borderRadius:999,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700,textDecoration:"none",fontSize:12} as const;
- return <>
-  {ready&&<div style={{position:"sticky",top:0,zIndex:9999,background:"linear-gradient(135deg,#0b1322,#1d2738)",color:"#fff",borderBottom:"1px solid rgba(215,181,109,.7)",boxShadow:"0 8px 24px rgba(0,0,0,.15)",padding:"9px 12px"}}>
-   <div style={{maxWidth:1200,margin:"0 auto",display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
-    <strong style={{color:"#f4d38a",letterSpacing:.5}}>PENDING TASKS: {total}</strong>
-    <span style={{fontSize:12}}>Sales {counts.sales}</span><span style={{fontSize:12}}>Services {counts.services}</span><span style={{fontSize:12}}>Dealer Apps {counts.dealers}</span><span style={{fontSize:12}}>Partner Apps {counts.partners}</span><span style={{fontSize:12}}>Verify {counts.verification}</span><span style={{fontSize:12}}>Dealer Vehicles {counts.dealerVehicles}</span><span style={{fontSize:12}}>Deal Rooms {counts.dealRooms}</span>
-    <div style={{width:"100%",display:"flex",gap:6,flexWrap:"wrap"}}><a href="/admin" style={navStyle}>Control Room</a><a href="/admin/add-vehicle" style={{...navStyle,border:"1px solid #f4d38a",color:"#fef3c7"}}>＋ Multi-Category Vehicle</a><a href="/admin/revenue" style={{...navStyle,border:"1px solid #86efac",color:"#dcfce7"}}>₹ Revenue Pipeline</a><a href="/admin/new-vehicles" style={{...navStyle,border:"1px solid #60a5fa",color:"#dbeafe"}}>✨ OEM / New Vehicle Desk</a><a href="/admin/deal-rooms" style={{...navStyle,border:"1px solid #fca5a5",color:"#fee2e2"}}>🤝 Deal Rooms</a><a href="/admin/finance" style={navStyle}>Purchase / Sale / Margin / RC</a><a href="/admin/poster-scan" style={navStyle}>Smart Poster Scan</a><a href="/admin/vehicle-ai" style={{...navStyle,border:"1px solid #c084fc",color:"#f3e8ff"}}>🧠 Vehicle AI</a><a href="/admin/verification" style={navStyle}>Verification Desk</a><a href="/admin/growth" style={{...navStyle,border:"1px solid #d7b56d",color:"#f4d38a"}}>✨ Growth Tools</a><a href="/admin/language" style={{...navStyle,border:"1px solid #818cf8",color:"#eef2ff"}}>🌐 Language Desk</a><a href="/admin/connections" style={navStyle}>Connections</a><a href="/business-hub" style={navStyle}>Business Hub</a><a href="/inventory" style={navStyle}>Customer Inventory</a><a href="/new-vehicles" style={navStyle}>Customer New Vehicle Flow</a><a href="/" style={{...navStyle,border:"1px solid #fff"}}>Customer Website</a></div>
-    <div style={{marginLeft:"auto",display:"flex",gap:6,flexWrap:"wrap"}}>
-     <button onClick={loadCounts} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700}}>Refresh</button>
-     <button onClick={enablePush} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #d7b56d",background:pushEnabled?"#173326":"#2a2110",color:"#f4d38a",fontWeight:800}}>{pushEnabled?"🔔 Phone Alerts ON":"🔔 Enable Phone Alerts"}</button>
-     {pushEnabled&&<button onClick={testPush} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700}}>Test Alert</button>}
+ const metrics=[
+  ["Queue",total,"total"],["Customer Leads",counts.sales,""],["Service Requests",counts.services,""],["Dealer Reviews",counts.dealers,""],["Partner Reviews",counts.partners,""],["Verification",counts.verification,""],["Inventory Reviews",counts.dealerVehicles,""],["Active Deals",counts.dealRooms,""]
+ ] as const;
+
+ return <div className="rd-portal rd-admin-portal">
+  {ready&&<div className="rdPortalTopbar" data-no-translate>
+   <div className="rdPortalTopbarInner">
+    <a className="rdPortalIdentity" href="/admin">
+     <span className="rdPortalMonogram">RD</span>
+     <span className="rdPortalIdentityCopy"><b>ROHILLA DRIVE</b><small>Administration Console</small></span>
+    </a>
+    <nav className="rdPortalNav" aria-label="Administration navigation">
+     {navLinks.map(link=><a key={link.href} href={link.href} className={path===link.href?"active":""}>{link.label}</a>)}
+    </nav>
+    <div className="rdPortalUtilities">
+     <button onClick={loadCounts}>Refresh</button>
+     <button className="premium" onClick={enablePush}>{pushEnabled?"Admin Alerts On":"Enable Admin Alerts"}</button>
+     {pushEnabled&&<button onClick={testPush}>Test Alert</button>}
+     <a href="/business-hub">Business Network</a>
+     <a className="premium" href="/">Public Website</a>
     </div>
-    {note&&<small style={{width:"100%",color:"#cbd5e1"}}>{note}</small>}
    </div>
+   <div className="rdPortalOps"><div className="rdPortalOpsInner">
+    {metrics.map(([label,value,kind])=><span key={label} className={`rdPortalMetric ${kind}`}><span>{label}</span><b>{value}</b></span>)}
+    {note&&<span className="rdPortalMetric"><span>{note}</span></span>}
+   </div></div>
   </div>}
   {children}
- </>;
+ </div>;
 }
