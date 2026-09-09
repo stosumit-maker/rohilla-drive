@@ -26,20 +26,20 @@ export default function LanguageExperience(){
 
  useEffect(()=>{
   const saved=localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  if(saved){setCode(saved);setHasSaved(true)}else setShow(true);
- },[]);
+  if(saved){setCode(saved);setHasSaved(true)}else if(!privatePortal)setShow(true);
+ },[privatePortal]);
 
  useEffect(()=>{
+  if(privatePortal)return;
   document.documentElement.lang=language.translationCode;
   window.dispatchEvent(new CustomEvent("rohilla-language-change",{detail:language}));
   if(code==="en-IN")return;
-  if(privatePortal){setNote("Language saved. Use the secure Language Desk for customer conversations.");return}
   translateVisiblePage(code);
   const root=document.querySelector("main");if(!root)return;
   const observer=new MutationObserver(()=>{if(debounce.current)window.clearTimeout(debounce.current);debounce.current=window.setTimeout(()=>translateVisiblePage(code),450)});
   observer.observe(root,{childList:true,subtree:true});
   return()=>{observer.disconnect();if(debounce.current)window.clearTimeout(debounce.current)};
- },[code,path]);
+ },[code,path,privatePortal]);
 
  async function translateBatch(texts:string[],target:string){
   const r=await fetch("/api/translate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({texts,target,source:"en-IN"})});
@@ -68,6 +68,7 @@ export default function LanguageExperience(){
   setCode(next);setHasSaved(true);setShow(false);
  }
 
+ if(privatePortal)return null;
  return <>
   <button onClick={()=>setShow(true)} aria-label="Choose language" data-no-translate style={{position:"fixed",right:12,top:72,zIndex:10020,border:"1px solid #d7b56d",background:"#111827",color:"#f4d38a",borderRadius:999,padding:"8px 11px",fontWeight:800,boxShadow:"0 6px 20px rgba(0,0,0,.2)"}}>🌐 {language.nativeName}</button>
   {note&&code!=="en-IN"&&<div data-no-translate style={{position:"fixed",right:12,top:112,zIndex:10019,maxWidth:280,fontSize:11,padding:"6px 9px",borderRadius:9,background:"rgba(17,24,39,.94)",color:"#fff"}}>{note}</div>}
