@@ -46,15 +46,13 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  }
 
  useEffect(()=>{
+  document.title="Administration Console | ROHILLA DRIVE";
   let cancelled=false;
   async function gate(){
    const {data:{session}}=await db.auth.getSession();
    if(!session||cancelled)return;
    const {data:aal}=await db.auth.mfa.getAuthenticatorAssuranceLevel();
-   if(aal?.currentLevel!=="aal2"){
-    gateRef.current=window.setTimeout(gate,2500);
-    return;
-   }
+   if(aal?.currentLevel!=="aal2"){gateRef.current=window.setTimeout(gate,2500);return}
    const {data:isAdmin}=await db.rpc("is_admin");
    if(!isAdmin||cancelled)return;
    setReady(true);
@@ -68,45 +66,43 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  async function enablePush(){
   try{
    setNote("");
-   if(!("serviceWorker" in navigator)||!("PushManager" in window)||!("Notification" in window)){setNote("Phone push is not supported in this browser.");return}
+   if(!("serviceWorker" in navigator)||!("PushManager" in window)||!("Notification" in window)){setNote("Notifications are not supported in this browser.");return}
    const permission=await Notification.requestPermission();
-   if(permission!=="granted"){setNote("Notification permission was not allowed. Chrome Site settings में Notifications allow करके दोबारा try करें.");return}
+   if(permission!=="granted"){setNote("Notification permission is disabled. Enable it in browser site settings and try again.");return}
    const reg=await navigator.serviceWorker.register("/admin-sw.js",{scope:"/"});
    await navigator.serviceWorker.ready;
    let sub=await reg.pushManager.getSubscription();
    if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC_KEY)});
    const json=sub.toJSON();
    const {data:{session}}=await db.auth.getSession();
-   if(!session||!json.keys?.p256dh||!json.keys?.auth){setNote("Could not save phone alert subscription.");return}
+   if(!session||!json.keys?.p256dh||!json.keys?.auth){setNote("Could not save the notification subscription.");return}
    const {error}=await db.from("admin_push_subscriptions").upsert({admin_user_id:session.user.id,endpoint:sub.endpoint,p256dh:json.keys.p256dh,auth:json.keys.auth,user_agent:navigator.userAgent,updated_at:new Date().toISOString()},{onConflict:"endpoint"});
    if(error){setNote(error.message);return}
    setPushEnabled(true);
-   setNote("Phone alerts enabled ✓ Sending test…");
+   setNote("Notifications enabled. Sending a test alert…");
    const test=await db.rpc("test_rohilla_admin_push");
-   setNote(test.error?`Phone alerts enabled, test failed: ${test.error.message}`:"Phone alerts enabled ✓ Test notification sent.");
-  }catch(err:any){setNote(err?.message||"Could not enable phone alerts.")}
+   setNote(test.error?`Notifications enabled; test alert failed: ${test.error.message}`:"Notifications enabled. Test alert sent successfully.");
+  }catch(err:any){setNote(err?.message||"Could not enable notifications.")}
  }
 
- async function testPush(){
-  setNote("Sending test alert…");
-  const {data,error}=await db.rpc("test_rohilla_admin_push");
-  if(error){setNote(error.message);return}
-  setNote(data?"Test notification sent ✓":"Test notification could not be sent.");
- }
+ async function testPush(){setNote("Sending test alert…");const {data,error}=await db.rpc("test_rohilla_admin_push");if(error){setNote(error.message);return}setNote(data?"Test alert sent successfully.":"Test alert could not be sent.")}
 
  const total=Object.values(counts).reduce((sum,n)=>sum+n,0);
- const navStyle={padding:"7px 10px",borderRadius:999,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700,textDecoration:"none",fontSize:12} as const;
+ const navStyle={padding:"8px 11px",borderRadius:8,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700,textDecoration:"none",fontSize:12} as const;
  return <>
-  {ready&&<div style={{position:"sticky",top:0,zIndex:9999,background:"linear-gradient(135deg,#0b1322,#1d2738)",color:"#fff",borderBottom:"1px solid rgba(215,181,109,.7)",boxShadow:"0 8px 24px rgba(0,0,0,.15)",padding:"9px 12px"}}>
-   <div style={{maxWidth:1200,margin:"0 auto",display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
-    <strong style={{color:"#f4d38a",letterSpacing:.5}}>PENDING TASKS: {total}</strong>
-    <span style={{fontSize:12}}>Sales {counts.sales}</span><span style={{fontSize:12}}>Services {counts.services}</span><span style={{fontSize:12}}>Dealer Apps {counts.dealers}</span><span style={{fontSize:12}}>Partner Apps {counts.partners}</span><span style={{fontSize:12}}>Verify {counts.verification}</span><span style={{fontSize:12}}>Dealer Vehicles {counts.dealerVehicles}</span><span style={{fontSize:12}}>Deal Rooms {counts.dealRooms}</span>
-    <div style={{width:"100%",display:"flex",gap:6,flexWrap:"wrap"}}><a href="/admin" style={navStyle}>Control Room</a><a href="/admin/add-vehicle" style={{...navStyle,border:"1px solid #f4d38a",color:"#fef3c7"}}>＋ Multi-Category Vehicle</a><a href="/admin/revenue" style={{...navStyle,border:"1px solid #86efac",color:"#dcfce7"}}>₹ Revenue Pipeline</a><a href="/admin/new-vehicles" style={{...navStyle,border:"1px solid #60a5fa",color:"#dbeafe"}}>✨ OEM / New Vehicle Desk</a><a href="/admin/deal-rooms" style={{...navStyle,border:"1px solid #fca5a5",color:"#fee2e2"}}>🤝 Deal Rooms</a><a href="/admin/finance" style={navStyle}>Purchase / Sale / Margin / RC</a><a href="/admin/poster-scan" style={navStyle}>Smart Poster Scan</a><a href="/admin/vehicle-ai" style={{...navStyle,border:"1px solid #c084fc",color:"#f3e8ff"}}>🧠 Vehicle AI</a><a href="/admin/verification" style={navStyle}>Verification Desk</a><a href="/admin/growth" style={{...navStyle,border:"1px solid #d7b56d",color:"#f4d38a"}}>✨ Growth Tools</a><a href="/admin/language" style={{...navStyle,border:"1px solid #818cf8",color:"#eef2ff"}}>🌐 Language Desk</a><a href="/admin/connections" style={navStyle}>Connections</a><a href="/business-hub" style={navStyle}>Business Hub</a><a href="/inventory" style={navStyle}>Customer Inventory</a><a href="/new-vehicles" style={navStyle}>Customer New Vehicle Flow</a><a href="/" style={{...navStyle,border:"1px solid #fff"}}>Customer Website</a></div>
-    <div style={{marginLeft:"auto",display:"flex",gap:6,flexWrap:"wrap"}}>
-     <button onClick={loadCounts} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700}}>Refresh</button>
-     <button onClick={enablePush} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #d7b56d",background:pushEnabled?"#173326":"#2a2110",color:"#f4d38a",fontWeight:800}}>{pushEnabled?"🔔 Phone Alerts ON":"🔔 Enable Phone Alerts"}</button>
-     {pushEnabled&&<button onClick={testPush} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700}}>Test Alert</button>}
+  <style jsx global>{`
+   body{background:#f5f7fb}.auth{max-width:460px!important;margin:72px auto!important;padding:28px!important;border:1px solid #d8dee9!important;border-radius:18px!important;background:#fff!important;box-shadow:0 18px 50px rgba(15,23,42,.08)!important}.auth h1{letter-spacing:-.02em}.auth button,.adminForm button{min-height:44px}.section{max-width:1200px;margin-left:auto;margin-right:auto}.section h1,.section h2{letter-spacing:-.02em}header{border-bottom:1px solid #e2e8f0}.brand small{opacity:.78}
+  `}</style>
+  {!ready&&<div data-no-translate style={{padding:"12px 18px",background:"#0f172a",color:"#fff",borderBottom:"1px solid #334155"}}><div style={{maxWidth:1200,margin:"0 auto",display:"flex",justifyContent:"space-between",gap:16,alignItems:"center"}}><div><strong style={{letterSpacing:.6}}>ROHILLA DRIVE</strong><div style={{fontSize:12,color:"#cbd5e1"}}>Administration Console</div></div><span style={{fontSize:12,color:"#cbd5e1"}}>Restricted access</span></div></div>}
+  {ready&&<div data-no-translate style={{position:"sticky",top:0,zIndex:9999,background:"#0f172a",color:"#fff",borderBottom:"1px solid #334155",boxShadow:"0 8px 24px rgba(15,23,42,.12)",padding:"10px 12px"}}>
+   <div style={{maxWidth:1200,margin:"0 auto",display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+    <div style={{marginRight:8}}><strong style={{letterSpacing:.5}}>ROHILLA DRIVE</strong><div style={{fontSize:11,color:"#cbd5e1"}}>Administration Console</div></div>
+    <span style={{fontSize:12,fontWeight:800,color:"#f8fafc"}}>Open items: {total}</span>
+    <span style={{fontSize:12,color:"#cbd5e1"}}>Sales {counts.sales}</span><span style={{fontSize:12,color:"#cbd5e1"}}>Services {counts.services}</span><span style={{fontSize:12,color:"#cbd5e1"}}>Dealer applications {counts.dealers}</span><span style={{fontSize:12,color:"#cbd5e1"}}>Partner applications {counts.partners}</span><span style={{fontSize:12,color:"#cbd5e1"}}>Verification {counts.verification}</span><span style={{fontSize:12,color:"#cbd5e1"}}>Draft inventory {counts.dealerVehicles}</span><span style={{fontSize:12,color:"#cbd5e1"}}>Active deals {counts.dealRooms}</span>
+    <div style={{width:"100%",display:"flex",gap:6,flexWrap:"wrap"}}>
+     <a href="/admin" style={navStyle}>Dashboard</a><a href="/admin/add-vehicle" style={navStyle}>Inventory Management</a><a href="/admin/revenue" style={navStyle}>Revenue</a><a href="/admin/new-vehicles" style={navStyle}>New Vehicle Leads</a><a href="/admin/deal-rooms" style={navStyle}>Deal Management</a><a href="/admin/finance" style={navStyle}>Transactions & RC</a><a href="/admin/poster-scan" style={navStyle}>Listing Assistant</a><a href="/admin/vehicle-ai" style={navStyle}>Vehicle Intelligence</a><a href="/admin/verification" style={navStyle}>Verification</a><a href="/admin/growth" style={navStyle}>Marketing</a><a href="/admin/language" style={navStyle}>Language Support</a><a href="/admin/connections" style={navStyle}>Integrations</a><a href="/business-hub" style={navStyle}>Business Network</a><a href="/inventory" style={navStyle}>Public Inventory</a><a href="/new-vehicles" style={navStyle}>Public New Vehicles</a><a href="/" style={{...navStyle,background:"#fff",color:"#0f172a",border:"1px solid #e2e8f0"}}>Customer Website</a>
     </div>
+    <div style={{marginLeft:"auto",display:"flex",gap:6,flexWrap:"wrap"}}><button onClick={loadCounts} style={{padding:"8px 11px",borderRadius:8,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700}}>Refresh</button><button onClick={enablePush} style={{padding:"8px 11px",borderRadius:8,border:"1px solid #64748b",background:pushEnabled?"#173326":"#111827",color:"#fff",fontWeight:700}}>{pushEnabled?"Notifications On":"Enable Notifications"}</button>{pushEnabled&&<button onClick={testPush} style={{padding:"8px 11px",borderRadius:8,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700}}>Test Alert</button>}</div>
     {note&&<small style={{width:"100%",color:"#cbd5e1"}}>{note}</small>}
    </div>
   </div>}
