@@ -1,11 +1,27 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { supabase } from "../supabaseClient";
+import {useEffect,useRef,useState} from "react";
+import {usePathname} from "next/navigation";
+import {supabase} from "../supabaseClient";
 
 const VAPID_PUBLIC_KEY="BCu-RuCf1vdiAr6eUOnZRKYTaBTqAdmknc0LtfXQO1kH4IGBM6lcw3VlwN2D26cTWPo2Iei7SyQUcLeWiR5cGXA";
 type Counts={sales:number;services:number;dealers:number;partners:number;verification:number;dealerVehicles:number;dealRooms:number};
 const emptyCounts:Counts={sales:0,services:0,dealers:0,partners:0,verification:0,dealerVehicles:0,dealRooms:0};
+
+const nav=[
+ ["/admin","Executive Dashboard"],
+ ["/admin/add-vehicle","Inventory Intake"],
+ ["/admin/revenue","Revenue Management"],
+ ["/admin/new-vehicles","New Vehicle Leads"],
+ ["/admin/deal-rooms","Deal Management"],
+ ["/admin/finance","Vehicle Ledger & RC"],
+ ["/admin/poster-scan","Listing Intake"],
+ ["/admin/vehicle-ai","Vehicle Intelligence"],
+ ["/admin/verification","Verification Operations"],
+ ["/admin/growth","Marketing Operations"],
+ ["/admin/language","Language Operations"],
+ ["/admin/connections","Integrations"]
+] as const;
 
 function urlBase64ToUint8Array(base64String:string){
  const padding="=".repeat((4-base64String.length%4)%4);
@@ -15,6 +31,7 @@ function urlBase64ToUint8Array(base64String:string){
 }
 
 export default function AdminLayout({children}:{children:React.ReactNode}){
+ const path=usePathname();
  const db=supabase();
  const [ready,setReady]=useState(false);
  const [counts,setCounts]=useState<Counts>(emptyCounts);
@@ -46,15 +63,17 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  }
 
  useEffect(()=>{
+  const current=nav.find(([href])=>href===path)?.[1]||"Administration";
+  document.title=`${current} | ROHILLA DRIVE`;
+ },[path]);
+
+ useEffect(()=>{
   let cancelled=false;
   async function gate(){
    const {data:{session}}=await db.auth.getSession();
    if(!session||cancelled)return;
    const {data:aal}=await db.auth.mfa.getAuthenticatorAssuranceLevel();
-   if(aal?.currentLevel!=="aal2"){
-    gateRef.current=window.setTimeout(gate,2500);
-    return;
-   }
+   if(aal?.currentLevel!=="aal2"){gateRef.current=window.setTimeout(gate,2500);return}
    const {data:isAdmin}=await db.rpc("is_admin");
    if(!isAdmin||cancelled)return;
    setReady(true);
@@ -68,48 +87,58 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  async function enablePush(){
   try{
    setNote("");
-   if(!("serviceWorker" in navigator)||!("PushManager" in window)||!("Notification" in window)){setNote("Phone push is not supported in this browser.");return}
+   if(!("serviceWorker" in navigator)||!("PushManager" in window)||!("Notification" in window)){setNote("Push notifications are not supported in this browser.");return}
    const permission=await Notification.requestPermission();
-   if(permission!=="granted"){setNote("Notification permission was not allowed. Chrome Site settings में Notifications allow करके दोबारा try करें.");return}
+   if(permission!=="granted"){setNote("Notification permission is disabled. Enable it in browser site settings and try again.");return}
    const reg=await navigator.serviceWorker.register("/admin-sw.js",{scope:"/"});
    await navigator.serviceWorker.ready;
    let sub=await reg.pushManager.getSubscription();
    if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC_KEY)});
    const json=sub.toJSON();
    const {data:{session}}=await db.auth.getSession();
-   if(!session||!json.keys?.p256dh||!json.keys?.auth){setNote("Could not save phone alert subscription.");return}
+   if(!session||!json.keys?.p256dh||!json.keys?.auth){setNote("The notification subscription could not be saved.");return}
    const {error}=await db.from("admin_push_subscriptions").upsert({admin_user_id:session.user.id,endpoint:sub.endpoint,p256dh:json.keys.p256dh,auth:json.keys.auth,user_agent:navigator.userAgent,updated_at:new Date().toISOString()},{onConflict:"endpoint"});
    if(error){setNote(error.message);return}
    setPushEnabled(true);
-   setNote("Phone alerts enabled ✓ Sending test…");
    const test=await db.rpc("test_rohilla_admin_push");
-   setNote(test.error?`Phone alerts enabled, test failed: ${test.error.message}`:"Phone alerts enabled ✓ Test notification sent.");
-  }catch(err:any){setNote(err?.message||"Could not enable phone alerts.")}
+   setNote(test.error?`Notifications enabled; test delivery failed: ${test.error.message}`:"Notifications enabled. Test alert sent.");
+  }catch(err:any){setNote(err?.message||"Notifications could not be enabled.")}
  }
 
  async function testPush(){
-  setNote("Sending test alert…");
+  setNote("Sending test notification…");
   const {data,error}=await db.rpc("test_rohilla_admin_push");
   if(error){setNote(error.message);return}
-  setNote(data?"Test notification sent ✓":"Test notification could not be sent.");
+  setNote(data?"Test notification sent.":"Test notification could not be sent.");
  }
 
  const total=Object.values(counts).reduce((sum,n)=>sum+n,0);
- const navStyle={padding:"7px 10px",borderRadius:999,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700,textDecoration:"none",fontSize:12} as const;
- return <>
-  {ready&&<div style={{position:"sticky",top:0,zIndex:9999,background:"linear-gradient(135deg,#0b1322,#1d2738)",color:"#fff",borderBottom:"1px solid rgba(215,181,109,.7)",boxShadow:"0 8px 24px rgba(0,0,0,.15)",padding:"9px 12px"}}>
-   <div style={{maxWidth:1200,margin:"0 auto",display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
-    <strong style={{color:"#f4d38a",letterSpacing:.5}}>PENDING TASKS: {total}</strong>
-    <span style={{fontSize:12}}>Sales {counts.sales}</span><span style={{fontSize:12}}>Services {counts.services}</span><span style={{fontSize:12}}>Dealer Apps {counts.dealers}</span><span style={{fontSize:12}}>Partner Apps {counts.partners}</span><span style={{fontSize:12}}>Verify {counts.verification}</span><span style={{fontSize:12}}>Dealer Vehicles {counts.dealerVehicles}</span><span style={{fontSize:12}}>Deal Rooms {counts.dealRooms}</span>
-    <div style={{width:"100%",display:"flex",gap:6,flexWrap:"wrap"}}><a href="/admin" style={navStyle}>Control Room</a><a href="/admin/add-vehicle" style={{...navStyle,border:"1px solid #f4d38a",color:"#fef3c7"}}>＋ Multi-Category Vehicle</a><a href="/admin/revenue" style={{...navStyle,border:"1px solid #86efac",color:"#dcfce7"}}>₹ Revenue Pipeline</a><a href="/admin/new-vehicles" style={{...navStyle,border:"1px solid #60a5fa",color:"#dbeafe"}}>✨ OEM / New Vehicle Desk</a><a href="/admin/deal-rooms" style={{...navStyle,border:"1px solid #fca5a5",color:"#fee2e2"}}>🤝 Deal Rooms</a><a href="/admin/finance" style={navStyle}>Purchase / Sale / Margin / RC</a><a href="/admin/poster-scan" style={navStyle}>Smart Poster Scan</a><a href="/admin/vehicle-ai" style={{...navStyle,border:"1px solid #c084fc",color:"#f3e8ff"}}>🧠 Vehicle AI</a><a href="/admin/verification" style={navStyle}>Verification Desk</a><a href="/admin/growth" style={{...navStyle,border:"1px solid #d7b56d",color:"#f4d38a"}}>✨ Growth Tools</a><a href="/admin/language" style={{...navStyle,border:"1px solid #818cf8",color:"#eef2ff"}}>🌐 Language Desk</a><a href="/admin/connections" style={navStyle}>Connections</a><a href="/business-hub" style={navStyle}>Business Hub</a><a href="/inventory" style={navStyle}>Customer Inventory</a><a href="/new-vehicles" style={navStyle}>Customer New Vehicle Flow</a><a href="/" style={{...navStyle,border:"1px solid #fff"}}>Customer Website</a></div>
-    <div style={{marginLeft:"auto",display:"flex",gap:6,flexWrap:"wrap"}}>
-     <button onClick={loadCounts} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700}}>Refresh</button>
-     <button onClick={enablePush} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #d7b56d",background:pushEnabled?"#173326":"#2a2110",color:"#f4d38a",fontWeight:800}}>{pushEnabled?"🔔 Phone Alerts ON":"🔔 Enable Phone Alerts"}</button>
-     {pushEnabled&&<button onClick={testPush} style={{padding:"7px 10px",borderRadius:999,border:"1px solid #475569",background:"#111827",color:"#fff",fontWeight:700}}>Test Alert</button>}
+ return <div className="rdPortal rdAdminPortal">
+  {ready&&<div className="portalShellTop" data-no-translate="true">
+   <div className="portalShellInner">
+    <div className="portalIdentity"><b>ROHILLA DRIVE</b><small>Executive Operations Suite</small></div>
+    <nav className="portalNav" aria-label="Administration navigation">
+     {nav.map(([href,label])=><a key={href} href={href} data-active={path===href?"true":"false"}>{label}</a>)}
+     <a href="/" target="_self">Customer Website</a>
+    </nav>
+    <div className="portalUtility">
+     <button onClick={loadCounts}>Refresh</button>
+     <button onClick={enablePush}>{pushEnabled?"Notifications On":"Enable Notifications"}</button>
+     {pushEnabled&&<button onClick={testPush}>Test</button>}
     </div>
-    {note&&<small style={{width:"100%",color:"#cbd5e1"}}>{note}</small>}
+    <div className="portalMetrics" aria-label="Open work summary">
+     <span className="portalMetric">Open work <strong>{total}</strong></span>
+     <span className="portalMetric">Sales <strong>{counts.sales}</strong></span>
+     <span className="portalMetric">Services <strong>{counts.services}</strong></span>
+     <span className="portalMetric">Dealer applications <strong>{counts.dealers}</strong></span>
+     <span className="portalMetric">Partner applications <strong>{counts.partners}</strong></span>
+     <span className="portalMetric">Verification <strong>{counts.verification}</strong></span>
+     <span className="portalMetric">Dealer inventory <strong>{counts.dealerVehicles}</strong></span>
+     <span className="portalMetric">Active deals <strong>{counts.dealRooms}</strong></span>
+    </div>
+    {note&&<div className="portalNote">{note}</div>}
    </div>
   </div>}
   {children}
- </>;
+ </div>;
 }
