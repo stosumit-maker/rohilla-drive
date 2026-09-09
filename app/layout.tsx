@@ -10,6 +10,7 @@ import LanguageExperience from "./components/LanguageExperience";
 import HomeExperienceEnhancer from "./components/HomeExperienceEnhancer";
 import LegalFooter from "./components/LegalFooter";
 import PortalExperience from "./components/PortalExperience";
+import PortalCopyPolish from "./components/PortalCopyPolish";
 
 const site = "https://www.rohilladrive.com";
 const languages={"en-IN":"/en","hi-IN":"/hi","pa-IN":"/pa","kn-IN":"/kn","ta-IN":"/ta","te-IN":"/te","ml-IN":"/ml","mr-IN":"/mr","gu-IN":"/gu","bn-IN":"/bn","or-IN":"/or","ur-IN":"/ur","x-default":"/"};
@@ -66,7 +67,7 @@ const organizationSchema = {
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": `${site}/#website`,
+  "@id": `${site}/#website",
   url: `${site}/`,
   name: "ROHILLA DRIVE",
   alternateName: ["Rohilla Drive", "Rohilla Multibrand Cars", "rohilladrive.com"],
@@ -84,6 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
     <PortalExperience />
+    <PortalCopyPolish />
     <PublicBackNavigation />
     <OfficialIdentityStrip />
     {children}
