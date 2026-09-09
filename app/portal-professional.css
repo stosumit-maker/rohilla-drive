@@ -1,0 +1,57 @@
+.rd-private-portal{min-height:100vh;background:#f4f6f9;color:#172033;font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.rd-private-portal header{min-height:72px;height:auto;background:#fff;border-bottom:1px solid #dfe4eb;box-shadow:0 2px 10px rgba(15,23,42,.04);padding:12px 4%;position:sticky;top:0;z-index:20}
+.rd-private-portal header .brand b{font-size:18px;letter-spacing:.7px;color:#0f172a}
+.rd-private-portal header .brand small{font-size:10px;letter-spacing:.45px;color:#667085;margin-top:2px}
+.rd-private-portal .section{max-width:1260px;padding:34px 4%}
+.rd-private-portal .section>h1,.rd-private-portal .head h1{font-size:clamp(28px,4vw,40px);letter-spacing:-.6px;margin:0 0 8px;color:#101828}
+.rd-private-portal .section>h2,.rd-private-portal .head h2{font-size:26px;color:#101828}
+.rd-private-portal p{line-height:1.6;color:#667085}
+.rd-private-portal .hero{padding:38px 4%!important;background:linear-gradient(135deg,#0b1322,#172033 72%,#233047);border-bottom:1px solid #26364d}
+.rd-private-portal .hero:before{display:none!important}
+.rd-private-portal .heroText>span{font-size:10px;letter-spacing:1.7px;color:#d7b56d!important;font-weight:800}
+.rd-private-portal .hero h1{font-size:clamp(32px,5vw,50px)!important;line-height:1.08!important;letter-spacing:-1px;margin:12px 0!important}
+.rd-private-portal .hero p{font-size:15px!important;max-width:800px;color:#c6d0dd}
+.rd-private-portal .auth{max-width:480px;margin:7vh auto;padding:34px;background:#fff;border:1px solid #dfe4eb;border-radius:20px;box-shadow:0 22px 60px rgba(15,23,42,.10)}
+.rd-private-portal .auth h1{font-size:28px;letter-spacing:-.5px;margin:0 0 6px;color:#101828}
+.rd-private-portal .auth h2{font-size:18px;font-weight:700;color:#475467;margin:0 0 12px}
+.rd-private-portal .auth form{margin-top:18px}
+.rd-private-portal input,.rd-private-portal textarea,.rd-private-portal select{background:#fff;border:1px solid #d0d5dd;border-radius:10px;padding:12px 13px;color:#101828;outline:none;transition:border-color .15s ease,box-shadow .15s ease}
+.rd-private-portal input:focus,.rd-private-portal textarea:focus,.rd-private-portal select:focus{border-color:#4f6b95;box-shadow:0 0 0 3px rgba(79,107,149,.12)}
+.rd-private-portal button,.rd-private-portal .call{border-radius:9px;padding:10px 14px;background:#172033;color:#fff;font-weight:750;border:1px solid #172033;box-shadow:none}
+.rd-private-portal button:hover,.rd-private-portal .call:hover{background:#0f172a}
+.rd-private-portal .secondary{background:#fff!important;color:#172033!important;border:1px solid #cfd6df!important}
+.rd-private-portal .application,.rd-private-portal .request-card,.rd-private-portal .stat-card,.rd-private-portal .empty-card,.rd-private-portal .notice,.rd-private-portal .vehicle-box{background:#fff;border:1px solid #dfe4eb;border-radius:14px;box-shadow:0 5px 18px rgba(15,23,42,.045)}
+.rd-private-portal .application{padding:20px}
+.rd-private-portal .application h2,.rd-private-portal .application h3{margin:5px 0 8px;color:#101828}
+.rd-private-portal .application label,.rd-private-portal .request-card label{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.55px;text-transform:uppercase;color:#475467;background:#f2f4f7;border:1px solid #eaecf0;border-radius:999px;padding:4px 8px}
+.rd-private-portal .notice{padding:13px 15px;background:#f8fafc;color:#344054;line-height:1.5}
+.rd-private-portal .grid{gap:14px}
+.rd-private-portal .stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.rd-private-portal .stat-card{padding:18px;display:flex;flex-direction:column;gap:4px}
+.rd-private-portal .stat-card strong{font-size:25px;letter-spacing:-.5px;color:#101828}
+.rd-private-portal .stat-card span{font-size:12px;font-weight:700;color:#667085}
+.rd-private-portal .partner-head,.rd-private-portal .request-top,.rd-private-portal .head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.rd-private-portal .request-list{display:grid;gap:12px}
+.rd-private-portal .request-card{padding:20px}
+.rd-private-portal .request-card h2{font-size:20px;margin:5px 0;color:#101828}
+.rd-private-portal .request-details{display:grid;gap:4px;margin:14px 0}
+.rd-private-portal .request-details p{margin:0}
+.rd-private-portal .request-actions,.rd-private-portal .status-control,.rd-private-portal .filter-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.rd-private-portal .status-control{padding-top:12px;border-top:1px solid #eaecf0}
+.rd-private-portal .status-control span{font-size:12px;font-weight:750;color:#475467}
+.rd-private-portal .status{font-size:10px;text-transform:uppercase;letter-spacing:.55px;font-weight:800;padding:5px 8px;border-radius:999px;background:#eef2f6;color:#344054}
+.rd-private-portal .filter{background:#fff!important;color:#344054!important;border:1px solid #d0d5dd!important;padding:8px 11px!important}
+.rd-private-portal .filter.active{background:#172033!important;color:#fff!important;border-color:#172033!important}
+.rd-private-portal .vehicle-box{padding:12px 14px;margin:12px 0;box-shadow:none;background:#f8fafc}
+.rd-private-portal .vehicle-box strong,.rd-private-portal .vehicle-box span{display:block}
+.rd-private-portal .vehicle-box span{font-size:12px;color:#667085;margin-top:3px}
+.rd-private-portal .card{border-radius:14px;border-color:#dfe4eb;box-shadow:0 5px 18px rgba(15,23,42,.045)}
+.rd-private-portal .body{padding:18px}
+.rd-private-portal .upload{background:#f8fafc;border:1px dashed #98a2b3;border-radius:10px;color:#475467;font-weight:650}
+.rd-private-portal .modal{border-radius:18px;border:1px solid #dfe4eb;box-shadow:0 26px 80px rgba(15,23,42,.22)}
+.rd-private-portal .dark{background:#111827;border-radius:18px;margin-top:18px;margin-bottom:32px}
+.rd-private-portal .dark .about{padding:24px!important}
+.rd-private-portal .dark h2{color:#fff}
+.rd-private-portal .dark p{color:#c3ccd8}
+.rd-private-portal pre{background:#f8fafc;border:1px solid #eaecf0;border-radius:10px;padding:14px}
+@media(max-width:800px){.rd-private-portal .section{padding:26px 4%}.rd-private-portal .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.rd-private-portal .grid{grid-template-columns:1fr}.rd-private-portal .auth{margin:4vh 14px;padding:24px}.rd-private-portal .partner-head,.rd-private-portal .head{flex-direction:column;align-items:stretch}.rd-private-portal header{padding:10px 14px}.rd-private-portal header .brand b{font-size:16px}.rd-private-portal .hero{padding:30px 4%!important}}
