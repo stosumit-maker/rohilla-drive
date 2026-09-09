@@ -1,0 +1,177 @@
+:root{
+  --rd-suite-ink:#07111f;
+  --rd-suite-ink-2:#0d1b2a;
+  --rd-suite-slate:#526174;
+  --rd-suite-line:#dde4ec;
+  --rd-suite-canvas:#f3f6f9;
+  --rd-suite-surface:#ffffff;
+  --rd-suite-gold:#c5a15b;
+  --rd-suite-blue:#1457d9;
+  --rd-suite-blue-soft:#eef4ff;
+  --rd-suite-green:#137a52;
+  --rd-suite-red:#a33a3a;
+}
+
+/* Private business-suite shell */
+.rdPortalScope{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 92% 0%,rgba(20,87,217,.08),transparent 30%),
+    linear-gradient(180deg,#f8fafc 0%,var(--rd-suite-canvas) 100%);
+  color:var(--rd-suite-ink);
+  font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.rdPortalScope *{box-sizing:border-box}
+.rdPortalScope main{min-height:100vh;background:transparent}
+.rdPortalScope main:has(> .auth){display:grid;place-items:center;padding:44px 18px;background:linear-gradient(135deg,#07111f 0%,#0d1b2a 48%,#14253a 100%)}
+
+/* Portal headers */
+.rdPortalScope main>header{
+  min-height:78px;height:auto;position:sticky;top:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:13px clamp(18px,4vw,54px);
+  background:rgba(7,17,31,.97);color:#fff;
+  border-bottom:1px solid rgba(197,161,91,.52);
+  box-shadow:0 10px 30px rgba(7,17,31,.16);
+  backdrop-filter:blur(16px);
+}
+.rdPortalScope main>header .brand b{font-size:16px;letter-spacing:1.8px;font-weight:800;color:#fff}
+.rdPortalScope main>header .brand small{font-size:10px;letter-spacing:1.25px;color:#b9c5d4;text-transform:uppercase;margin-top:3px}
+.rdPortalScope main>header .row{align-items:center}
+
+/* Executive command bar / navigation */
+.rdAdminCommandBar{
+  position:sticky;top:0;z-index:60;padding:12px clamp(16px,3vw,38px);
+  background:rgba(7,17,31,.98);color:#fff;
+  border-bottom:1px solid rgba(197,161,91,.55);box-shadow:0 10px 34px rgba(7,17,31,.2);
+}
+.rdAdminCommandBar .rdCommandInner{max-width:1440px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rdAdminCommandBar .rdCommandTitle{display:flex;align-items:center;gap:9px;margin-right:4px;font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:#b8c5d5}
+.rdAdminCommandBar .rdCommandTitle strong{font-size:13px;color:#f1d8a1;letter-spacing:.7px}
+.rdAdminCommandBar .rdCommandMetrics{display:flex;gap:9px;flex-wrap:wrap;font-size:11px;color:#dbe4ee}
+.rdAdminCommandBar .rdCommandMetrics span{padding:5px 8px;border:1px solid #27384e;border-radius:999px;background:#0c1828}
+.rdAdminCommandBar .rdCommandNav{width:100%;display:flex;gap:6px;overflow-x:auto;padding:2px 0 1px;scrollbar-width:none}
+.rdAdminCommandBar .rdCommandNav::-webkit-scrollbar{display:none}
+.rdAdminCommandBar .rdCommandNav a{flex:0 0 auto;padding:8px 11px;border-radius:9px;border:1px solid #2a3b50;background:#0c1828;color:#dce7f3;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:.15px}
+.rdAdminCommandBar .rdCommandNav a:hover{border-color:#c5a15b;color:#f5dfb1;background:#142337}
+.rdAdminCommandBar .rdCommandActions{margin-left:auto;display:flex;gap:6px;align-items:center}
+.rdAdminCommandBar button{padding:8px 11px;font-size:11px}
+
+/* Content hierarchy */
+.rdPortalScope .section{max-width:1360px;margin:0 auto;padding:30px clamp(18px,4vw,54px)}
+.rdPortalScope .section+.section{padding-top:12px}
+.rdPortalScope .section>h1{font-size:clamp(28px,3vw,40px);letter-spacing:-.8px;margin:0 0 8px;color:#07111f}
+.rdPortalScope .section>h2{font-size:23px;letter-spacing:-.3px;margin:0 0 14px;color:#07111f}
+.rdPortalScope .section>p{max-width:860px;font-size:14px;line-height:1.65;color:#66768a;margin:0 0 20px}
+.rdPortalScope .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px}
+.rdPortalScope .application,.rdPortalScope .card,.rdPortalScope .request-card,.rdPortalScope .stat-card,.rdPortalScope .empty-card{
+  background:rgba(255,255,255,.96);border:1px solid var(--rd-suite-line);border-radius:16px;
+  box-shadow:0 7px 22px rgba(15,31,50,.055);
+}
+.rdPortalScope .application{padding:20px}
+.rdPortalScope .application h2,.rdPortalScope .application h3{font-size:18px;margin:0 0 7px;color:#101c2d}
+.rdPortalScope .application p{font-size:13px;line-height:1.55;margin:0 0 13px;color:#6a788b}
+.rdPortalScope .card{overflow:hidden;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.rdPortalScope .card:hover{transform:translateY(-2px);border-color:#cbd6e3;box-shadow:0 14px 30px rgba(15,31,50,.085)}
+.rdPortalScope .body{padding:18px}
+.rdPortalScope .body h3{font-size:18px;letter-spacing:-.2px}
+.rdPortalScope .body label{background:#eef4ff;color:#194da8;border-radius:999px;padding:5px 8px;font-size:9px;letter-spacing:.6px;text-transform:uppercase}
+.rdPortalScope .photo{background:linear-gradient(135deg,#e9eef4,#dce5ef)}
+
+/* Forms */
+.rdPortalScope input,.rdPortalScope textarea,.rdPortalScope select{
+  width:100%;padding:13px 14px;border:1px solid #d5dee8;border-radius:10px;
+  background:#fff;color:#142033;font:inherit;font-size:14px;outline:none;
+  transition:border-color .16s ease,box-shadow .16s ease,background .16s ease;
+}
+.rdPortalScope input:focus,.rdPortalScope textarea:focus,.rdPortalScope select:focus{border-color:#6f98df;box-shadow:0 0 0 3px rgba(20,87,217,.1)}
+.rdPortalScope textarea{min-height:104px;resize:vertical}
+.rdPortalScope .adminForm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;padding:20px;background:#fff;border:1px solid var(--rd-suite-line);border-radius:16px;box-shadow:0 7px 22px rgba(15,31,50,.04)}
+.rdPortalScope .adminForm textarea,.rdPortalScope .adminForm .upload,.rdPortalScope .adminForm>button,.rdPortalScope .adminForm>.application{grid-column:1/-1}
+.rdPortalScope .upload{padding:16px;border:1px dashed #aebdcd;border-radius:11px;background:#f8fafc;color:#58687b;font-size:12px;font-weight:700}
+
+/* Buttons and links */
+.rdPortalScope button,.rdPortalScope .call,.rdPortalScope .primary{
+  border:1px solid #0a356f;border-radius:9px;padding:11px 14px;
+  background:linear-gradient(180deg,#175fdc,#114cb6);color:#fff;font-weight:750;
+  box-shadow:0 3px 8px rgba(20,87,217,.12);text-decoration:none;cursor:pointer;
+}
+.rdPortalScope button:hover,.rdPortalScope .call:hover,.rdPortalScope .primary:hover{filter:brightness(.97);transform:translateY(-1px)}
+.rdPortalScope .secondary{background:#fff;color:#172337;border:1px solid #cad5e1;box-shadow:none}
+.rdPortalScope .x{background:#f2f5f8;color:#172337;border-color:#d6dee8}
+
+/* Authentication */
+.rdPortalScope .auth{
+  position:relative;width:min(520px,100%);max-width:none;margin:0;padding:34px 34px 30px;
+  background:rgba(255,255,255,.985);border:1px solid rgba(255,255,255,.58);border-radius:20px;
+  box-shadow:0 34px 80px rgba(0,0,0,.28);
+}
+.rdPortalScope .auth:before{content:"ROHILLA DRIVE  •  BUSINESS SUITE";display:block;margin-bottom:20px;color:#8b6b2f;font-size:10px;font-weight:850;letter-spacing:1.55px}
+.rdPortalScope .auth h1{font-size:30px;letter-spacing:-.65px;margin:0 0 5px;color:#07111f}
+.rdPortalScope .auth h2{font-size:18px;margin:0 0 10px;color:#26364a}
+.rdPortalScope .auth>p{font-size:13px;line-height:1.55;color:#65758a;margin:8px 0 15px}
+.rdPortalScope .auth form{display:grid;gap:9px;margin:15px 0}
+.rdPortalScope .auth form input,.rdPortalScope .auth form select,.rdPortalScope .auth form textarea{margin:0}
+.rdPortalScope .auth form button{margin-top:3px;min-height:44px}
+.rdPortalScope .auth>.secondary{width:100%;margin-top:7px}
+.rdPortalScope .auth>a{display:inline-block;margin-top:14px;color:#315a94;font-size:12px;font-weight:700;text-decoration:none}
+.rdPortalScope .notice{padding:12px 13px;border:1px solid #d7e1eb;border-left:3px solid #7a91ad;border-radius:10px;background:#f8fafc;color:#56677a;font-size:12px;line-height:1.55}
+.rdPortalScope .consent{font-size:11px;line-height:1.45;color:#68798c}
+
+/* Partner workspace */
+.rdPortalScope .partner-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px}
+.rdPortalScope .partner-head label{font-size:10px;font-weight:800;letter-spacing:1.2px;color:#8b6b2f;text-transform:uppercase}
+.rdPortalScope .partner-head h1{font-size:34px;letter-spacing:-.7px;margin:5px 0}
+.rdPortalScope .partner-head p{max-width:780px;font-size:13px;line-height:1.55;color:#6a798c}
+.rdPortalScope .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.rdPortalScope .stat-card{padding:18px}
+.rdPortalScope .stat-card strong{display:block;font-size:28px;letter-spacing:-.6px;color:#0c1a2c}
+.rdPortalScope .stat-card span{font-size:11px;color:#758397;text-transform:uppercase;letter-spacing:.8px}
+.rdPortalScope .filter-row{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0}
+.rdPortalScope .filter-row button{padding:8px 11px;background:#fff;color:#34455b;border-color:#d3dde7;box-shadow:none;font-size:11px}
+.rdPortalScope .filter-row button.active{background:#0d1b2a;color:#fff;border-color:#0d1b2a}
+.rdPortalScope .request-list{display:grid;gap:12px}
+.rdPortalScope .request-card{padding:19px}
+.rdPortalScope .request-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.rdPortalScope .request-top h2{font-size:19px;margin:4px 0}
+.rdPortalScope .request-top label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:#7b6540;font-weight:800}
+.rdPortalScope .status{border-radius:999px;padding:5px 8px;background:#eef2f6;color:#526174;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px}
+.rdPortalScope .vehicle-box,.rdPortalScope .request-details{padding:12px 13px;border-radius:10px;background:#f7f9fb;border:1px solid #e3e9ef;margin-top:11px}
+.rdPortalScope .request-details p{font-size:12px;line-height:1.5;margin:4px 0;color:#5f6e81}
+.rdPortalScope .request-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+/* Floating workspace navigator */
+.rdWorkspaceNav{position:fixed;left:16px;bottom:16px;z-index:90;display:flex;flex-direction:column;gap:8px;align-items:flex-start;max-width:calc(100vw - 32px)}
+.rdWorkspaceMenu{width:min(350px,calc(100vw - 32px));max-height:72vh;overflow:auto;display:grid;gap:5px;padding:10px;border-radius:15px;background:rgba(9,20,34,.98);border:1px solid #34465d;box-shadow:0 24px 65px rgba(0,0,0,.32);backdrop-filter:blur(14px)}
+.rdWorkspaceMenuTitle{padding:7px 8px 9px;color:#d9c28f;font-size:10px;font-weight:800;letter-spacing:1.15px;text-transform:uppercase;border-bottom:1px solid #27384e;margin-bottom:2px}
+.rdWorkspaceLink,.rdWorkspaceMenu button{display:block;width:100%;padding:9px 10px;border:1px solid transparent;border-radius:8px;background:transparent;color:#dce6f2;text-decoration:none;text-align:left;font-size:11px;font-weight:700;box-shadow:none}
+.rdWorkspaceLink:hover,.rdWorkspaceMenu button:hover{background:#13243a;border-color:#2e435b;color:#fff;transform:none}
+.rdWorkspaceLink.rdPrimaryLink{color:#f0d9a6;background:#172537;border-color:#4b4738}
+.rdWorkspaceToggle{border:1px solid #5c4f35!important;background:#091422!important;color:#f0d9a6!important;border-radius:999px!important;padding:10px 14px!important;font-size:11px!important;letter-spacing:.45px;box-shadow:0 10px 28px rgba(0,0,0,.22)!important}
+
+/* Modals */
+.rdPortalScope .overlay{z-index:120;background:rgba(5,12,22,.68);backdrop-filter:blur(4px)}
+.rdPortalScope .modal{border:1px solid #d9e2eb;border-radius:18px;box-shadow:0 30px 70px rgba(0,0,0,.24)}
+
+/* Keep public-site chrome out of private workspaces */
+body:has(.rdPortalScope)>footer{display:none!important}
+body:has(.rdPortalScope)>button[aria-label="Choose language"]{display:none!important}
+
+@media(max-width:800px){
+  .rdPortalScope main:has(> .auth){padding:24px 12px}
+  .rdPortalScope .auth{padding:26px 20px;border-radius:17px}
+  .rdPortalScope .auth h1{font-size:26px}
+  .rdPortalScope main>header{padding:12px 15px;min-height:68px;align-items:flex-start}
+  .rdPortalScope main>header .brand b{font-size:14px}
+  .rdPortalScope main>header .row{justify-content:flex-end}
+  .rdPortalScope .section{padding:24px 15px}
+  .rdPortalScope .adminForm{grid-template-columns:1fr;padding:15px}
+  .rdPortalScope .adminForm>*{grid-column:1!important}
+  .rdPortalScope .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .rdPortalScope .partner-head{align-items:flex-start;flex-direction:column}
+  .rdAdminCommandBar{padding:10px 12px}
+  .rdAdminCommandBar .rdCommandMetrics{display:none}
+  .rdAdminCommandBar .rdCommandActions{margin-left:0}
+  .rdWorkspaceNav{left:12px;bottom:12px;max-width:calc(100vw - 24px)}
+  .rdWorkspaceMenu{width:min(345px,calc(100vw - 24px))}
+}
