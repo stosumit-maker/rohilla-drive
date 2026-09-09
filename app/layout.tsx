@@ -1,6 +1,7 @@
 import "./style.css";
 import "./brand.css";
 import "./trusted-assist.css";
+import "./portal-suite.css";
 import type { Metadata } from "next";
 import PublicQuickLinks from "./PublicQuickLinks";
 import PublicBackNavigation from "./components/PublicBackNavigation";
@@ -64,7 +65,7 @@ const organizationSchema = {
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": `${site}/#website`,
+  "@id": `${site}/#website",
   url: `${site}/`,
   name: "ROHILLA DRIVE",
   alternateName: ["Rohilla Drive", "Rohilla Multibrand Cars", "rohilladrive.com"],
