@@ -1,2 +1,2 @@
 import GrowthConsole from "../../components/GrowthConsole";
-export default function PartnerGrowth(){return <GrowthConsole actorRole="partner" title="Business Hub Growth & Automation" homeHref="/partner"/>}
+export default function PartnerGrowth(){return <GrowthConsole actorRole="partner" title="Partner Marketing Studio" homeHref="/partner"/>}
