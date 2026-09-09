@@ -15,14 +15,14 @@ const numOrNull=(v:any)=>v===""||v===undefined||v===null?null:Number(v);
 
 export default function AdminAddVehicle(){
  const db=supabase();
- const [ready,setReady]=useState(false),[msg,setMsg]=useState("Checking Admin access…"),[busy,setBusy]=useState(false),[files,setFiles]=useState<File[]>([]);
+ const [ready,setReady]=useState(false),[msg,setMsg]=useState("Checking administration access…"),[busy,setBusy]=useState(false),[files,setFiles]=useState<File[]>([]);
  const [f,setF]=useState<any>({vehicle_type:"car",status:"draft"});
  useEffect(()=>{gate()},[]);
  async function gate(){
   const {data:{session}}=await db.auth.getSession();
-  if(!session){setMsg("Admin login required. Open Control Room first.");return}
+  if(!session){setMsg("Administration sign-in required.");return}
   const [{data:aal},{data:isAdmin}]=await Promise.all([db.auth.mfa.getAuthenticatorAssuranceLevel(),db.rpc("is_admin")]);
-  if(aal?.currentLevel!=="aal2"||!isAdmin){setMsg("Admin + Authenticator verification required. Open Control Room first.");return}
+  if(aal?.currentLevel!=="aal2"||!isAdmin){setMsg("Administrator authentication and Authenticator verification are required.");return}
   setReady(true);setMsg("");
  }
  async function uploadPhotos(vehicleId:string,chosen:File[]){
@@ -38,7 +38,7 @@ export default function AdminAddVehicle(){
  }
  async function add(e:React.FormEvent){
   e.preventDefault();if(!files.length){setMsg("Add at least one vehicle photo.");return}
-  setBusy(true);setMsg("Saving vehicle as draft and uploading photos…");
+  setBusy(true);setMsg("Creating draft record and uploading media…");
   const payload:any={
    vehicle_type:f.vehicle_type||"car",brand:f.brand?.trim(),model:f.model?.trim(),variant:f.variant?.trim()||null,
    year:numOrNull(f.year),km:numOrNull(f.km),fuel:f.fuel?.trim()||null,transmission:f.transmission?.trim()||null,
@@ -57,50 +57,50 @@ export default function AdminAddVehicle(){
     if(published.error)throw new Error(published.error.message);
    }
    setF({vehicle_type:"car",status:"draft"});setFiles([]);setBusy(false);
-   setMsg(f.status==="published"?"Vehicle published live ✓":"Vehicle saved as draft ✓");
+   setMsg(f.status==="published"?"Vehicle published successfully.":"Vehicle saved as draft.");
   }catch(err:any){
-   setBusy(false);setMsg(`${err?.message||"Photo upload failed."} Vehicle has been kept as draft so incomplete data is not published.`);
+   setBusy(false);setMsg(`${err?.message||"Photo upload failed."} The vehicle remains in draft and is not publicly visible.`);
   }
  }
- if(!ready)return <main className="section"><h1>Multi-Category Add Vehicle</h1><p>{msg}</p><a className="call" href="/admin">Open Admin Control Room</a></main>;
+ if(!ready)return <main className="section"><h1>Inventory Management</h1><p>{msg}</p><a className="call" href="/admin">Administration Dashboard</a></main>;
  const commercial=["commercial","fleet"].includes(f.vehicle_type);
  return <main>
-  <section className="hero" style={{paddingTop:36,paddingBottom:36}}><div className="heroText"><span>ROHILLA DRIVE ADMIN</span><h1>Multi-Category Vehicle Publisher</h1><p>Cars, two-wheelers, commercial vehicles, tractors/agri, EVs and fleet inventory from one secure Admin flow.</p></div></section>
-  <section className="section" style={{paddingTop:24}}><div className="head"><div><h2>Add Vehicle</h2><p>The vehicle is always created as draft first. It becomes public only after all selected photos upload successfully.</p></div><a className="call" href="/admin">Back to Control Room</a></div>
+  <section className="hero" style={{paddingTop:36,paddingBottom:36}}><div className="heroText"><span>ROHILLA DRIVE • ADMINISTRATION</span><h1>Inventory Publishing</h1><p>Manage cars, two-wheelers, commercial vehicles, tractors and agriculture vehicles, EVs and fleet inventory through one controlled publishing workflow.</p></div></section>
+  <section className="section" style={{paddingTop:24}}><div className="head"><div><h2>Create Vehicle Record</h2><p>Every vehicle begins as a draft. Public visibility is enabled only after the selected media has uploaded successfully.</p></div><a className="call" href="/admin">Administration Dashboard</a></div>
    <form className="adminForm" onSubmit={add}>
     <select required value={f.vehicle_type||"car"} onChange={e=>setF({...f,vehicle_type:e.target.value})}>{vehicleTypes.map(([v,l])=><option key={v} value={v}>{l}</option>)}</select>
     <input required placeholder="Brand" value={f.brand||""} onChange={e=>setF({...f,brand:e.target.value})}/>
     <input required placeholder="Model" value={f.model||""} onChange={e=>setF({...f,model:e.target.value})}/>
     <input placeholder="Variant" value={f.variant||""} onChange={e=>setF({...f,variant:e.target.value})}/>
     <input type="number" min="1900" max="2100" placeholder="Year" value={f.year||""} onChange={e=>setF({...f,year:e.target.value})}/>
-    <input type="number" min="0" placeholder="KM / running" value={f.km||""} onChange={e=>setF({...f,km:e.target.value})}/>
+    <input type="number" min="0" placeholder="Odometer / running (km)" value={f.km||""} onChange={e=>setF({...f,km:e.target.value})}/>
     <input placeholder="Fuel / powertrain" value={f.fuel||""} onChange={e=>setF({...f,fuel:e.target.value})}/>
     <input placeholder="Transmission" value={f.transmission||""} onChange={e=>setF({...f,transmission:e.target.value})}/>
     <input placeholder="Body type" value={f.body_type||""} onChange={e=>setF({...f,body_type:e.target.value})}/>
-    <input type="number" min="0" placeholder="Owners" value={f.owner_count||""} onChange={e=>setF({...f,owner_count:e.target.value})}/>
-    <input type="number" min="0" step="1" placeholder="Asking Price ₹" value={f.price||""} onChange={e=>setF({...f,price:e.target.value})}/>
+    <input type="number" min="0" placeholder="Previous owners" value={f.owner_count||""} onChange={e=>setF({...f,owner_count:e.target.value})}/>
+    <input type="number" min="0" step="1" placeholder="Asking price ₹" value={f.price||""} onChange={e=>setF({...f,price:e.target.value})}/>
     <input placeholder="City" value={f.city||""} onChange={e=>setF({...f,city:e.target.value})}/>
     <input placeholder="Registration class (private / commercial)" value={f.registration_class||""} onChange={e=>setF({...f,registration_class:e.target.value})}/>
-    <input type="number" min="0" placeholder="Engine CC (if applicable)" value={f.engine_cc||""} onChange={e=>setF({...f,engine_cc:e.target.value})}/>
+    <input type="number" min="0" placeholder="Engine capacity (cc, if applicable)" value={f.engine_cc||""} onChange={e=>setF({...f,engine_cc:e.target.value})}/>
     <input type="number" min="0" placeholder="Seating capacity" value={f.seating_capacity||""} onChange={e=>setF({...f,seating_capacity:e.target.value})}/>
     {commercial&&<>
-     <input type="number" min="0" placeholder="Payload kg" value={f.payload_kg||""} onChange={e=>setF({...f,payload_kg:e.target.value})}/>
-     <input type="number" min="0" placeholder="GVW kg" value={f.gross_vehicle_weight_kg||""} onChange={e=>setF({...f,gross_vehicle_weight_kg:e.target.value})}/>
+     <input type="number" min="0" placeholder="Payload (kg)" value={f.payload_kg||""} onChange={e=>setF({...f,payload_kg:e.target.value})}/>
+     <input type="number" min="0" placeholder="Gross vehicle weight (kg)" value={f.gross_vehicle_weight_kg||""} onChange={e=>setF({...f,gross_vehicle_weight_kg:e.target.value})}/>
      <input type="number" min="0" placeholder="Axle count" value={f.axle_count||""} onChange={e=>setF({...f,axle_count:e.target.value})}/>
      <input placeholder="Permit type" value={f.permit_type||""} onChange={e=>setF({...f,permit_type:e.target.value})}/>
-     <label>Fitness valid till<input type="date" value={f.fitness_valid_till||""} onChange={e=>setF({...f,fitness_valid_till:e.target.value})}/></label>
+     <label>Fitness validity<input type="date" value={f.fitness_valid_till||""} onChange={e=>setF({...f,fitness_valid_till:e.target.value})}/></label>
     </>}
     {f.vehicle_type==="ev"&&<>
-     <input type="number" min="0" step="0.1" placeholder="Battery kWh" value={f.battery_kwh||""} onChange={e=>setF({...f,battery_kwh:e.target.value})}/>
-     <input type="number" min="0" placeholder="Claimed / practical range km" value={f.range_km||""} onChange={e=>setF({...f,range_km:e.target.value})}/>
+     <input type="number" min="0" step="0.1" placeholder="Battery capacity (kWh)" value={f.battery_kwh||""} onChange={e=>setF({...f,battery_kwh:e.target.value})}/>
+     <input type="number" min="0" placeholder="Claimed / practical range (km)" value={f.range_km||""} onChange={e=>setF({...f,range_km:e.target.value})}/>
     </>}
-    <textarea placeholder="Description / features / condition" value={f.notes||""} onChange={e=>setF({...f,notes:e.target.value})}/>
-    <label className="upload">Vehicle photos — 1 to 50+<input required multiple accept="image/*" type="file" onChange={e=>setFiles(Array.from(e.target.files||[]))}/></label>
-    <select value={f.status||"draft"} onChange={e=>setF({...f,status:e.target.value})}><option value="draft">Save as Draft</option><option value="published">Publish after successful photo upload</option></select>
-    <button disabled={busy}>{busy?"Saving…":f.status==="published"?"Upload & Publish":"Upload & Save Draft"}</button>
+    <textarea placeholder="Description, features and condition" value={f.notes||""} onChange={e=>setF({...f,notes:e.target.value})}/>
+    <label className="upload">Vehicle media — add one or more photos<input required multiple accept="image/*" type="file" onChange={e=>setFiles(Array.from(e.target.files||[]))}/></label>
+    <select value={f.status||"draft"} onChange={e=>setF({...f,status:e.target.value})}><option value="draft">Save as Draft</option><option value="published">Publish after successful media upload</option></select>
+    <button disabled={busy}>{busy?"Saving…":f.status==="published"?"Publish Vehicle":"Save Draft"}</button>
    </form>
    {msg&&<div className="notice" style={{marginTop:12}}>{msg}</div>}
   </section>
-  <section className="section dark"><div className="about"><h2>Safety rule</h2><p>No incomplete vehicle is published. The record starts as draft, photos are uploaded, and only then can the Admin-selected publish action make it public.</p></div></section>
+  <section className="section dark"><div className="about"><h2>Publishing Controls</h2><p>Incomplete records are not published. The record is created as a draft, media is uploaded, and public visibility is enabled only after the selected publishing action completes successfully.</p></div></section>
  </main>
 }
