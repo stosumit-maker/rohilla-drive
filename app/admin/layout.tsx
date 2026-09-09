@@ -21,6 +21,9 @@ const navLinks=[
  {href:"/admin/language",label:"Language Operations"},
  {href:"/admin/connections",label:"Integrations"}
 ];
+const routeTitles:Record<string,string>={
+ "/admin":"Executive Dashboard","/admin/add-vehicle":"Inventory Publishing","/admin/revenue":"Revenue & Collections","/admin/new-vehicles":"New Vehicle Leads","/admin/deal-rooms":"Deal Management","/admin/finance":"Transactions & RC","/admin/poster-scan":"Listing Intake","/admin/vehicle-ai":"Vehicle Intelligence","/admin/verification":"Verification Operations","/admin/growth":"Marketing Studio","/admin/language":"Language Operations","/admin/connections":"Integrations"
+};
 
 function urlBase64ToUint8Array(base64String:string){
  const padding="=".repeat((4-base64String.length%4)%4);
@@ -61,6 +64,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
   setPushEnabled(Boolean(sub));
  }
 
+ useEffect(()=>{document.title=`${routeTitles[path]||"Administration Console"} | ROHILLA DRIVE`},[path]);
  useEffect(()=>{
   let cancelled=false;
   async function gate(){
@@ -116,7 +120,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  ] as const;
 
  return <div className="rd-portal rd-admin-portal">
-  {ready&&<div className="rdPortalTopbar" data-no-translate>
+  <div className="rdPortalTopbar" data-no-translate>
    <div className="rdPortalTopbarInner">
     <a className="rdPortalIdentity" href="/admin">
      <span className="rdPortalMonogram">RD</span>
@@ -126,18 +130,16 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
      {navLinks.map(link=><a key={link.href} href={link.href} className={path===link.href?"active":""}>{link.label}</a>)}
     </nav>
     <div className="rdPortalUtilities">
-     <button onClick={loadCounts}>Refresh</button>
-     <button className="premium" onClick={enablePush}>{pushEnabled?"Admin Alerts On":"Enable Admin Alerts"}</button>
-     {pushEnabled&&<button onClick={testPush}>Test Alert</button>}
+     {ready&&<><button onClick={loadCounts}>Refresh</button><button className="premium" onClick={enablePush}>{pushEnabled?"Admin Alerts On":"Enable Admin Alerts"}</button>{pushEnabled&&<button onClick={testPush}>Test Alert</button>}</>}
      <a href="/business-hub">Business Network</a>
      <a className="premium" href="/">Public Website</a>
     </div>
    </div>
-   <div className="rdPortalOps"><div className="rdPortalOpsInner">
+   {ready&&<div className="rdPortalOps"><div className="rdPortalOpsInner">
     {metrics.map(([label,value,kind])=><span key={label} className={`rdPortalMetric ${kind}`}><span>{label}</span><b>{value}</b></span>)}
     {note&&<span className="rdPortalMetric"><span>{note}</span></span>}
-   </div></div>
-  </div>}
+   </div></div>}
+  </div>
   {children}
  </div>;
 }
