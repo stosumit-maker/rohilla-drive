@@ -16,7 +16,7 @@ const navLinks=[
  {href:"/admin/finance",label:"Transactions & RC"},
  {href:"/admin/poster-scan",label:"Listing Intake"},
  {href:"/admin/vehicle-ai",label:"Vehicle Intelligence"},
- {href:"/admin/verification",label:"Verification"},
+ {href:"/admin/verification",label:"Verification Operations"},
  {href:"/admin/growth",label:"Marketing Studio"},
  {href:"/admin/language",label:"Language Operations"},
  {href:"/admin/connections",label:"Integrations"}
@@ -38,6 +38,8 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  const [note,setNote]=useState("");
  const refreshRef=useRef<number|undefined>(undefined);
  const gateRef=useRef<number|undefined>(undefined);
+ const current=navLinks.find(link=>link.href===path);
+ const isInner=path!=="/admin";
 
  async function countQuery(query:any){const {count}=await query;return count||0}
  async function loadCounts(){
@@ -118,12 +120,12 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  return <div className="rd-portal rd-admin-portal">
   {ready&&<div className="rdPortalTopbar" data-no-translate>
    <div className="rdPortalTopbarInner">
-    <a className="rdPortalIdentity" href="/admin">
+    <a className="rdPortalIdentity" href="/admin" aria-label="Administration dashboard">
      <span className="rdPortalMonogram">RD</span>
      <span className="rdPortalIdentityCopy"><b>ROHILLA DRIVE</b><small>Administration Console</small></span>
     </a>
     <nav className="rdPortalNav" aria-label="Administration navigation">
-     {navLinks.map(link=><a key={link.href} href={link.href} className={path===link.href?"active":""}>{link.label}</a>)}
+     {navLinks.map(link=><a key={link.href} href={link.href} className={path===link.href?"active":""} aria-current={path===link.href?"page":undefined}>{link.label}</a>)}
     </nav>
     <div className="rdPortalUtilities">
      <button onClick={loadCounts}>Refresh</button>
@@ -138,6 +140,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
     {note&&<span className="rdPortalMetric"><span>{note}</span></span>}
    </div></div>
   </div>}
+  {ready&&isInner&&<div className="rdPortalContextBar" data-no-translate><a href="/admin" aria-label="Back to Administration Dashboard">← Back to Dashboard</a><span>{current?.label||"Administration Console"}</span></div>}
   {children}
  </div>;
 }
