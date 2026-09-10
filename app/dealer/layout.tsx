@@ -1,11 +1,14 @@
 import type {Metadata} from "next";
 import DealerPortalShell from "./DealerPortalShell";
 
+const description="Secure ROHILLA DRIVE workspace for approved dealer partners.";
 export const metadata:Metadata={
- title:"Dealer Workspace",
- description:"Secure ROHILLA DRIVE workspace for approved dealer partners.",
+ title:{default:"Dealer Workspace | ROHILLA DRIVE",template:"%s | ROHILLA DRIVE"},
+ description,
  robots:{index:false,follow:false,noarchive:true,nocache:true},
- alternates:{canonical:"/dealer"}
+ alternates:{canonical:"/dealer"},
+ openGraph:{title:"Dealer Workspace | ROHILLA DRIVE",description,url:"/dealer",siteName:"ROHILLA DRIVE",type:"website",images:[]},
+ twitter:{card:"summary",title:"Dealer Workspace | ROHILLA DRIVE",description}
 };
 
 export default function DealerLayout({children}:{children:React.ReactNode}){
