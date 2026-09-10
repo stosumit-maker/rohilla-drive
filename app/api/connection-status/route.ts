@@ -1,8 +1,10 @@
 import {NextResponse} from "next/server";
+import {requirePortalActor} from "../../lib/server-auth";
 
 export const runtime="nodejs";
 
-export async function GET(){
+export async function GET(req:Request){
+ const auth=await requirePortalActor(req,["admin"]);if(auth.error)return auth.error;
  const aiGateway=Boolean(process.env.AI_GATEWAY_API_KEY||process.env.VERCEL_OIDC_TOKEN);
  const directAi=Boolean(process.env.OPENAI_API_KEY||process.env.ROHILLA_AI_PROVIDER_KEY);
  const googleTranslation=Boolean(process.env.GOOGLE_TRANSLATE_API_KEY);
