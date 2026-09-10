@@ -25,20 +25,22 @@ export default function AdminAddVehicle(){
   if(aal?.currentLevel!=="aal2"||!isAdmin){setMsg("Administrator authentication is required.");return}
   setReady(true);setMsg("");
  }
- async function uploadPhotos(vehicleId:string,chosen:File[]){
+ async function uploadPhotos(vehicleId:string,chosen:File[],targetStatus:string){
+  const bucket=targetStatus==="published"?"vehicle-photos":"vehicle-draft-photos";
   for(let n=0;n<chosen.length;n++){
    const file=chosen[n];
    const path=`${vehicleId}/${Date.now()}-${n}-${file.name.replace(/[^a-zA-Z0-9._-]/g,"")}`;
-   const up=await db.storage.from("vehicle-photos").upload(path,file,{upsert:false});
+   const up=await db.storage.from(bucket).upload(path,file,{upsert:false});
    if(up.error)throw new Error(up.error.message);
-   const pub=db.storage.from("vehicle-photos").getPublicUrl(path).data.publicUrl;
-   const {error}=await db.from("vehicle_photos").insert({vehicle_id:vehicleId,url:pub,sort_order:n,path});
-   if(error)throw new Error(error.message);
+   const url=bucket==="vehicle-photos"?db.storage.from(bucket).getPublicUrl(path).data.publicUrl:"";
+   const {error}=await db.from("vehicle_photos").insert({vehicle_id:vehicleId,url,sort_order:n,path,storage_bucket:bucket});
+   if(error){await db.storage.from(bucket).remove([path]);throw new Error(error.message)}
   }
  }
  async function add(e:React.FormEvent){
   e.preventDefault();if(!files.length){setMsg("Add at least one vehicle photo.");return}
   setBusy(true);setMsg("Saving the vehicle record and uploading photos…");
+  const targetStatus=f.status||"draft";
   const payload:any={
    vehicle_type:f.vehicle_type||"car",brand:f.brand?.trim(),model:f.model?.trim(),variant:f.variant?.trim()||null,
    year:numOrNull(f.year),km:numOrNull(f.km),fuel:f.fuel?.trim()||null,transmission:f.transmission?.trim()||null,
@@ -51,13 +53,13 @@ export default function AdminAddVehicle(){
   const {data,error}=await db.from("vehicles").insert(payload).select("id").single();
   if(error){setBusy(false);setMsg(error.message);return}
   try{
-   await uploadPhotos(data.id,files);
-   if(f.status==="published"){
+   await uploadPhotos(data.id,files,targetStatus);
+   if(targetStatus==="published"){
     const published=await db.from("vehicles").update({status:"published"}).eq("id",data.id);
     if(published.error)throw new Error(published.error.message);
    }
    setF({vehicle_type:"car",status:"draft"});setFiles([]);setBusy(false);
-   setMsg(f.status==="published"?"Vehicle published successfully.":"Vehicle saved as a draft.");
+   setMsg(targetStatus==="published"?"Vehicle published successfully.":"Vehicle saved as a private-media draft. Use Draft Review when it is ready to go live.");
   }catch(err:any){
    setBusy(false);setMsg(`${err?.message||"Photo upload failed."} The vehicle remains in draft status.`);
   }
@@ -66,7 +68,7 @@ export default function AdminAddVehicle(){
  const commercial=["commercial","fleet"].includes(f.vehicle_type);
  return <main>
   <section className="hero" style={{paddingTop:36,paddingBottom:36}}><div className="heroText"><span>ROHILLA DRIVE • ADMINISTRATION</span><h1>Inventory Management</h1><p>Create and manage vehicle records across passenger, two-wheeler, commercial, agriculture, EV and fleet categories.</p></div></section>
-  <section className="section" style={{paddingTop:24}}><div className="head"><div><h2>Add Vehicle</h2><p>New records are created as drafts first. Publication occurs only after the selected photos are uploaded successfully.</p></div><a className="call" href="/admin">Back to Dashboard</a></div>
+  <section className="section" style={{paddingTop:24}}><div className="head"><div><h2>Add Vehicle</h2><p>New records are created as drafts first. Draft media remains private; publication occurs only after the selected photos are intentionally made public.</p></div><div className="row"><a className="call" href="/admin/draft-review">Draft Review</a><a className="call" href="/admin">Back to Dashboard</a></div></div>
    <form className="adminForm" onSubmit={add}>
     <select required value={f.vehicle_type||"car"} onChange={e=>setF({...f,vehicle_type:e.target.value})}>{vehicleTypes.map(([v,l])=><option key={v} value={v}>{l}</option>)}</select>
     <input required placeholder="Brand" value={f.brand||""} onChange={e=>setF({...f,brand:e.target.value})}/>
@@ -96,11 +98,11 @@ export default function AdminAddVehicle(){
     </>}
     <textarea placeholder="Description / Features / Condition" value={f.notes||""} onChange={e=>setF({...f,notes:e.target.value})}/>
     <label className="upload">Vehicle Photos<input required multiple accept="image/*" type="file" onChange={e=>setFiles(Array.from(e.target.files||[]))}/></label>
-    <select value={f.status||"draft"} onChange={e=>setF({...f,status:e.target.value})}><option value="draft">Save as Draft</option><option value="published">Publish after successful photo upload</option></select>
-    <button disabled={busy}>{busy?"Saving…":f.status==="published"?"Upload & Publish":"Upload & Save Draft"}</button>
+    <select value={f.status||"draft"} onChange={e=>setF({...f,status:e.target.value})}><option value="draft">Save as Private Draft</option><option value="published">Publish after successful photo upload</option></select>
+    <button disabled={busy}>{busy?"Saving…":f.status==="published"?"Upload & Publish":"Upload & Save Private Draft"}</button>
    </form>
    {msg&&<div className="notice" style={{marginTop:12}}>{msg}</div>}
   </section>
-  <section className="section dark"><div className="about"><h2>Publication Control</h2><p>Incomplete records remain private drafts. A vehicle is published only after the selected media upload succeeds and the publication option has been intentionally selected.</p></div></section>
+  <section className="section dark"><div className="about"><h2>Publication Control</h2><p>Incomplete records and their media remain private drafts. A vehicle is published only after the selected media is intentionally promoted for public inventory.</p></div></section>
  </main>
 }
