@@ -92,21 +92,21 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
    setNote("");
    if(!("serviceWorker" in navigator)||!("PushManager" in window)||!("Notification" in window)){setNote("Browser notifications are not supported on this device.");return}
    const permission=await Notification.requestPermission();
-   if(permission!=="granted"){setNote("Notification permission is blocked. Enable notifications in browser site settings and try again.");return}
+   if(permission!=="granted"){setNote("Notification permission is blocked. Enable notifications in your browser site settings and try again.");return}
    const reg=await navigator.serviceWorker.register("/admin-sw.js",{scope:"/"});
    await navigator.serviceWorker.ready;
    let sub=await reg.pushManager.getSubscription();
    if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC_KEY)});
    const json=sub.toJSON();
    const {data:{session}}=await db.auth.getSession();
-   if(!session||!json.keys?.p256dh||!json.keys?.auth){setNote("Could not save the alert subscription.");return}
+   if(!session||!json.keys?.p256dh||!json.keys?.auth){setNote("The alert subscription could not be saved.");return}
    const {error}=await db.from("admin_push_subscriptions").upsert({admin_user_id:session.user.id,endpoint:sub.endpoint,p256dh:json.keys.p256dh,auth:json.keys.auth,user_agent:navigator.userAgent,updated_at:new Date().toISOString()},{onConflict:"endpoint"});
    if(error){setNote(error.message);return}
    setPushEnabled(true);
-   setNote("Admin alerts enabled. Sending a test notification…");
+   setNote("Administrator alerts enabled. Sending a test notification…");
    const test=await db.rpc("test_rohilla_admin_push");
-   setNote(test.error?`Alerts enabled; test failed: ${test.error.message}`:"Admin alerts enabled. Test notification sent.");
-  }catch(err:any){setNote(err?.message||"Could not enable admin alerts.")}
+   setNote(test.error?`Alerts enabled; test notification failed: ${test.error.message}`:"Administrator alerts enabled. Test notification sent.");
+  }catch(err:any){setNote(err?.message||"Administrator alerts could not be enabled.")}
  }
 
  async function testPush(){
@@ -118,7 +118,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
 
  const total=Object.values(counts).reduce((sum,n)=>sum+n,0);
  const metrics=[
-  ["Queue",total,"total"],["Customer Leads",counts.sales,""],["Service Requests",counts.services,""],["Dealer Reviews",counts.dealers,""],["Partner Reviews",counts.partners,""],["Verification",counts.verification,""],["Inventory Reviews",counts.dealerVehicles,""],["Active Deals",counts.dealRooms,""]
+  ["Open Queue",total,"total"],["Customer Leads",counts.sales,""],["Service Requests",counts.services,""],["Dealer Applications",counts.dealers,""],["Partner Applications",counts.partners,""],["Verification Cases",counts.verification,""],["Inventory Drafts",counts.dealerVehicles,""],["Active Deals",counts.dealRooms,""]
  ] as const;
 
  return <div className="rd-portal rd-admin-portal">
@@ -133,9 +133,9 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
     </nav>
     <div className="rdPortalUtilities">
      <button onClick={loadCounts}>Refresh</button>
-     <button className="premium" onClick={enablePush}>{pushEnabled?"Admin Alerts On":"Enable Admin Alerts"}</button>
+     <button className="premium" onClick={enablePush}>{pushEnabled?"Administrator Alerts Enabled":"Enable Administrator Alerts"}</button>
      {pushEnabled&&<button onClick={testPush}>Test Alert</button>}
-     <a href="/business-hub">Business Network</a>
+     <a href="/business-hub">Business Hub</a>
      <a className="premium" href="/">Public Website</a>
     </div>
    </div>
