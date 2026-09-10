@@ -26,7 +26,7 @@ export default function PartnerLayout({children}:{children:React.ReactNode}){
     <nav className="rdPortalNav" aria-label="Partner workspace navigation">
      {links.map(link=><a key={link.href} href={link.href} style={navItemStyle} className={path===link.href?"active":""} aria-current={path===link.href?"page":undefined}>{link.label}</a>)}
     </nav>
-    <div className="rdPortalUtilities"><a href="/business-hub">Business Network</a><a className="premium" href="/">Public Website</a></div>
+    <div className="rdPortalUtilities"><a href="/business-hub">Business Hub</a><a className="premium" href="/">Public Website</a></div>
    </div>
   </div>
   {isInner&&<div className="rdPortalContextBar" data-no-translate style={contextStyle}><a href="/partner" aria-label="Back to Partner Dashboard" style={backStyle}>← Back to Dashboard</a><span style={sectionStyle}>Current section: {current?.label||"Partner Workspace"}</span></div>}
