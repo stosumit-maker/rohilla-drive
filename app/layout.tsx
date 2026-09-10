@@ -5,6 +5,7 @@ import "./portal.css";
 import type { Metadata } from "next";
 import PublicQuickLinks from "./PublicQuickLinks";
 import PublicBackNavigation from "./components/PublicBackNavigation";
+import PublicRegistrationPrefix from "./components/PublicRegistrationPrefix";
 import OfficialIdentityStrip from "./components/OfficialIdentityStrip";
 import LanguageExperience from "./components/LanguageExperience";
 import HomeExperienceEnhancer from "./components/HomeExperienceEnhancer";
@@ -87,6 +88,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <PortalExperience />
     <PortalCopyPolish />
     <PublicBackNavigation />
+    <PublicRegistrationPrefix />
     <OfficialIdentityStrip />
     {children}
     <LegalFooter />
