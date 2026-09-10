@@ -45,11 +45,12 @@ const currentCopy:Record<string,string>={
   "Partner Portal":"Partner Workspace",
   "Partner Business Portal":"Partner Workspace",
   "Customer Website":"Public Website",
+  "Business Network":"Business Hub",
   "PARTNER DASHBOARD":"WORKSPACE OVERVIEW",
   "Loading Partner Portal…":"Loading Partner Workspace…",
   "Back to Dealer Portal":"Back to Dealer Workspace",
   "Back to Portal":"Back to Workspace",
-  "Portal Home":"Workspace Home",
+  "Portal Home":"Back to Dashboard",
   "Transactions, Margin & RC":"Vehicle Ledger & RC",
   "Open Transaction Ledger":"Open Vehicle Ledger",
   "Marketing Tools":"Marketing Studio",
@@ -75,7 +76,7 @@ function polishCurrentPortalCopy(root:ParentNode){
     if(!text.parentElement||text.parentElement.closest("script,style,[data-no-copy-polish]"))continue;
     const trimmed=text.data.trim();
     let next=currentCopy[trimmed]?text.data.replace(trimmed,currentCopy[trimmed]):text.data;
-    next=next.replace(/\s*✓/g,"");
+    next=next.replace(/Rohilla Drive/g,"ROHILLA DRIVE").replace(/\s*✓/g,"");
     if(next!==text.data)text.data=next;
   }
 }
