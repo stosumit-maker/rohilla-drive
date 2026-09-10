@@ -1,6 +1,7 @@
 import CustomerBackBar from "../components/CustomerBackBar";
 
-export const metadata={title:"ROHILLA DRIVE Business Hub",description:"Join the ROHILLA DRIVE business network for OEM and authorised dealers, pre-owned dealers, workshops, mobility, inspection and automotive services.",alternates:{canonical:"/business-hub"},openGraph:{url:"/business-hub",title:"Business Hub | ROHILLA DRIVE",description:"OEM and new-vehicle dealerships, pre-owned dealers, service providers, mobility businesses and automotive partners."}};
+const description="Join the ROHILLA DRIVE business network for OEM and authorised dealers, pre-owned dealers, workshops, mobility, inspection and automotive services.";
+export const metadata={title:"Business Hub",description,alternates:{canonical:"/business-hub"},openGraph:{url:"/business-hub",title:"Business Hub | ROHILLA DRIVE",description:"OEM and new-vehicle dealerships, pre-owned dealers, service providers, mobility businesses and automotive partners."},twitter:{card:"summary_large_image",title:"Business Hub | ROHILLA DRIVE",description:"Join the ROHILLA DRIVE business network for dealer, service, mobility and automotive partner opportunities."}};
 
 type BusinessType={name:string;desc:string;register:string;login:string;workspace:string};
 const partner=(category:string)=>`/join/partner?category=${encodeURIComponent(category)}`;
