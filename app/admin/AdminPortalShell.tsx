@@ -11,6 +11,7 @@ const navLinks=[
  {href:"/admin",label:"Dashboard"},
  {href:"/admin/add-vehicle",label:"Inventory"},
  {href:"/admin/photo-listing",label:"Photo-First Listing"},
+ {href:"/admin/draft-review",label:"Draft Review"},
  {href:"/admin/revenue",label:"Revenue & Collections"},
  {href:"/admin/new-vehicles",label:"New Vehicle Leads"},
  {href:"/admin/deal-rooms",label:"Deal Management"},
