@@ -6,6 +6,14 @@ const SUPABASE_ANON_KEY=process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY||process.env.N
 export type PortalActor={user:any;role:"admin"|"dealer"|"partner"|"staff";db:any};
 
 function bearer(req:Request){const h=req.headers.get("authorization")||"";return h.toLowerCase().startsWith("bearer ")?h.slice(7).trim():""}
+function canonicalRole(raw:any):PortalActor["role"]|null{
+ const role=String(raw||"");
+ if(role==="owner"||role==="admin")return "admin";
+ if(role==="manager"||role==="sales"||role==="staff")return "staff";
+ if(role==="dealer")return "dealer";
+ if(role==="partner"||role==="inspector")return "partner";
+ return null;
+}
 
 export async function requirePortalActor(req:Request,allowed:(PortalActor["role"])[]):Promise<{actor?:PortalActor;error?:Response}>{
  const token=bearer(req);if(!token)return {error:Response.json({error:"Authentication required"},{status:401})};
@@ -13,8 +21,11 @@ export async function requirePortalActor(req:Request,allowed:(PortalActor["role"
  const {data:{user},error:userError}=await db.auth.getUser(token);if(userError||!user)return {error:Response.json({error:"Invalid or expired session"},{status:401})};
  const {data:profile,error:profileError}=await db.from("profiles").select("role,active").eq("id",user.id).single();
  if(profileError||!profile?.active)return {error:Response.json({error:"Active portal access required"},{status:403})};
- let role=String(profile.role||"") as PortalActor["role"];
- if(role==="admin"){const [{data:aal},{data:isAdmin}]=await Promise.all([db.auth.mfa.getAuthenticatorAssuranceLevel(),db.rpc("is_admin")]);if(aal?.currentLevel!=="aal2"||!isAdmin)return {error:Response.json({error:"Admin authenticator verification required"},{status:403})}}
+ const role=canonicalRole(profile.role);if(!role)return {error:Response.json({error:"This account does not have a supported portal role"},{status:403})};
+ if(role==="admin"){
+  const [{data:aal},{data:isAdmin}]=await Promise.all([db.auth.mfa.getAuthenticatorAssuranceLevel(),db.rpc("is_admin")]);
+  if(aal?.currentLevel!=="aal2"||!isAdmin)return {error:Response.json({error:"Admin authenticator verification required"},{status:403})};
+ }
  if(!allowed.includes(role))return {error:Response.json({error:"This portal role is not authorised for this action"},{status:403})};
  return {actor:{user,role,db}};
 }
