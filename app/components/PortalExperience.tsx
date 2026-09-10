@@ -66,8 +66,22 @@ const currentCopy:Record<string,string>={
   "Vehicle Verification":"Verification Operations",
   "New Vehicle Opportunities":"New Vehicle Leads",
   "New Vehicle Lead Management":"New Vehicle Leads",
-  "Revenue Management":"Revenue & Collections"
+  "Revenue Management":"Revenue & Collections",
+  "Upload & Publish Live":"Upload & Publish",
+  "Photos — 1 to 50+":"Vehicle Photos",
+  "No phone":"Phone Not Provided",
+  "Location not given":"Location Not Provided",
+  "Partner assigned":"Partner Assigned"
 };
+const placeholders:Record<string,string>={
+  "Year":"Model Year",
+  "KM":"Odometer (km)",
+  "Owners":"Number of Owners",
+  "Asking Price ₹":"Asking Price (₹)",
+  "Description / features":"Description / Features / Condition"
+};
+const statusWords=new Set(["draft","published","sold","archived","new","contacted","qualified","closed","reviewing","approved","rejected","assigned","accepted","in_progress","completed","cancelled","pending","processing","submitted","blocked"]);
+const titleCase=(value:string)=>value.replace(/_/g," ").replace(/\b\w/g,char=>char.toUpperCase());
 
 function polishCurrentPortalCopy(root:ParentNode){
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node:Node|null;
@@ -76,9 +90,15 @@ function polishCurrentPortalCopy(root:ParentNode){
     if(!text.parentElement||text.parentElement.closest("script,style,[data-no-copy-polish]"))continue;
     const trimmed=text.data.trim();
     let next=currentCopy[trimmed]?text.data.replace(trimmed,currentCopy[trimmed]):text.data;
+    if(statusWords.has(trimmed))next=text.data.replace(trimmed,titleCase(trimmed));
     next=next.replace(/Rohilla Drive/g,"ROHILLA DRIVE").replace(/\s*✓/g,"");
+    next=next.replace(/Status:\s*([a-z_]+)/g,(_,status)=>`Status: ${titleCase(status)}`);
     if(next!==text.data)text.data=next;
   }
+  root.querySelectorAll?.("input[placeholder],textarea[placeholder]").forEach((element:any)=>{
+    const value=element.getAttribute("placeholder");
+    if(value&&placeholders[value])element.setAttribute("placeholder",placeholders[value]);
+  });
 }
 
 export default function PortalExperience(){
