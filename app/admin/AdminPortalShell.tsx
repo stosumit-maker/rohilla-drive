@@ -21,6 +21,10 @@ const navLinks=[
  {href:"/admin/language",label:"Language Operations"},
  {href:"/admin/connections",label:"Integrations"}
 ];
+const navItemStyle={minHeight:40,display:"inline-flex",alignItems:"center"} as const;
+const contextStyle={maxWidth:1340,margin:"0 auto",padding:"10px 22px 0",display:"flex",alignItems:"center",gap:10,flexWrap:"wrap" as const};
+const backStyle={display:"inline-flex",alignItems:"center",minHeight:40,padding:"8px 12px",border:"1px solid #98a2b3",borderRadius:999,background:"#fff",color:"#101828",fontSize:12,fontWeight:900,textDecoration:"none",boxShadow:"0 2px 8px rgba(15,23,42,.08)"};
+const sectionStyle={fontSize:11,fontWeight:800,color:"#667085"};
 
 function urlBase64ToUint8Array(base64String:string){
  const padding="=".repeat((4-base64String.length%4)%4);
@@ -125,7 +129,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
      <span className="rdPortalIdentityCopy"><b>ROHILLA DRIVE</b><small>Administration Console</small></span>
     </a>
     <nav className="rdPortalNav" aria-label="Administration navigation">
-     {navLinks.map(link=><a key={link.href} href={link.href} className={path===link.href?"active":""} aria-current={path===link.href?"page":undefined}>{link.label}</a>)}
+     {navLinks.map(link=><a key={link.href} href={link.href} style={navItemStyle} className={path===link.href?"active":""} aria-current={path===link.href?"page":undefined}>{link.label}</a>)}
     </nav>
     <div className="rdPortalUtilities">
      <button onClick={loadCounts}>Refresh</button>
@@ -140,7 +144,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
     {note&&<span className="rdPortalMetric"><span>{note}</span></span>}
    </div></div>
   </div>}
-  {ready&&isInner&&<div className="rdPortalContextBar" data-no-translate><a href="/admin" aria-label="Back to Administration Dashboard">← Back to Dashboard</a><span>{current?.label||"Administration Console"}</span></div>}
+  {ready&&isInner&&<div className="rdPortalContextBar" data-no-translate style={contextStyle}><a href="/admin" aria-label="Back to Administration Dashboard" style={backStyle}>← Back to Dashboard</a><span style={sectionStyle}>Current section: {current?.label||"Administration Console"}</span></div>}
   {children}
  </div>;
 }
