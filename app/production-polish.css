@@ -1,0 +1,2 @@
+/* Production polish: keep public hero surfaces evergreen and premium. */
+.hero:before{content:none!important;display:none!important}
