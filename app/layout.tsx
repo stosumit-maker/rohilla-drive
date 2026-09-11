@@ -2,6 +2,7 @@ import "./style.css";
 import "./brand.css";
 import "./trusted-assist.css";
 import "./portal.css";
+import "./production-polish.css";
 import type { Metadata } from "next";
 import PublicQuickLinks from "./PublicQuickLinks";
 import PublicBackNavigation from "./components/PublicBackNavigation";
