@@ -118,6 +118,11 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
   setNote(data?"Test notification sent.":"Test notification could not be sent.");
  }
 
+ async function signOut(){
+  await db.auth.signOut();
+  location.href="/admin";
+ }
+
  const total=Object.values(counts).reduce((sum,n)=>sum+n,0);
  const metrics=[
   ["Open Queue",total,"total"],["Customer Leads",counts.sales,""],["Service Requests",counts.services,""],["Dealer Applications",counts.dealers,""],["Partner Applications",counts.partners,""],["Verification Cases",counts.verification,""],["Inventory Drafts",counts.dealerVehicles,""],["Active Deals",counts.dealRooms,""]
@@ -134,11 +139,12 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
      {navLinks.map(link=><a key={link.href} href={link.href} style={navItemStyle} className={path===link.href?"active":""} aria-current={path===link.href?"page":undefined}>{link.label}</a>)}
     </nav>
     <div className="rdPortalUtilities">
-     <button onClick={loadCounts}>Refresh</button>
+     <button onClick={loadCounts}>Refresh Queues</button>
      <button className="premium" onClick={enablePush}>{pushEnabled?"Administrator Alerts Enabled":"Enable Administrator Alerts"}</button>
      {pushEnabled&&<button onClick={testPush}>Test Alert</button>}
      <a href="/business-hub">Business Hub</a>
      <a className="premium" href="/">Public Website</a>
+     <button onClick={signOut}>Sign Out</button>
     </div>
    </div>
    <div className="rdPortalOps"><div className="rdPortalOpsInner">

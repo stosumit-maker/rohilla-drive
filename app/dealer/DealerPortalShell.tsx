@@ -1,5 +1,6 @@
 "use client";
 import {usePathname} from "next/navigation";
+import {supabase} from "../supabaseClient";
 
 const links=[
  {href:"/dealer",label:"Dashboard"},
@@ -15,9 +16,11 @@ const backStyle={display:"inline-flex",alignItems:"center",minHeight:40,padding:
 const sectionStyle={fontSize:11,fontWeight:800,color:"#667085"};
 
 export default function DealerLayout({children}:{children:React.ReactNode}){
+ const db=supabase();
  const path=usePathname();
  const current=links.find(link=>link.href===path);
  const isInner=path!=="/dealer";
+ const signOut=()=>db.auth.signOut().then(()=>{location.href="/dealer"});
  return <div className="rd-portal rd-dealer-portal">
   <div className="rdPortalTopbar" data-no-translate>
    <div className="rdPortalTopbarInner">
@@ -28,7 +31,7 @@ export default function DealerLayout({children}:{children:React.ReactNode}){
     <nav className="rdPortalNav" aria-label="Dealer workspace navigation">
      {links.map(link=><a key={link.href} href={link.href} style={navItemStyle} className={path===link.href?"active":""} aria-current={path===link.href?"page":undefined}>{link.label}</a>)}
     </nav>
-    <div className="rdPortalUtilities"><a href="/business-hub">Business Hub</a><a className="premium" href="/">Public Website</a></div>
+    <div className="rdPortalUtilities"><a href="/business-hub">Business Hub</a><a className="premium" href="/">Public Website</a><button onClick={signOut}>Sign Out</button></div>
    </div>
   </div>
   {isInner&&<div className="rdPortalContextBar" data-no-translate style={contextStyle}><a href="/dealer" aria-label="Back to Dealer Dashboard" style={backStyle}>← Back to Dashboard</a><span style={sectionStyle}>Current section: {current?.label||"Dealer Workspace"}</span></div>}
