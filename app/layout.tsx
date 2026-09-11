@@ -7,7 +7,6 @@ import type { Metadata } from "next";
 import PublicQuickLinks from "./PublicQuickLinks";
 import PublicBackNavigation from "./components/PublicBackNavigation";
 import PublicRegistrationPrefix from "./components/PublicRegistrationPrefix";
-import OfficialIdentityStrip from "./components/OfficialIdentityStrip";
 import LanguageExperience from "./components/LanguageExperience";
 import HomeExperienceEnhancer from "./components/HomeExperienceEnhancer";
 import LegalFooter from "./components/LegalFooter";
@@ -41,7 +40,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
 };
 
-export const viewport = { width: "device-width", initialScale: 1, maximumScale: 1, userScalable: false };
+export const viewport = { width: "device-width", initialScale: 1, maximumScale: 5, userScalable: true };
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -90,7 +89,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <PortalCopyPolish />
     <PublicBackNavigation />
     <PublicRegistrationPrefix />
-    <OfficialIdentityStrip />
     {children}
     <LegalFooter />
     <HomeExperienceEnhancer />
