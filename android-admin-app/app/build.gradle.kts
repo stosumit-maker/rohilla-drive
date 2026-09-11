@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.rohilladrive.admin"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.rohilladrive.admin"
@@ -22,5 +22,5 @@ android {
 }
 
 dependencies {
-    implementation("com.google.androidbrowserhelper:androidbrowserhelper:2.6.2")
+    implementation("com.google.androidbrowserhelper:androidbrowserhelper:2.7.3")
 }
