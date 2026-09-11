@@ -1,1 +1,0 @@
-Final professional polish checkpoint: concise Dealer/Partner registration copy, cleaner public hierarchy, and accessible mobile zoom. No database or customer-data changes.
