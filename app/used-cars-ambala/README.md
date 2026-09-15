@@ -1,1 +1,0 @@
-This route is a genuine local inventory landing page for Ambala. It renders published Ambala inventory from production data and must not be duplicated into thin keyword-only city pages. Keep claims tied to real platform capabilities and current inventory.

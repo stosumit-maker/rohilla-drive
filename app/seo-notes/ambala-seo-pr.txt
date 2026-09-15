@@ -1,1 +1,0 @@
-PR scope: local Ambala hub, live used-car landing page, sitemap/internal-link/entity metadata improvements.
