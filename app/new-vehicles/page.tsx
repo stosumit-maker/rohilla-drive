@@ -3,7 +3,7 @@ import {useState} from "react";
 import {supabase} from "../supabaseClient";
 import CustomerBackBar from "../components/CustomerBackBar";
 import LegalConsent from "../components/LegalConsent";
-import {requestReference} from "../lib/reference";
+import {newRequestReference} from "../lib/reference";
 
 const vehicleTypes=[
  ["car_suv","Car / SUV","🚗"],["two_wheeler","Two-Wheeler","🏍️"],["commercial","Commercial Vehicle","🚚"],["tractor_agri","Tractor / Agriculture","🚜"],["ev","Electric Vehicle","⚡"],["fleet","Fleet / Corporate","🏢"]
@@ -13,9 +13,9 @@ export default function NewVehicles(){
  const db=supabase();
  const [f,setF]=useState<any>({vehicle_type:"car_suv",city:"Ambala City"});
  const [busy,setBusy]=useState(false);const [msg,setMsg]=useState("");
- async function submit(e:React.FormEvent){e.preventDefault();setBusy(true);setMsg("Saving your requirement…");
-  const {data,error}=await db.from("leads").insert({customer_name:f.name.trim(),customer_phone:f.phone.trim(),requirement:`New ${f.vehicle_type} assistance`,message:[f.use_case?`Use: ${f.use_case}`:"",f.finance?`Finance: ${f.finance}`:"",f.exchange?`Exchange: ${f.exchange}`:"",f.notes||""].filter(Boolean).join("\n"),status:"new",source:"new_vehicle_assistance",enquiry_type:"new_vehicle",new_or_used:"new",budget:f.budget?Number(f.budget):null,preferred_brand:f.brand||null,preferred_model:f.model||null,vehicle_type:f.vehicle_type,customer_city:f.city||null}).select("id").single();
-  setBusy(false);if(error){setMsg(error.message);return}const ref=requestReference(data?.id,"RDN");setMsg(`Requirement saved ✓ Reference: ${ref}. Rohilla Drive can review it and, where relevant, coordinate available OEM/authorised dealer options.`);
+ async function submit(e:React.FormEvent){e.preventDefault();setBusy(true);setMsg("Saving your requirement…");const ref=newRequestReference("RDN");
+  const {error}=await db.from("leads").insert({customer_name:f.name.trim(),customer_phone:f.phone.trim(),requirement:`New ${f.vehicle_type} assistance`,message:[`Reference: ${ref}`,f.use_case?`Use: ${f.use_case}`:"",f.finance?`Finance: ${f.finance}`:"",f.exchange?`Exchange: ${f.exchange}`:"",f.notes||""].filter(Boolean).join("\n"),status:"new",source:"new_vehicle_assistance",enquiry_type:"new_vehicle",new_or_used:"new",budget:f.budget?Number(f.budget):null,preferred_brand:f.brand||null,preferred_model:f.model||null,vehicle_type:f.vehicle_type,customer_city:f.city||null});
+  setBusy(false);if(error){setMsg(error.message);return}setMsg(`Requirement saved ✓ Reference: ${ref}. Rohilla Drive can review it and, where relevant, coordinate available OEM/authorised dealer options.`);
  }
  return <main>
   <CustomerBackBar/>
