@@ -12,6 +12,8 @@ const navLinks=[
  {href:"/admin/add-vehicle",label:"Inventory"},
  {href:"/admin/photo-listing",label:"Photo-First Listing"},
  {href:"/admin/draft-review",label:"Draft Review"},
+ {href:"/admin/seller-submissions",label:"Seller Submissions"},
+ {href:"/admin/service-operations",label:"Service Operations"},
  {href:"/admin/revenue",label:"Revenue & Collections"},
  {href:"/admin/new-vehicles",label:"New Vehicle Leads"},
  {href:"/admin/deal-rooms",label:"Deal Management"},
@@ -51,7 +53,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  async function loadCounts(){
   const [sales,services,dealers,partners,verification,dealerVehicles,dealRooms]=await Promise.all([
    countQuery(db.from("leads").select("id",{count:"exact",head:true}).in("status",["new","contacted","qualified"])),
-   countQuery(db.from("service_requests").select("id",{count:"exact",head:true}).in("status",["new","assigned","accepted","in_progress"])),
+   countQuery(db.from("service_requests").select("id",{count:"exact",head:true}).in("status",["new","assigned","accepted","quote_submitted","approved","scheduled","in_progress"])),
    countQuery(db.from("dealer_applications").select("id",{count:"exact",head:true}).in("status",["new","reviewing"])),
    countQuery(db.from("collaboration_requests").select("id",{count:"exact",head:true}).in("status",["new","reviewing"])),
    countQuery(db.from("vehicle_verification_orders").select("id",{count:"exact",head:true}).in("status",["submitted","pending","processing","in_progress"])),
