@@ -3,11 +3,12 @@ import {useEffect,useState} from "react";
 import {supabase} from "../../supabaseClient";
 
 type Photo={id:string;url:string;path:string|null;storage_bucket:string;sort_order:number;preview?:string};
-type Vehicle={id:string;brand:string;model:string;variant?:string|null;year?:number|null;km?:number|null;fuel?:string|null;asking_price?:number|null;city?:string|null;partner_id?:string|null;registration_prefix?:string|null;status:string;vehicle_photos:Photo[]};
+type Vehicle={id:string;brand:string;model:string;variant?:string|null;year?:number|null;km?:number|null;fuel?:string|null;asking_price?:number|null;city?:string|null;partner_id?:string|null;registration_prefix?:string|null;status:string;metadata?:Record<string,any>;vehicle_photos:Photo[]};
 
 export default function DraftReviewClient(){
  const db=supabase();
  const [ready,setReady]=useState(false),[cars,setCars]=useState<Vehicle[]>([]),[busyId,setBusyId]=useState(""),[msg,setMsg]=useState("Checking administrator access…");
+ const [notes,setNotes]=useState<Record<string,string>>({});
  useEffect(()=>{gate()},[]);
  async function gate(){
   const {data:{session}}=await db.auth.getSession();if(!session){setMsg("Administrator sign-in is required.");return}
@@ -17,7 +18,7 @@ export default function DraftReviewClient(){
  }
  async function load(){
   setMsg("Loading private drafts…");
-  const {data,error}=await db.from("vehicles").select("id,brand,model,variant,year,km,fuel,asking_price,city,partner_id,registration_prefix,status,vehicle_photos(id,url,path,storage_bucket,sort_order)").eq("status","draft").order("created_at",{ascending:false});
+  const {data,error}=await db.from("vehicles").select("id,brand,model,variant,year,km,fuel,asking_price,city,partner_id,registration_prefix,status,metadata,vehicle_photos(id,url,path,storage_bucket,sort_order)").eq("status","draft").order("created_at",{ascending:false});
   if(error){setMsg(error.message);return}
   const hydrated=await Promise.all((data||[]).map(async(row:any)=>{
    const photos=await Promise.all((row.vehicle_photos||[]).map(async(p:any)=>{
@@ -25,7 +26,16 @@ export default function DraftReviewClient(){
     return {...p,preview:p.url||""};
    }));return {...row,vehicle_photos:photos};
   }));
-  setCars(hydrated as Vehicle[]);setMsg(hydrated.length?"Review each draft before publication.":"No vehicle drafts are waiting for review.");
+  setCars(hydrated as Vehicle[]);setNotes(Object.fromEntries(hydrated.map((x:any)=>[x.id,x.metadata?.review_note||""])));setMsg(hydrated.length?"Review each draft before publication.":"No vehicle drafts are waiting for review.");
+ }
+ async function requestChanges(car:Vehicle){
+  const note=(notes[car.id]||"").trim();if(!note){setMsg("Add a clear review note before requesting changes.");return}
+  setBusyId(car.id);setMsg("Sending correction request to dealer…");
+  const metadata={...(car.metadata||{}),review_status:"changes_requested",review_note:note,review_requested_at:new Date().toISOString()};
+  const {error}=await db.from("vehicles").update({metadata}).eq("id",car.id).eq("status","draft");
+  if(error){setMsg(error.message);setBusyId("");return}
+  await db.from("vehicle_events").insert({vehicle_id:car.id,event_type:"dealer_changes_requested",event_data:{review_note:note}});
+  setMsg(`${car.brand} ${car.model}: changes requested. The dealer can now edit and resubmit the private draft.`);setBusyId("");await load();
  }
  async function promotePhoto(vehicleId:string,p:Photo){
   if(p.storage_bucket!=="vehicle-draft-photos"||!p.path)return null;
@@ -38,19 +48,15 @@ export default function DraftReviewClient(){
   if(upd.error){await db.storage.from("vehicle-photos").remove([publicPath]);throw new Error(upd.error.message)}
   return {photoId:p.id,privatePath:p.path,publicPath};
  }
- async function rollbackPromoted(items:{photoId:string;privatePath:string;publicPath:string}[]){
-  for(const x of items.slice().reverse()){
-   await db.from("vehicle_photos").update({url:"",path:x.privatePath,storage_bucket:"vehicle-draft-photos"}).eq("id",x.photoId);
-   await db.storage.from("vehicle-photos").remove([x.publicPath]);
-  }
- }
+ async function rollbackPromoted(items:{photoId:string;privatePath:string;publicPath:string}[]){for(const x of items.slice().reverse()){await db.from("vehicle_photos").update({url:"",path:x.privatePath,storage_bucket:"vehicle-draft-photos"}).eq("id",x.photoId);await db.storage.from("vehicle-photos").remove([x.publicPath])}}
  async function publish(car:Vehicle){
   if(!confirm(`Publish ${car.brand} ${car.model}${car.variant?` ${car.variant}`:""}? Private draft media will become public inventory media.`))return;
   setBusyId(car.id);setMsg("Promoting reviewed media and publishing vehicle…");const promoted:{photoId:string;privatePath:string;publicPath:string}[]=[];
   try{
    if(!car.vehicle_photos?.length)throw new Error("Add at least one vehicle photo before publication.");
    for(const p of [...car.vehicle_photos].sort((a,b)=>(a.sort_order||0)-(b.sort_order||0))){const x=await promotePhoto(car.id,p);if(x)promoted.push(x)}
-   const changed=await db.from("vehicles").update({status:"published"}).eq("id",car.id);if(changed.error){await rollbackPromoted(promoted);throw new Error(changed.error.message)}
+   const metadata={...(car.metadata||{}),review_status:"approved",review_approved_at:new Date().toISOString()};
+   const changed=await db.from("vehicles").update({status:"published",metadata}).eq("id",car.id);if(changed.error){await rollbackPromoted(promoted);throw new Error(changed.error.message)}
    for(const x of promoted)await db.storage.from("vehicle-draft-photos").remove([x.privatePath]);
    const media=(await db.from("vehicle_photos").select("url").eq("vehicle_id",car.id).order("sort_order")).data?.map((x:any)=>x.url).filter(Boolean)||[];
    const existing=await db.from("social_posts").select("id",{count:"exact",head:true}).eq("vehicle_id",car.id);
@@ -62,10 +68,10 @@ export default function DraftReviewClient(){
  }
  if(!ready)return <main><section className="section"><h1>Draft Review</h1><p>{msg}</p><a href="/admin">Back to Dashboard</a></section></main>;
  return <main>
-  <section className="hero" style={{paddingTop:36,paddingBottom:36}}><div className="heroText"><span>PRIVATE DRAFT → REVIEW → PUBLIC INVENTORY</span><h1>Draft Review</h1><p>Review unpublished vehicle media before it is promoted to the public inventory bucket.</p></div></section>
+  <section className="hero" style={{paddingTop:36,paddingBottom:36}}><div className="heroText"><span>PRIVATE DRAFT → REVIEW → PUBLIC INVENTORY</span><h1>Draft Review</h1><p>Approve clean submissions or send a precise correction note back to the submitting dealer.</p></div></section>
   <section className="section" style={{paddingTop:24}}><div className="head"><div><h2>Vehicle Drafts ({cars.length})</h2><p>{msg}</p></div><div className="row"><button onClick={load} disabled={Boolean(busyId)}>Refresh</button><a className="call" href="/admin/photo-listing">Photo-First Listing</a><a className="call" href="/admin/add-vehicle">Inventory</a></div></div>
-   {cars.length===0?<div className="notice">No drafts require review right now.</div>:<div className="grid">{cars.map(car=><article className="card" key={car.id}><div className="photo real swipeGallery">{(car.vehicle_photos||[]).length?(car.vehicle_photos||[]).sort((a,b)=>(a.sort_order||0)-(b.sort_order||0)).map((p,i)=><img key={p.id} src={p.preview||p.url} alt={`${car.brand} ${car.model} draft photo ${i+1}`}/>):<span>No photo</span>}</div><div className="body"><label>{car.partner_id?"Dealer Submission":"Administration Draft"}</label><h3>{car.brand} {car.model} {car.variant||""}</h3><small>{car.year||"Year pending"} • {car.km!=null?`${Number(car.km).toLocaleString("en-IN")} km`:"KM pending"} • {car.fuel||"Fuel pending"}{car.city?` • ${car.city}`:""}</small>{car.registration_prefix&&<p><b>Public registration:</b> {car.registration_prefix}</p>}<strong>{car.asking_price!=null?`₹${Number(car.asking_price).toLocaleString("en-IN")}`:"Price pending"}</strong><p>{car.vehicle_photos?.filter(p=>p.storage_bucket==="vehicle-draft-photos").length||0} private draft photo(s) • {car.vehicle_photos?.filter(p=>p.storage_bucket==="vehicle-photos").length||0} public/legacy photo(s)</p><button disabled={busyId===car.id||!car.vehicle_photos?.length} onClick={()=>publish(car)}>{busyId===car.id?"Publishing…":"Approve Media & Publish"}</button></div></article>)}</div>}
+   {cars.length===0?<div className="notice">No drafts require review right now.</div>:<div className="grid">{cars.map(car=><article className="card" key={car.id}><div className="photo real swipeGallery">{(car.vehicle_photos||[]).length?(car.vehicle_photos||[]).sort((a,b)=>(a.sort_order||0)-(b.sort_order||0)).map((p,i)=><img key={p.id} src={p.preview||p.url} alt={`${car.brand} ${car.model} draft photo ${i+1}`}/>):<span>No photo</span>}</div><div className="body"><label>{car.partner_id?"Dealer Submission":"Administration Draft"}</label><h3>{car.brand} {car.model} {car.variant||""}</h3><small>{car.year||"Year pending"} • {car.km!=null?`${Number(car.km).toLocaleString("en-IN")} km`:"KM pending"} • {car.fuel||"Fuel pending"}{car.city?` • ${car.city}`:""}</small>{car.registration_prefix&&<p><b>Public registration:</b> {car.registration_prefix}</p>}<strong>{car.asking_price!=null?`₹${Number(car.asking_price).toLocaleString("en-IN")}`:"Price pending"}</strong><p>{car.vehicle_photos?.filter(p=>p.storage_bucket==="vehicle-draft-photos").length||0} private draft photo(s) • {car.vehicle_photos?.filter(p=>p.storage_bucket==="vehicle-photos").length||0} public/legacy photo(s)</p>{car.metadata?.review_status&&<div className="notice"><b>Review status:</b> {String(car.metadata.review_status).replaceAll("_"," ")}{car.metadata?.review_note&&<><br/><b>Last note:</b> {car.metadata.review_note}</>}</div>}{car.partner_id&&<textarea placeholder="Tell the dealer exactly what must be corrected before publication" value={notes[car.id]||""} onChange={e=>setNotes({...notes,[car.id]:e.target.value})}/>}<div className="row">{car.partner_id&&<button className="secondary" disabled={busyId===car.id} onClick={()=>requestChanges(car)}>{busyId===car.id?"Working…":"Request Changes"}</button>}<button disabled={busyId===car.id||!car.vehicle_photos?.length} onClick={()=>publish(car)}>{busyId===car.id?"Working…":"Approve Media & Publish"}</button></div></div></article>)}</div>}
   </section>
-  <section className="section dark"><div className="about"><h2>Privacy Guard</h2><p>ROHILLA DRIVE blocks a vehicle from changing to published status while any linked photo is still stored in the private draft bucket. Draft Review promotes the reviewed media first and only then publishes the vehicle.</p></div></section>
+  <section className="section dark"><div className="about"><h2>Privacy Guard</h2><p>ROHILLA DRIVE blocks publication while linked photos are still private. Correction requests keep the vehicle and media private; approval promotes reviewed media first and only then publishes the vehicle.</p></div></section>
  </main>
 }
