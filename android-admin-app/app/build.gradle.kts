@@ -10,8 +10,8 @@ android {
         applicationId = "com.rohilladrive.admin"
         minSdk = 23
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.1.0-preview"
+        versionCode = 2
+        versionName = "0.1.1-preview"
     }
 
     buildTypes {
@@ -22,5 +22,4 @@ android {
 }
 
 dependencies {
-    implementation("com.google.androidbrowserhelper:androidbrowserhelper:2.7.3")
 }
