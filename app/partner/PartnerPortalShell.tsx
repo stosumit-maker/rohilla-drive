@@ -4,6 +4,7 @@ import {supabase} from "../supabaseClient";
 
 const links=[
  {href:"/partner",label:"Dashboard"},
+ {href:"/partner/kyc",label:"KYC & Documents"},
  {href:"/partner/deals",label:"Deal Management"},
  {href:"/partner/growth",label:"Marketing Studio"},
  {href:"/partner/language",label:"Language Operations"}
