@@ -18,8 +18,8 @@ const languages={"en-IN":"/en","hi-IN":"/hi","pa-IN":"/pa","kn-IN":"/kn","ta-IN"
 
 export const metadata: Metadata = {
   metadataBase: new URL(site),
-  title: { default: "ROHILLA DRIVE — Complete Vehicle & Mobility Network", template: "%s | ROHILLA DRIVE" },
-  description: "Official ROHILLA DRIVE by Rohilla Multibrand Cars, Ambala City. Buy, sell, verify and discover new or pre-owned vehicles and automotive services.",
+  title: { default: "ROHILLA DRIVE | Used Cars & Automotive Services in Ambala", template: "%s | ROHILLA DRIVE" },
+  description: "Official ROHILLA DRIVE by Rohilla Multibrand Cars, Ambala City. Browse used cars, sell a vehicle, request new-vehicle assistance, verification and automotive services.",
   applicationName: "ROHILLA DRIVE",
   alternates: { canonical: "/", languages },
   manifest: "/manifest.webmanifest",
@@ -27,14 +27,14 @@ export const metadata: Metadata = {
     type: "website",
     url: `${site}/`,
     siteName: "ROHILLA DRIVE",
-    title: "ROHILLA DRIVE — Complete Vehicle & Mobility Network",
-    description: "Official website of ROHILLA DRIVE by Rohilla Multibrand Cars. New and pre-owned vehicles, verification, services, Trusted Assist, dealers and automotive partners through one connected network.",
+    title: "ROHILLA DRIVE | Used Cars & Automotive Services in Ambala",
+    description: "Official website of ROHILLA DRIVE by Rohilla Multibrand Cars in Ambala City. Used cars, vehicle selling, new-vehicle assistance, verification and connected automotive services.",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "ROHILLA DRIVE official website" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ROHILLA DRIVE — Complete Vehicle & Mobility Network",
-    description: "Official ROHILLA DRIVE website. Buy, sell, verify and manage the complete vehicle life through one connected network.",
+    title: "ROHILLA DRIVE | Ambala Vehicle & Mobility Network",
+    description: "Used cars, vehicle selling, new-vehicle assistance, verification and automotive services from Rohilla Multibrand Cars in Ambala City.",
     images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
@@ -44,7 +44,7 @@ export const viewport = { width: "device-width", initialScale: 1, maximumScale: 
 
 const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": ["Organization", "AutomotiveBusiness"],
+  "@type": ["Organization", "AutomotiveBusiness", "AutoDealer"],
   "@id": `${site}/#organization`,
   name: "ROHILLA DRIVE",
   alternateName: ["Rohilla Drive", "Rohilla Multibrand Cars", "rohilladrive.com"],
@@ -54,9 +54,9 @@ const organizationSchema = {
   logo: `${site}/icon`,
   telephone: "+91-7015260003",
   contactPoint: [{ "@type": "ContactPoint", telephone: "+91-7015260003", contactType: "customer service", areaServed: "IN", availableLanguage: ["English", "Hindi", "Punjabi"] }],
-  areaServed: "India",
+  areaServed: [{"@type":"City","name":"Ambala"},{"@type":"AdministrativeArea","name":"Haryana"},{"@type":"Country","name":"India"}],
   address: { "@type": "PostalAddress", addressLocality: "Ambala City", addressRegion: "Haryana", addressCountry: "IN" },
-  knowsAbout: ["new vehicles","pre-owned vehicles","vehicle verification","automotive services","vehicle selling","vehicle mobility","RC transfer","inspection"],
+  knowsAbout: ["used cars in Ambala","second hand cars in Ambala","new vehicles","pre-owned vehicles","vehicle verification","automotive services","vehicle selling","vehicle mobility","RC transfer","inspection"],
   sameAs: [
     "https://www.instagram.com/rohillamultibrandcars/",
     "https://www.facebook.com/profile.php?id=100094277025442",
