@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { supabase } from "../supabaseClient";
 import LegalConsent from "./LegalConsent";
-import { requestReference } from "../lib/reference";
+import { newRequestReference } from "../lib/reference";
 
 type VehicleEnquiryTarget = {
   id: string;
@@ -39,14 +39,16 @@ export default function VehicleEnquiryModal({
     setBusy(true);
     setError("");
 
+    const ref = newRequestReference("RDQ");
     const description = [
+      `Reference: ${ref}`,
       `Interested in ${vehicle.year || ""} ${vehicle.brand} ${vehicle.model} ${vehicle.variant || ""}`.trim(),
       vehicle.asking_price ? `Listed price: ₹${Number(vehicle.asking_price).toLocaleString("en-IN")}` : "",
       location.trim() ? `Customer location: ${location.trim()}` : "",
       message.trim(),
     ].filter(Boolean).join("\n");
 
-    const { data, error: insertError } = await db
+    const { error: insertError } = await db
       .from("leads")
       .insert({
         vehicle_id: vehicle.id,
@@ -63,9 +65,7 @@ export default function VehicleEnquiryModal({
         preferred_model: vehicle.model || null,
         vehicle_type: vehicle.vehicle_type || "car",
         customer_city: location.trim() || null,
-      })
-      .select("id")
-      .single();
+      });
 
     setBusy(false);
     if (insertError) {
@@ -73,14 +73,13 @@ export default function VehicleEnquiryModal({
       return;
     }
 
-    const ref = requestReference(data?.id, "RDQ");
     const wa = [
       "ROHILLA DRIVE VEHICLE ENQUIRY",
       "",
       `Vehicle: ${vehicle.year || ""} ${vehicle.brand} ${vehicle.model} ${vehicle.variant || ""}`.trim(),
       vehicle.asking_price ? `Price: ₹${Number(vehicle.asking_price).toLocaleString("en-IN")}` : "",
       `Vehicle ID: ${vehicle.id}`,
-      ref ? `Enquiry Ref: ${ref}` : "",
+      `Enquiry Ref: ${ref}`,
       "",
       `Name: ${name.trim()}`,
       `Phone: ${phone.trim()}`,
