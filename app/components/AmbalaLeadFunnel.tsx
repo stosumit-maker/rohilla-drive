@@ -3,6 +3,7 @@
 import {useEffect,useState} from "react";
 import {supabase} from "../supabaseClient";
 import LegalConsent from "./LegalConsent";
+import {track} from "@vercel/analytics";
 
 type Mode="buy"|"sell";
 
@@ -72,6 +73,8 @@ export default function AmbalaLeadFunnel({source="ambala_lead_funnel",defaultMod
       return;
     }
 
+    track("Lead Submitted",{surface:"ambala_funnel",intent:buying?"buy_used":"sell_used",source:leadSource,campaign:campaign||"none"});
+
     const wa=buying
       ?`ROHILLA DRIVE - BUY CAR REQUIREMENT\n\nName: ${name}\nPhone: ${phone}\nCity: ${city}\nCar wanted: ${car}\nBudget: ${budget?`₹${Number(budget).toLocaleString("en-IN")}`:"Open"}\nTiming: ${timing}\n\nMy requirement is saved. Please contact me with suitable options.`
       :`ROHILLA DRIVE - SELL CAR REQUIREMENT\n\nName: ${name}\nPhone: ${phone}\nCity: ${city}\nCar: ${car}\nYear: ${year||"Not entered"}\nExpected price: ${budget?`₹${Number(budget).toLocaleString("en-IN")}`:"Open"}\n\nMy requirement is saved. Please contact me for the next step.`;
@@ -88,7 +91,7 @@ export default function AmbalaLeadFunnel({source="ambala_lead_funnel",defaultMod
     <div className="row" style={{marginBottom:14}}>
       <button type="button" className={mode==="buy"?"call":"secondary"} onClick={()=>{setMode("buy");setMsg("")}}>I Want to Buy</button>
       <button type="button" className={mode==="sell"?"call":"secondary"} onClick={()=>{setMode("sell");setMsg("")}}>I Want to Sell</button>
-      <a className="secondary" href="tel:+917015260003">Call 7015260003</a>
+      <a className="secondary" href="tel:+917015260003" onClick={()=>track("Call Click",{surface:"ambala_funnel"})}>Call 7015260003</a>
     </div>
     <form className="adminForm" onSubmit={submit}>
       <input required placeholder="Your name" value={name} onChange={e=>setName(e.target.value)}/>

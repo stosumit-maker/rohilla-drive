@@ -2,6 +2,7 @@
 
 import {useRef,useState,type TouchEvent} from "react";
 import VehicleEnquiryModal from "../../components/VehicleEnquiryModal";
+import {track} from "@vercel/analytics";
 
 export default function CarDetailClient({initialCar}:{initialCar:any}){
  const c=initialCar;
@@ -13,7 +14,7 @@ export default function CarDetailClient({initialCar}:{initialCar:any}){
  function next(){if(!photos.length)return;setZoom(1);setActive((old)=>(old+1)%photos.length)}
  function touchBegin(e:TouchEvent<HTMLDivElement>){if(e.touches.length===1)touchStart.current={x:e.touches[0].clientX,y:e.touches[0].clientY}}
  function touchEnd(e:TouchEvent<HTMLDivElement>){if(!touchStart.current||e.changedTouches.length!==1)return;const dx=e.changedTouches[0].clientX-touchStart.current.x;touchStart.current=null;if(Math.abs(dx)>60)(dx<0?next:previous)()}
- async function shareVehicle(){const url=window.location.href;const text=`${c.year||""} ${c.brand} ${c.model} ${c.variant||""} • ₹${Number(c.asking_price||0).toLocaleString("en-IN")} • ROHILLA DRIVE`;try{if(navigator.share){await navigator.share({title:`${c.brand} ${c.model} | ROHILLA DRIVE`,text,url});return}await navigator.clipboard.writeText(`${text}\n${url}`);alert("Vehicle link copied")}catch{}}
+ async function shareVehicle(){const shareUrl=new URL(window.location.href);shareUrl.searchParams.set("utm_source","share");shareUrl.searchParams.set("utm_medium","vehicle_link");shareUrl.searchParams.set("utm_campaign","organic_share");const url=shareUrl.toString();track("Vehicle Share",{brand:c.brand,model:c.model});const text=`${c.year||""} ${c.brand} ${c.model} ${c.variant||""} • ₹${Number(c.asking_price||0).toLocaleString("en-IN")} • ROHILLA DRIVE`;try{if(navigator.share){await navigator.share({title:`${c.brand} ${c.model} | ROHILLA DRIVE`,text,url});return}await navigator.clipboard.writeText(`${text}\n${url}`);alert("Vehicle link copied")}catch{}}
  return <main className="carPage">
   <header className="carHeader"><div className="brand"><b>ROHILLA DRIVE</b><small>by Rohilla Multibrand Cars</small></div><div className="row"><a href="/inventory">← Back to Inventory</a><button className="secondary" onClick={shareVehicle}>Share</button></div></header>
   <section className="carDetail">
@@ -29,8 +30,8 @@ export default function CarDetailClient({initialCar}:{initialCar:any}){
     <div className="specs"><span>{c.year}</span><span>{Number(c.km||0).toLocaleString("en-IN")} km</span><span>{c.fuel}</span>{c.transmission&&<span>{c.transmission}</span>}{c.owner_count&&<span>{c.owner_count} Owner</span>}{c.city&&<span>{c.city}</span>}{c.registration_prefix&&<span>{c.registration_prefix}</span>}</div>
     <h2>₹{Number(c.asking_price||0).toLocaleString("en-IN")}</h2>
     {c.public_notes&&<p>{c.public_notes}</p>}
-    <button type="button" className="primary" onClick={()=>setEnquire(true)}>Enquire / Continue on WhatsApp</button>
-    <a className="call big" href="tel:7015260003">Call 7015260003</a>
+    <button type="button" className="primary" onClick={()=>{track("Enquiry Open",{surface:"vehicle_detail",brand:c.brand,model:c.model});setEnquire(true)}}>Enquire / Continue on WhatsApp</button>
+    <a className="call big" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"vehicle_detail",brand:c.brand,model:c.model})}>Call 7015260003</a>
     <div className="notice" style={{marginTop:18}}><b>Looking for a similar car?</b> <a href="/find-car-ambala">Send your model and budget requirement →</a></div>
    </div>
   </section>
