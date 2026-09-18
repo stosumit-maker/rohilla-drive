@@ -70,6 +70,8 @@ body:not(:has(.rd-portal)) .premiumPhone{box-shadow:none!important;background:#1
 body:not(:has(.rd-portal)) .floatingWa{box-shadow:0 8px 22px rgba(15,23,42,.16)!important;font-weight:800}
 
 @media(max-width:720px){
+ body:not(:has(.rd-portal)) footer{padding-bottom:96px!important}
+ body:not(:has(.rd-portal)) .legalFooter{padding-bottom:96px!important}
  body:not(:has(.rd-portal)) .hero{padding:38px 5% 42px!important}
  body:not(:has(.rd-portal)) .hero h1{font-size:36px!important;line-height:1.02!important;letter-spacing:-1px}
  body:not(:has(.rd-portal)) .heroText .heroSub{font-size:14px!important}
