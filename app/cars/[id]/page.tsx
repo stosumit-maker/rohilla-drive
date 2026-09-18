@@ -1,44 +1,96 @@
-"use client";
+import type {Metadata} from "next";
+import {notFound} from "next/navigation";
+import {supabase} from "../../supabaseClient";
+import CarDetailClient from "./CarDetailClient";
 
-import {useEffect,useRef,useState,type TouchEvent} from "react";
-import {useParams} from "next/navigation";
-import {supabase} from "../../../app/supabaseClient";
-import VehicleEnquiryModal from "../../components/VehicleEnquiryModal";
+type Params={id:string};
+const site="https://www.rohilladrive.com";
 
-export default function CarPage(){
- const {id}=useParams<{id:string}>();
+async function getCar(id:string){
  const db=supabase();
- const [c,setC]=useState<any>(null),[active,setActive]=useState(0),[fullscreen,setFullscreen]=useState(false),[zoom,setZoom]=useState(1),[enquire,setEnquire]=useState(false);
- const touchStart=useRef<{x:number;y:number}|null>(null);
- useEffect(()=>{db.from("vehicles").select("*,vehicle_photos(url,sort_order)").eq("id",id).eq("status","published").single().then(({data})=>setC(data))},[id]);
- if(!c)return <main><div className="section"><h2>Loading vehicle…</h2></div></main>;
- const photos=[...(c.vehicle_photos||[])].sort((a:any,b:any)=>(a.sort_order||0)-(b.sort_order||0));
- const currentPhoto=photos[active]?.url;
- function previous(){if(!photos.length)return;setZoom(1);setActive((old)=>(old-1+photos.length)%photos.length)}
- function next(){if(!photos.length)return;setZoom(1);setActive((old)=>(old+1)%photos.length)}
- function touchBegin(e:TouchEvent<HTMLDivElement>){if(e.touches.length===1)touchStart.current={x:e.touches[0].clientX,y:e.touches[0].clientY}}
- function touchEnd(e:TouchEvent<HTMLDivElement>){if(!touchStart.current||e.changedTouches.length!==1)return;const dx=e.changedTouches[0].clientX-touchStart.current.x;touchStart.current=null;if(Math.abs(dx)>60)(dx<0?next:previous)()}
- async function shareVehicle(){const url=window.location.href;const text=`${c.year} ${c.brand} ${c.model} ${c.variant||""} • ₹${Number(c.asking_price||0).toLocaleString("en-IN")} • ROHILLA DRIVE`;try{if(navigator.share){await navigator.share({title:`${c.brand} ${c.model} | ROHILLA DRIVE`,text,url});return}await navigator.clipboard.writeText(`${text}\n${url}`);alert("Vehicle link copied")}catch{}}
- return <main className="carPage">
-  <header className="carHeader"><div className="brand"><b>ROHILLA DRIVE</b><small>by Rohilla Multibrand Cars</small></div><div className="row"><a href="/inventory">← Back to Inventory</a><button className="secondary" onClick={shareVehicle}>Share</button></div></header>
-  <section className="carDetail">
-   <div className="photoColumn">
-    <div className="detailViewer" onTouchStart={touchBegin} onTouchEnd={touchEnd}>
-     {currentPhoto?<><button type="button" className="photoArrow left" onClick={previous} aria-label="Previous photo">‹</button><img src={currentPhoto} alt={`${c.brand} ${c.model}`} onClick={()=>{setZoom(1);setFullscreen(true)}} draggable={false}/><button type="button" className="photoArrow right" onClick={next} aria-label="Next photo">›</button><button type="button" className="zoomButton" onClick={()=>{setZoom(1);setFullscreen(true)}}>⛶ Fullscreen</button><div className="photoCounter">{active+1} / {photos.length}</div></>:<span>Vehicle photo unavailable</span>}
-    </div>
-    {photos.length>1&&<div className="detailThumbs">{photos.map((photo:any,index:number)=><button type="button" key={photo.url||index} className={index===active?"thumb active":"thumb"} onClick={()=>{setZoom(1);setActive(index)}}><img src={photo.url} alt={`Photo ${index+1}`} draggable={false}/></button>)}</div>}
-    {photos.length>1&&<p className="swipeHint">← Swipe photos • Tap photo to enlarge →</p>}
-   </div>
-   <div className="carInfo">
-    <label>ROHILLA DRIVE</label><h1>{c.brand} {c.model} {c.variant}</h1>
-    <div className="specs"><span>{c.year}</span><span>{Number(c.km||0).toLocaleString("en-IN")} km</span><span>{c.fuel}</span>{c.transmission&&<span>{c.transmission}</span>}{c.owner_count&&<span>{c.owner_count} Owner</span>}{c.city&&<span>{c.city}</span>}{c.registration_prefix&&<span>{c.registration_prefix}</span>}</div>
-    <h2>₹{Number(c.asking_price||0).toLocaleString("en-IN")}</h2>
-    {c.public_notes&&<p>{c.public_notes}</p>}
-    <button type="button" className="primary" onClick={()=>setEnquire(true)}>Enquire / Continue on WhatsApp</button>
-    <a className="call big" href="tel:7015260003">Call 7015260003</a>
-   </div>
-  </section>
-  {fullscreen&&currentPhoto&&<div className="overlay" role="dialog" aria-modal="true" aria-label="Vehicle photo viewer"><div className="modal" style={{maxWidth:"min(1100px,96vw)",width:"96vw"}}><button className="x" onClick={()=>{setFullscreen(false);setZoom(1)}} aria-label="Close photo viewer">×</button><div style={{display:"flex",gap:8,justifyContent:"center",marginBottom:10}}><button className="secondary" onClick={()=>setZoom(z=>Math.max(1,z-.5))}>−</button><button className="secondary" onClick={()=>setZoom(1)}>100%</button><button className="secondary" onClick={()=>setZoom(z=>Math.min(4,z+.5))}>+</button></div><div onTouchStart={touchBegin} onTouchEnd={touchEnd} style={{overflow:"auto",textAlign:"center",maxHeight:"78vh"}}><img src={currentPhoto} alt={`${c.brand} ${c.model} enlarged`} draggable={false} style={{maxWidth:"100%",transform:`scale(${zoom})`,transformOrigin:"center center",transition:"transform .12s ease"}}/></div>{photos.length>1&&<div className="row" style={{justifyContent:"center",marginTop:12}}><button onClick={previous}>Previous</button><span>{active+1} / {photos.length}</span><button onClick={next}>Next</button></div>}</div></div>}
-  {enquire&&<VehicleEnquiryModal vehicle={c} source="vehicle_detail_page" onClose={()=>setEnquire(false)}/>} 
- </main>
+ const {data}=await db.from("vehicles")
+  .select("id,brand,model,variant,year,km,fuel,transmission,owner_count,asking_price,city,public_notes,registration_prefix,status,created_at,vehicle_photos(url,sort_order)")
+  .eq("id",id)
+  .eq("status","published")
+  .single();
+ return data||null;
+}
+
+function carName(c:any){
+ return [c.year,c.brand,c.model,c.variant].filter(Boolean).join(" ");
+}
+
+export const revalidate=300;
+
+export async function generateMetadata({params}:{params:Promise<Params>}):Promise<Metadata>{
+ const {id}=await params;
+ const c=await getCar(id);
+ if(!c)return {title:"Vehicle Not Available | ROHILLA DRIVE",robots:{index:false,follow:true}};
+ const name=carName(c);
+ const price=c.asking_price!=null?`₹${Number(c.asking_price).toLocaleString("en-IN")}`:"Price on request";
+ const place=c.city||"Ambala";
+ const description=`${name} used car in ${place}. ${c.km!=null?Number(c.km).toLocaleString("en-IN")+" km, ":""}${c.fuel||""}${c.transmission?", "+c.transmission:""}. Asking price ${price}. View photos and enquire with ROHILLA DRIVE by Rohilla Multibrand Cars.`;
+ const images=[...(c.vehicle_photos||[])].sort((a:any,b:any)=>(a.sort_order||0)-(b.sort_order||0)).map((x:any)=>x.url).filter(Boolean);
+ return {
+  title:`${name} Used Car in ${place} | ${price}`,
+  description,
+  alternates:{canonical:`/cars/${id}`},
+  robots:{index:true,follow:true},
+  openGraph:{title:`${name} Used Car | ROHILLA DRIVE`,description,url:`/cars/${id}`,type:"website",images},
+  twitter:{card:images.length?"summary_large_image":"summary",title:`${name} Used Car | ROHILLA DRIVE`,description,images}
+ };
+}
+
+export default async function CarPage({params}:{params:Promise<Params>}){
+ const {id}=await params;
+ const c=await getCar(id);
+ if(!c)notFound();
+ const name=carName(c);
+ const photos=[...(c.vehicle_photos||[])].sort((a:any,b:any)=>(a.sort_order||0)-(b.sort_order||0)).map((x:any)=>x.url).filter(Boolean);
+ const additional=[
+  c.year&&{"@type":"PropertyValue",name:"Model Year",value:String(c.year)},
+  c.km!=null&&{"@type":"PropertyValue",name:"Kilometres",value:`${Number(c.km).toLocaleString("en-IN")} km`},
+  c.fuel&&{"@type":"PropertyValue",name:"Fuel",value:c.fuel},
+  c.transmission&&{"@type":"PropertyValue",name:"Transmission",value:c.transmission},
+  c.owner_count&&{"@type":"PropertyValue",name:"Owner Count",value:String(c.owner_count)},
+  c.city&&{"@type":"PropertyValue",name:"Location",value:c.city},
+  c.registration_prefix&&{"@type":"PropertyValue",name:"Registration Prefix",value:c.registration_prefix}
+ ].filter(Boolean);
+ const productSchema:any={
+  "@context":"https://schema.org",
+  "@type":["Product","Car"],
+  "@id":`${site}/cars/${c.id}#vehicle`,
+  name,
+  url:`${site}/cars/${c.id}`,
+  image:photos,
+  description:c.public_notes||`${name} used vehicle listed by ROHILLA DRIVE by Rohilla Multibrand Cars.`,
+  sku:c.id,
+  brand:{"@type":"Brand",name:c.brand},
+  category:"Used car",
+  itemCondition:"https://schema.org/UsedCondition",
+  vehicleModelDate:c.year?String(c.year):undefined,
+  mileageFromOdometer:c.km!=null?{"@type":"QuantitativeValue",value:Number(c.km),unitCode:"KMT"}:undefined,
+  fuelType:c.fuel||undefined,
+  vehicleTransmission:c.transmission||undefined,
+  additionalProperty:additional,
+  offers:c.asking_price!=null?{
+   "@type":"Offer",
+   url:`${site}/cars/${c.id}`,
+   priceCurrency:"INR",
+   price:Number(c.asking_price),
+   availability:"https://schema.org/InStock",
+   itemCondition:"https://schema.org/UsedCondition",
+   seller:{"@id":`${site}/#organization`}
+  }:undefined
+ };
+ const breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[
+  {"@type":"ListItem",position:1,name:"ROHILLA DRIVE",item:site},
+  {"@type":"ListItem",position:2,name:"Used Cars in Ambala",item:`${site}/used-cars-ambala`},
+  {"@type":"ListItem",position:3,name,item:`${site}/cars/${c.id}`}
+ ]};
+ return <>
+  <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(productSchema)}}/>
+  <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumb)}}/>
+  <CarDetailClient initialCar={c}/>
+ </>;
 }
