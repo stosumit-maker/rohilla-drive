@@ -4,6 +4,7 @@ import { useState } from "react";
 import { supabase } from "../supabaseClient";
 import LegalConsent from "./LegalConsent";
 import { newRequestReference } from "../lib/reference";
+import { track } from "@vercel/analytics";
 
 type VehicleEnquiryTarget = {
   id: string;
@@ -72,6 +73,8 @@ export default function VehicleEnquiryModal({
       setError(insertError.message);
       return;
     }
+
+    track("Lead Submitted",{surface:source,intent:"buy_vehicle",brand:vehicle.brand,model:vehicle.model});
 
     const wa = [
       "ROHILLA DRIVE VEHICLE ENQUIRY",
