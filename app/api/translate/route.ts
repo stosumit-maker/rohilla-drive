@@ -28,15 +28,24 @@ async function gatewayTranslate(texts:string[],target:string,source?:string){
 }
 
 export async function POST(req:Request){
+ const url=new URL(req.url);
+ const origin=req.headers.get("origin");
+ if(!origin||origin!==url.origin)return NextResponse.json({error:"Same-origin request required"},{status:403,headers:{"Cache-Control":"no-store"}});
+ if(!(req.headers.get("content-type")||"").toLowerCase().includes("application/json"))return NextResponse.json({error:"JSON request required"},{status:415,headers:{"Cache-Control":"no-store"}});
+ const declaredLength=Number(req.headers.get("content-length")||0);
+ if(declaredLength>20000)return NextResponse.json({error:"Translation request is too large"},{status:413,headers:{"Cache-Control":"no-store"}});
  try{
   const body=await req.json();const raw=Array.isArray(body?.texts)?body.texts:[body?.text];
-  const texts=raw.filter((x:any)=>typeof x==="string").map((x:string)=>x.slice(0,5000)).slice(0,60);
+  if(raw.length>4)return NextResponse.json({error:"Too many translation items"},{status:413,headers:{"Cache-Control":"no-store"}});
+  const texts=raw.filter((x:any)=>typeof x==="string").map((x:string)=>x.trim()).filter(Boolean);
+  if(texts.some((x:string)=>x.length>2000)||texts.reduce((sum:number,x:string)=>sum+x.length,0)>6000)return NextResponse.json({error:"Translation request is too large"},{status:413,headers:{"Cache-Control":"no-store"}});
   const target=normalize(String(body?.target||"en-IN"));const source=body?.source&&body.source!=="auto"?normalize(String(body.source)):undefined;
-  if(!texts.length)return NextResponse.json({translations:[],configured:true,provider:"none_needed"});
-  if(source&&target===source)return NextResponse.json({translations:texts,configured:true,provider:"identity"});
-  try{const out=await googleTranslate(texts,target,source);if(out)return NextResponse.json({translations:out,configured:true,provider:"google_cloud_translation"})}catch{}
-  try{const out=await gatewayTranslate(texts,target,source);return NextResponse.json({translations:out,configured:true,provider:"vercel_ai_gateway"})}catch(err:any){
-   return NextResponse.json({translations:texts,configured:false,provider:"gateway_unavailable",error:err?.message||"Translation AI is not available yet"},{status:200});
+  const headers={"Cache-Control":"no-store"};
+  if(!texts.length)return NextResponse.json({translations:[],configured:true,provider:"none_needed"},{headers});
+  if(source&&target===source)return NextResponse.json({translations:texts,configured:true,provider:"identity"},{headers});
+  try{const out=await googleTranslate(texts,target,source);if(out)return NextResponse.json({translations:out,configured:true,provider:"google_cloud_translation"},{headers})}catch{}
+  try{const out=await gatewayTranslate(texts,target,source);return NextResponse.json({translations:out,configured:true,provider:"vercel_ai_gateway"},{headers})}catch{
+   return NextResponse.json({translations:texts,configured:false,provider:"gateway_unavailable",error:"Translation service is temporarily unavailable."},{status:200,headers});
   }
- }catch(err:any){return NextResponse.json({error:err?.message||"Translation failed"},{status:500})}
+ }catch{return NextResponse.json({error:"Translation request could not be processed"},{status:400,headers:{"Cache-Control":"no-store"}})}
 }
