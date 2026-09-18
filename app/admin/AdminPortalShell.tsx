@@ -14,6 +14,7 @@ const navLinks=[
  {href:"/admin/draft-review",label:"Draft Review"},
  {href:"/admin/seller-submissions",label:"Seller Submissions"},
  {href:"/admin/service-operations",label:"Service Operations"},
+ {href:"/admin/partner-kyc",label:"Partner KYC & Documents"},
  {href:"/admin/revenue",label:"Revenue & Collections"},
  {href:"/admin/new-vehicles",label:"New Vehicle Leads"},
  {href:"/admin/deal-rooms",label:"Deal Management"},
