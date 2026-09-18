@@ -1,5 +1,6 @@
 import type {Metadata} from "next";
 import {supabase} from "../supabaseClient";
+import AmbalaLeadFunnel from "../components/AmbalaLeadFunnel";
 
 export const revalidate=300;
 
@@ -71,18 +72,21 @@ export default async function UsedCarsAmbala(){
         <p>Browse current ROHILLA DRIVE listings in Ambala with available price, year, kilometres, fuel, ownership and vehicle photos. Inventory changes as vehicles are added or sold.</p>
         <div className="row" style={{marginTop:18}}>
           <a className="call" href="/inventory?city=Ambala%20City">Browse Full Inventory</a>
+          <a className="call" href="/find-car-ambala">Tell Us the Car You Need</a>
           <a className="call" href="/sell">Sell Your Car in Ambala</a>
           <a className="secondary" href={`https://wa.me/917015260003?text=${encodeURIComponent("Hello ROHILLA DRIVE, I am looking for a used car in Ambala.")}`}>WhatsApp</a>
         </div>
       </div>
     </section>
 
+    <AmbalaLeadFunnel source="used_cars_ambala" defaultMode="buy"/>
+
     <section className="section" style={{paddingTop:30}}>
       <div className="head"><div><h2>Current Second Hand Cars in Ambala</h2><p>{cars.length?`${cars.length} published vehicle${cars.length===1?"":"s"} currently matching Ambala.`:"No Ambala vehicle is published at this moment. Share your requirement and we can follow up when suitable inventory is available."}</p></div><a className="textLink" href="/inventory">All Inventory →</a></div>
       {cars.length?<div className="grid">{cars.map(car=>{const photos=[...(car.vehicle_photos||[])].sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));const first=photos[0]?.url;return <article className="card" key={car.id}>
         <div className="photo real">{first?<img src={first} alt={`${car.year||""} ${car.brand} ${car.model} used car in Ambala`}/>:<span>Vehicle photo unavailable</span>}</div>
         <div className="body"><label>USED CAR • AMBALA</label><h2 style={{fontSize:22}}>{car.brand} {car.model}</h2>{car.variant&&<p>{car.variant}</p>}<small>{car.year||"Year on request"}{car.km!=null?` • ${Number(car.km).toLocaleString("en-IN")} km`:""}{car.fuel?` • ${car.fuel}`:""}{car.owner_count?` • ${car.owner_count} Owner`:""}</small>{car.registration_prefix&&<small style={{display:"block",marginTop:5}}>Registration: {car.registration_prefix}</small>}{car.asking_price!=null&&<strong>₹{Number(car.asking_price).toLocaleString("en-IN")}</strong>}<a className="call" href={`/cars/${car.id}`} style={{display:"block",textAlign:"center"}}>View Car Details</a></div>
-      </article>})}</div>:<div className="notice"><b>Looking for a specific car?</b> <a href="/assistant">Share your brand, model and budget with Rohilla Assistant →</a></div>}
+      </article>})}</div>:<div className="notice"><b>Looking for a specific car?</b> <a href="/find-car-ambala">Tell us the model and budget — save your requirement →</a></div>}
     </section>
 
     <section className="section compactSection">
