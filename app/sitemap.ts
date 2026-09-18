@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { supabase } from "./supabaseClient";
+import {buyPath,marketLocations,sellPath} from "./lib/market-locations";
 
 const site = "https://www.rohilladrive.com";
 const locales=["en","hi","pa","kn","ta","te","ml","mr","gu","bn","or","ur"];
@@ -12,6 +13,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${site}/used-cars-ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 1 },
     { url: `${site}/find-car-ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.99 },
     { url: `${site}/sell-car-ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.99 },
+    { url: `${site}/coverage`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.98 },
+    ...marketLocations.filter(x=>!x.legacyBuyPath).map(x=>({url:`${site}${buyPath(x)}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:x.hub?0.96:0.9})),
+    ...marketLocations.filter(x=>!x.legacySellPath).map(x=>({url:`${site}${sellPath(x)}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:x.hub?0.94:0.88})),
     { url: `${site}/about`, lastModified: refreshed, changeFrequency: "monthly", priority: 0.95 },
     ...locales.map(locale=>({url:`${site}/${locale}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:0.9})),
     { url: `${site}/inventory`, lastModified: refreshed, changeFrequency: "daily", priority: 0.98 },
