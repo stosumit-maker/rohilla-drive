@@ -18,8 +18,8 @@ const languages={"en-IN":"/en","hi-IN":"/hi","pa-IN":"/pa","kn-IN":"/kn","ta-IN"
 
 export const metadata: Metadata = {
   metadataBase: new URL(site),
-  title: { default: "ROHILLA DRIVE | Cars, Automotive Services & Vehicle Assistance", template: "%s | ROHILLA DRIVE" },
-  description: "ROHILLA DRIVE by Rohilla Multibrand Cars, Ambala City — used and new car enquiries, vehicle selling, inspection, repair, detailing, RC/RTO, finance, insurance, roadside, tyres/battery and wider automotive assistance across Haryana, Chandigarh and nearby regional markets.",
+  title: { default: "Used Cars, Sell Car & Vehicle Services in Ambala | ROHILLA DRIVE", template: "%s | ROHILLA DRIVE" },
+  description: "ROHILLA DRIVE by Rohilla Multibrand Cars, Ambala City — buy used cars, sell your car, enquire for new vehicles, request inspection, service, RC transfer, finance, insurance and wider automotive assistance across Ambala, Haryana, Chandigarh and nearby markets.",
   applicationName: "ROHILLA DRIVE",
   alternates: { canonical: "/", languages },
   manifest: "/manifest.webmanifest",
