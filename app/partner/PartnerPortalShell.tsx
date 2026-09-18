@@ -1,4 +1,5 @@
 "use client";
+import {useEffect,useState} from "react";
 import {usePathname} from "next/navigation";
 import {supabase} from "../supabaseClient";
 
@@ -17,11 +18,42 @@ const sectionStyle={fontSize:11,fontWeight:800,color:"#667085"};
 export default function PartnerLayout({children}:{children:React.ReactNode}){
  const db=supabase();
  const path=usePathname();
+ const [ready,setReady]=useState(false);
+ const [checked,setChecked]=useState(false);
  const current=links.find(link=>link.href===path);
  const isInner=path!=="/partner";
+
+ useEffect(()=>{
+  let cancelled=false;
+  async function gate(nextSession?:any){
+   let session=nextSession;
+   if(session===undefined){
+    const {data}=await db.auth.getSession();
+    session=data.session;
+   }
+   if(cancelled)return;
+   if(!session){setReady(false);setChecked(true);return}
+   const {data:profile}=await db.from("profiles").select("role,active").eq("id",session.user.id).single();
+   if(cancelled)return;
+   setReady(Boolean(profile?.role==="partner"&&profile?.active));
+   setChecked(true);
+  }
+  void gate();
+  const {data:{subscription}}=db.auth.onAuthStateChange((_event,session)=>{
+   window.setTimeout(()=>{void gate(session)},0);
+  });
+  return()=>{cancelled=true;subscription.unsubscribe()};
+ },[]);
+
  const signOut=()=>db.auth.signOut().then(()=>{location.href="/partner"});
+ const protectedContent=!checked
+  ?<main className="section"><h2>Checking Partner Workspace access…</h2></main>
+  :ready
+   ?children
+   :<main className="section"><div className="auth"><h1>ROHILLA DRIVE</h1><h2>Partner Authentication Required</h2><p>Sign in with an approved and active partner account before opening this section.</p><a className="call" href="/partner">Go to Partner Sign In</a><a href="/business-hub">Create / Apply for Partner Account</a></div></main>;
+
  return <div className="rd-portal rd-partner-portal">
-  <div className="rdPortalTopbar" data-no-translate>
+  {ready&&<div className="rdPortalTopbar" data-no-translate>
    <div className="rdPortalTopbarInner">
     <a className="rdPortalIdentity" href="/partner" aria-label="Partner dashboard">
      <span className="rdPortalMonogram">RD</span>
@@ -32,8 +64,8 @@ export default function PartnerLayout({children}:{children:React.ReactNode}){
     </nav>
     <div className="rdPortalUtilities"><a href="/business-hub">Business Hub</a><a className="premium" href="/">Public Website</a><button onClick={signOut}>Sign Out</button></div>
    </div>
-  </div>
-  {isInner&&<div className="rdPortalContextBar" data-no-translate style={contextStyle}><a href="/partner" aria-label="Back to Partner Dashboard" style={backStyle}>← Back to Dashboard</a><span style={sectionStyle}>Current section: {current?.label||"Partner Workspace"}</span></div>}
-  {children}
+  </div>}
+  {ready&&isInner&&<div className="rdPortalContextBar" data-no-translate style={contextStyle}><a href="/partner" aria-label="Back to Partner Dashboard" style={backStyle}>← Back to Dashboard</a><span style={sectionStyle}>Current section: {current?.label||"Partner Workspace"}</span></div>}
+  {isInner?protectedContent:children}
  </div>;
 }
