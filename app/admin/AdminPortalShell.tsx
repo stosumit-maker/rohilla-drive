@@ -156,6 +156,6 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
    </div></div>
   </div>}
   {ready&&isInner&&<div className="rdPortalContextBar" data-no-translate style={contextStyle}><a href="/admin" aria-label="Back to Administration Dashboard" style={backStyle}>← Back to Dashboard</a><span style={sectionStyle}>Current section: {current?.label||"Administration Console"}</span></div>}
-  {children}
+  {(ready||path==="/admin")?children:<main className="section"><div className="auth"><h1>ROHILLA DRIVE</h1><h2>Administrator Authentication Required</h2><p>Complete administrator sign-in and multi-factor authentication before opening this section.</p><a className="call" href="/admin">Go to Administration Sign In</a></div></main>}
  </div>;
 }
