@@ -11,6 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${site}/ambala`, lastModified: refreshed, changeFrequency: "weekly", priority: 1 },
     { url: `${site}/used-cars-ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 1 },
     { url: `${site}/find-car-ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.99 },
+    { url: `${site}/sell-car-ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.99 },
     { url: `${site}/about`, lastModified: refreshed, changeFrequency: "monthly", priority: 0.95 },
     ...locales.map(locale=>({url:`${site}/${locale}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:0.9})),
     { url: `${site}/inventory`, lastModified: refreshed, changeFrequency: "daily", priority: 0.98 },

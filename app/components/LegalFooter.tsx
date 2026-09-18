@@ -4,7 +4,8 @@ export default function LegalFooter(){
       <a href="/ambala" style={{fontWeight:900,color:"#0f172a"}}>ROHILLA DRIVE Ambala</a>
       <a href="/used-cars-ambala" style={{fontWeight:900,color:"#0f172a"}}>Used Cars in Ambala</a>
       <a href="/find-car-ambala" style={{fontWeight:900,color:"#0f172a"}}>Find a Car in Ambala</a>
-      <a href="/sell" style={{fontWeight:900,color:"#0f172a"}}>Sell Your Car in Ambala</a>
+      <a href="/sell-car-ambala" style={{fontWeight:900,color:"#0f172a"}}>Sell Your Car in Ambala</a>
+      <a href="/sell" style={{fontWeight:900,color:"#0f172a"}}>Detailed Seller Submission</a>
       <a href="/inventory" style={{fontWeight:900,color:"#0f172a"}}>Vehicle Inventory</a>
     </div>
     <div style={{display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap",marginBottom:6}}>
