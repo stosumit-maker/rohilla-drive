@@ -1,4 +1,5 @@
 import type {Metadata} from "next";
+import AmbalaLeadFunnel from "../components/AmbalaLeadFunnel";
 
 export const metadata:Metadata={
   title:"Car Dealer in Ambala | Buy, Sell & Auto Services",
@@ -12,6 +13,7 @@ const site="https://www.rohilladrive.com";
 const phone="+91-7015260003";
 const services=[
   ["Used Cars in Ambala","Browse current second hand and pre-owned cars with published prices, photos and vehicle details.","/used-cars-ambala"],
+  ["Find a Car for Me","Share your preferred model, budget and timing. ROHILLA DRIVE saves the requirement for direct follow-up.","/find-car-ambala"],
   ["Sell Your Car","Submit vehicle details and private photos for review. Individual sellers do not need a dealer account.","/sell"],
   ["New Vehicle Assistance","Share your model, variant, budget and city requirement for new-vehicle assistance.","/new-vehicles"],
   ["Vehicle Verification","Use ROHILLA DRIVE verification workflows for supported vehicle checks and documentation coordination.","/verify"],
@@ -53,8 +55,10 @@ export default function AmbalaHub(){
       <h1>Car Dealer & Vehicle Services in Ambala</h1>
       <p className="heroSub">Buy • Sell • Verify • New Vehicles • Automotive Services</p>
       <p>ROHILLA DRIVE by Rohilla Multibrand Cars connects customers in Ambala with current used-car inventory, vehicle selling, new-vehicle assistance, verification and supported automotive services through one platform.</p>
-      <div className="row" style={{marginTop:18}}><a className="call" href="/used-cars-ambala">Used Cars in Ambala</a><a className="call" href="/sell">Sell Your Car</a><a className="secondary" href="/inventory">Browse Inventory</a></div>
+      <div className="row" style={{marginTop:18}}><a className="call" href="/find-car-ambala">Find My Car</a><a className="call" href="/used-cars-ambala">Used Cars in Ambala</a><a className="call" href="/sell">Sell Your Car</a><a className="secondary" href="/inventory">Browse Inventory</a></div>
     </div></section>
+
+    <AmbalaLeadFunnel source="ambala_hub" defaultMode="buy"/>
 
     <section className="section"><div className="head"><div><h2>Automotive Help in Ambala — One Connected Platform</h2><p>Choose the task you need and go directly to the correct workflow.</p></div></div><div className="grid">{services.map(([title,text,href])=><article className="card" key={title}><div className="body"><h2 style={{fontSize:22}}>{title}</h2><p>{text}</p><a className="textLink" href={href}>Open →</a></div></article>)}</div></section>
 
