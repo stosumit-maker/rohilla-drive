@@ -10,7 +10,7 @@ export default function ServiceLeadForm({defaultCity,locationName}:{defaultCity:
   const [name,setName]=useState("");
   const [phone,setPhone]=useState("");
   const [city,setCity]=useState(defaultCity);
-  const [service,setService]=useState(autoServiceIntents[0].id);
+  const [service,setService]=useState("car-service-repair");
   const [vehicle,setVehicle]=useState("");
   const [preferredTime,setPreferredTime]=useState("");
   const [notes,setNotes]=useState("");
@@ -37,7 +37,7 @@ export default function ServiceLeadForm({defaultCity,locationName}:{defaultCity:
     e.preventDefault();
     const digits=phone.replace(/\D/g,"");
     if(digits.length<10){setMsg("Please enter a valid mobile number.");return}
-    const selected=autoServiceIntents.find(x=>x.id===service) || autoServiceIntents[0];
+    const selected=autoServiceIntents.find(x=>x.id===service) || autoServiceIntents.find(x=>x.id==="car-service-repair") || autoServiceIntents[0];
     setBusy(true);setMsg("Saving your service request…");
     const details=[
       vehicle?`Vehicle: ${vehicle}`:"",
