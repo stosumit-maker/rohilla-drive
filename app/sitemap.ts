@@ -16,6 +16,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${site}/coverage`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.98 },
     ...marketLocations.filter(x=>!x.legacyBuyPath).map(x=>({url:`${site}${buyPath(x)}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:x.hub?0.96:0.9})),
     ...marketLocations.filter(x=>!x.legacySellPath).map(x=>({url:`${site}${sellPath(x)}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:x.hub?0.94:0.88})),
+    ...marketLocations.map(x=>({url:`${site}/car-services/${x.slug}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:x.hub?0.95:0.89})),
+    ...marketLocations.map(x=>({url:`${site}/new-cars/${x.slug}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:x.hub?0.95:0.89})),
     { url: `${site}/about`, lastModified: refreshed, changeFrequency: "monthly", priority: 0.95 },
     ...locales.map(locale=>({url:`${site}/${locale}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:0.9})),
     { url: `${site}/inventory`, lastModified: refreshed, changeFrequency: "daily", priority: 0.98 },
