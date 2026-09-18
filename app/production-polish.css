@@ -4,6 +4,10 @@
 /* Public surfaces only. Private workspaces keep their own portal visual system. */
 body:not(:has(.rd-portal)){background:#f5f7fa;color:#101828}
 body:not(:has(.rd-portal)) header{border-bottom:1px solid #e2e7ee;box-shadow:0 4px 18px rgba(15,23,42,.045)}
+body:not(:has(.rd-portal)) .publicAccessBar{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:8px 5%;background:#fff;border-bottom:1px solid #e2e7ee;color:#475467;font-size:11px;font-weight:800}
+body:not(:has(.rd-portal)) .publicAccessBar span{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#667085;margin-right:2px}
+body:not(:has(.rd-portal)) .publicAccessBar a{display:inline-flex;align-items:center;min-height:32px;padding:6px 10px;border:1px solid #d5dde7;border-radius:999px;background:#fff;color:#172033;text-decoration:none;font-size:10px;font-weight:850}
+body:not(:has(.rd-portal)) .publicAccessBar a:first-of-type{background:#101b2d;color:#fff;border-color:#101b2d}
 body:not(:has(.rd-portal)) .hero{background:linear-gradient(135deg,#07101d 0%,#0d1a2d 58%,#17243a 100%)!important;padding-top:70px!important;padding-bottom:68px!important;border-bottom:1px solid rgba(215,181,109,.16)}
 body:not(:has(.rd-portal)) .heroText>span{color:#d7b56d!important;letter-spacing:1.4px!important}
 body:not(:has(.rd-portal)) .hero h1{letter-spacing:-1.7px;line-height:.98!important;max-width:920px}
@@ -70,6 +74,9 @@ body:not(:has(.rd-portal)) .premiumPhone{box-shadow:none!important;background:#1
 body:not(:has(.rd-portal)) .floatingWa{box-shadow:0 8px 22px rgba(15,23,42,.16)!important;font-weight:800}
 
 @media(max-width:720px){
+ body:not(:has(.rd-portal)) .publicAccessBar{justify-content:flex-start;gap:6px;padding:7px 4%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+ body:not(:has(.rd-portal)) .publicAccessBar::-webkit-scrollbar{display:none}
+ body:not(:has(.rd-portal)) .publicAccessBar span,body:not(:has(.rd-portal)) .publicAccessBar a{flex:0 0 auto}
  body:not(:has(.rd-portal)) footer{padding-bottom:96px!important}
  body:not(:has(.rd-portal)) .legalFooter{padding-bottom:96px!important}
  body:not(:has(.rd-portal)) .hero{padding:38px 5% 42px!important}
