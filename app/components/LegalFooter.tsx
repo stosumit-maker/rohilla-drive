@@ -11,6 +11,10 @@ export default function LegalFooter(){
       <a href="/car-services/haryana" style={{fontWeight:900,color:"#0f172a"}}>Car Services in Haryana</a>
       <a href="/new-cars/haryana" style={{fontWeight:900,color:"#0f172a"}}>New Cars in Haryana</a>
       <a href="/car-services/chandigarh" style={{fontWeight:900,color:"#0f172a"}}>Car Services in Chandigarh</a>
+      <a href="/trusted-assist" style={{fontWeight:900,color:"#0f172a"}}>ROHILLA Trusted Assist</a>
+      <a href="/nri-car-care-india" style={{fontWeight:900,color:"#0f172a"}}>NRI Car Care India</a>
+      <a href="/defence-personnel-vehicle-assistance" style={{fontWeight:900,color:"#0f172a"}}>Defence Vehicle Assistance</a>
+      <a href="/senior-citizen-car-assistance" style={{fontWeight:900,color:"#0f172a"}}>Senior Citizen Car Assistance</a>
     </div>
     <div style={{display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap",marginBottom:6}}>
       <a href="/terms" style={{fontWeight:800,color:"#0f172a"}}>Terms & Conditions</a>
