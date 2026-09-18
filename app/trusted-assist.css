@@ -1,4 +1,4 @@
-.trustedAssistStrip{position:relative;overflow:hidden;isolation:isolate;animation:trustedAssistGlow 3.2s ease-in-out infinite;will-change:box-shadow,border-color,filter}
+.trustedAssistStrip{text-decoration:none;position:relative;overflow:hidden;isolation:isolate;animation:trustedAssistGlow 3.2s ease-in-out infinite;will-change:box-shadow,border-color,filter}
 .trustedAssistStrip>*{position:relative;z-index:1}
 .trustedAssistStrip:after{content:"";position:absolute;z-index:0;top:-45%;bottom:-45%;left:-28%;width:20%;transform:skewX(-18deg);background:linear-gradient(90deg,transparent,rgba(255,226,155,.34),transparent);filter:blur(2px);animation:trustedAssistSweep 4.6s ease-in-out infinite;pointer-events:none}
 .trustedCopy em{font-style:normal;font-size:13px;line-height:1.3;font-weight:800;color:#fff4d2;letter-spacing:.1px}
