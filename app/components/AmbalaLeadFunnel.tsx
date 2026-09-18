@@ -6,12 +6,12 @@ import LegalConsent from "./LegalConsent";
 
 type Mode="buy"|"sell";
 
-export default function AmbalaLeadFunnel({source="ambala_lead_funnel",defaultMode="buy"}:{source?:string;defaultMode?:Mode}){
+export default function AmbalaLeadFunnel({source="ambala_lead_funnel",defaultMode="buy",defaultCity="Ambala City",locationName="Ambala"}:{source?:string;defaultMode?:Mode;defaultCity?:string;locationName?:string}){
   const db=supabase();
   const [mode,setMode]=useState<Mode>(defaultMode);
   const [name,setName]=useState("");
   const [phone,setPhone]=useState("");
-  const [city,setCity]=useState("Ambala City");
+  const [city,setCity]=useState(defaultCity);
   const [car,setCar]=useState("");
   const [budget,setBudget]=useState("");
   const [year,setYear]=useState("");
@@ -40,7 +40,7 @@ export default function AmbalaLeadFunnel({source="ambala_lead_funnel",defaultMod
   },[source]);
 
   function reset(){
-    setName("");setPhone("");setCar("");setBudget("");setYear("");setTiming("Within 15 days");
+    setName("");setPhone("");setCar("");setBudget("");setYear("");setTiming("Within 15 days");setCity(defaultCity);
   }
 
   async function submit(e:React.FormEvent<HTMLFormElement>){
@@ -56,7 +56,7 @@ export default function AmbalaLeadFunnel({source="ambala_lead_funnel",defaultMod
     const {error}=await db.from("leads").insert({
       customer_name:name.trim(),
       customer_phone:phone.trim(),
-      requirement:buying?"Buy Used Car in Ambala":"Sell Used Car in Ambala",
+      requirement:buying?`Buy Used Car in ${locationName}`:`Sell Used Car in ${locationName}`,
       message,
       status:"new",
       source:leadSource,
@@ -82,8 +82,8 @@ export default function AmbalaLeadFunnel({source="ambala_lead_funnel",defaultMod
 
   return <section className="section" id="ambala-enquiry" style={{paddingTop:30}}>
     <div className="head"><div>
-      <h2>{mode==="buy"?"Can’t find the exact car? Tell us what you want.":"Want to sell your car in Ambala?"}</h2>
-      <p>{mode==="buy"?"Share the model, budget and timing once. Your requirement is saved for direct follow-up, even when the exact car is not currently published.":"Send a quick requirement now. You can add full vehicle details and private photos later."}</p>
+      <h2>{mode==="buy"?`Looking for a car in ${locationName}? Tell us what you want.`:`Want to sell your car in ${locationName}?`}</h2>
+      <p>{mode==="buy"?`Share the model, budget and timing once. Your ${locationName} requirement is saved for direct follow-up, even when the exact car is not currently published.`:"Send a quick requirement now. You can add full vehicle details and private photos later."}</p>
     </div></div>
     <div className="row" style={{marginBottom:14}}>
       <button type="button" className={mode==="buy"?"call":"secondary"} onClick={()=>{setMode("buy");setMsg("")}}>I Want to Buy</button>
