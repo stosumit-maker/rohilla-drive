@@ -7,6 +7,7 @@ export type AutoServiceIntent={
 };
 
 export const autoServiceIntents:AutoServiceIntent[]=[
+  {id:"trusted-assist",label:"ROHILLA Trusted Assist",short:"Vehicle coordination for NRI families, defence personnel, senior citizens, outstation owners and busy professionals when they cannot manage the vehicle personally.",searchTerms:["NRI car care India","vehicle assistance for NRI","car care for defence personnel","senior citizen car assistance","outstation vehicle assistance","remote car management"]},
   {id:"car-service-repair",label:"Car Service & Repair",short:"Workshop servicing, diagnostics, mechanical repair and maintenance requests.",searchTerms:["car service","car repair","car mechanic","car workshop","car service center"]},
   {id:"car-inspection",label:"Car Inspection & Verification",short:"Pre-purchase inspection, condition checks and vehicle verification requests.",searchTerms:["car inspection","used car inspection","vehicle inspection","car verification"]},
   {id:"car-detailing",label:"Car Detailing & Cleaning",short:"Interior, exterior, polishing, detailing and vehicle preparation requests.",searchTerms:["car detailing","car cleaning","car polish","car spa"]},

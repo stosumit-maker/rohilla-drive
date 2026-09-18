@@ -56,7 +56,7 @@ const organizationSchema = {
   contactPoint: [{ "@type": "ContactPoint", telephone: "+91-7015260003", contactType: "customer service", areaServed: "IN", availableLanguage: ["English", "Hindi", "Punjabi"] }],
   areaServed: [{"@type":"City","name":"Ambala"},{"@type":"AdministrativeArea","name":"Haryana"},{"@type":"AdministrativeArea","name":"Chandigarh"},{"@type":"AdministrativeArea","name":"Punjab"},{"@type":"AdministrativeArea","name":"Rajasthan"},{"@type":"Country","name":"India"}],
   address: { "@type": "PostalAddress", addressLocality: "Ambala City", addressRegion: "Haryana", addressCountry: "IN" },
-  knowsAbout: ["used cars","second hand cars","new cars","vehicle selling","car service","car repair","car inspection","car detailing","RC transfer","RTO assistance","car finance","car insurance","roadside assistance","car tyres","car battery","EV services","vehicle logistics","self-drive rental","vehicle verification","automotive services","vehicle mobility"],
+  knowsAbout: ["used cars","second hand cars","new cars","vehicle selling","car service","car repair","car inspection","car detailing","RC transfer","RTO assistance","car finance","car insurance","roadside assistance","car tyres","car battery","EV services","vehicle logistics","self-drive rental","vehicle verification","automotive services","vehicle mobility","NRI car care India","remote vehicle assistance","defence personnel vehicle assistance","senior citizen car assistance","outstation car assistance","vehicle care while owner is abroad"],
   sameAs: [
     "https://www.instagram.com/rohillamultibrandcars/",
     "https://www.facebook.com/profile.php?id=100094277025442",
