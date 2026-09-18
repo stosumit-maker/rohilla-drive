@@ -6,6 +6,11 @@ import {usePathname} from "next/navigation";
 const titles:Record<string,string>={
   "/admin":"Administration Console",
   "/admin/add-vehicle":"Inventory Management",
+  "/admin/photo-listing":"Photo-First Listing",
+  "/admin/draft-review":"Draft Review",
+  "/admin/seller-submissions":"Seller Submissions",
+  "/admin/service-operations":"Service Operations",
+  "/admin/partner-kyc":"Partner KYC & Documents",
   "/admin/revenue":"Revenue & Collections",
   "/admin/new-vehicles":"New Vehicle Leads",
   "/admin/deal-rooms":"Deal Management",
@@ -23,6 +28,7 @@ const titles:Record<string,string>={
   "/dealer/growth":"Marketing Studio",
   "/dealer/language":"Language Operations",
   "/partner":"Partner Workspace",
+  "/partner/kyc":"KYC & Documents",
   "/partner/deals":"Deal Management",
   "/partner/growth":"Marketing Studio",
   "/partner/language":"Language Operations"
