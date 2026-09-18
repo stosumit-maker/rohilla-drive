@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import {useEffect,useState} from "react";
 import {supabase} from "../supabaseClient";
 import LegalConsent from "./LegalConsent";
 
@@ -18,6 +18,26 @@ export default function AmbalaLeadFunnel({source="ambala_lead_funnel",defaultMod
   const [timing,setTiming]=useState("Within 15 days");
   const [busy,setBusy]=useState(false);
   const [msg,setMsg]=useState("");
+  const [leadSource,setLeadSource]=useState(source);
+  const [campaign,setCampaign]=useState("");
+
+  useEffect(()=>{
+    try{
+      const params=new URLSearchParams(window.location.search);
+      const rawSource=(params.get("utm_source")||params.get("source")||"").toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,48);
+      const rawCampaign=(params.get("utm_campaign")||"").toLowerCase().replace(/[^a-z0-9_-]/g,"").slice(0,64);
+      if(rawSource)setLeadSource(`external_${rawSource}`.slice(0,64));
+      else if(document.referrer){
+        const host=new URL(document.referrer).hostname.replace(/^www\./,"").toLowerCase().replace(/[^a-z0-9.-]/g,"").slice(0,45);
+        if(host&&!host.endsWith("rohilladrive.com"))setLeadSource(`referral_${host}`.slice(0,64));
+      }
+      if(rawCampaign)setCampaign(rawCampaign);
+      if((params.get("intent")||"").toLowerCase()==="sell")setMode("sell");
+      const model=params.get("model");if(model)setCar(model.slice(0,100));
+      const cityParam=params.get("city");if(cityParam)setCity(cityParam.slice(0,80));
+      const budgetParam=(params.get("budget")||"").replace(/\D/g,"");if(budgetParam)setBudget(budgetParam.slice(0,10));
+    }catch{}
+  },[source]);
 
   function reset(){
     setName("");setPhone("");setCar("");setBudget("");setYear("");setTiming("Within 15 days");
@@ -30,8 +50,8 @@ export default function AmbalaLeadFunnel({source="ambala_lead_funnel",defaultMod
     setBusy(true);setMsg("Saving your requirement…");
     const buying=mode==="buy";
     const message=buying
-      ?[`Wanted car: ${car}`,budget?`Budget: ₹${Number(budget).toLocaleString("en-IN")}`:"",`Purchase timing: ${timing}`,`City: ${city}`].filter(Boolean).join("\n")
-      :[`Car to sell: ${car}`,year?`Year: ${year}`:"",budget?`Expected price: ₹${Number(budget).toLocaleString("en-IN")}`:"",`City: ${city}`].filter(Boolean).join("\n");
+      ?[`Wanted car: ${car}`,budget?`Budget: ₹${Number(budget).toLocaleString("en-IN")}`:"",`Purchase timing: ${timing}`,`City: ${city}`,campaign?`Campaign: ${campaign}`:""].filter(Boolean).join("\n")
+      :[`Car to sell: ${car}`,year?`Year: ${year}`:"",budget?`Expected price: ₹${Number(budget).toLocaleString("en-IN")}`:"",`City: ${city}`,campaign?`Campaign: ${campaign}`:""].filter(Boolean).join("\n");
 
     const {error}=await db.from("leads").insert({
       customer_name:name.trim(),
@@ -39,9 +59,12 @@ export default function AmbalaLeadFunnel({source="ambala_lead_funnel",defaultMod
       requirement:buying?"Buy Used Car in Ambala":"Sell Used Car in Ambala",
       message,
       status:"new",
-      source,
+      source:leadSource,
       enquiry_type:buying?"buy_vehicle":"sell_vehicle",
-      new_or_used:"used"
+      new_or_used:"used",
+      customer_city:city.trim()||null,
+      preferred_model:car.trim()||null,
+      budget:budget?Number(budget):null
     });
     setBusy(false);
     if(error){
