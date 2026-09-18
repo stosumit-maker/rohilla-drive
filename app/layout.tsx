@@ -12,6 +12,7 @@ import HomeExperienceEnhancer from "./components/HomeExperienceEnhancer";
 import LegalFooter from "./components/LegalFooter";
 import PortalExperience from "./components/PortalExperience";
 import PortalCopyPolish from "./components/PortalCopyPolish";
+import { Analytics } from "@vercel/analytics/next";
 
 const site = "https://www.rohilladrive.com";
 const languages={"en-IN":"/en","hi-IN":"/hi","pa-IN":"/pa","kn-IN":"/kn","ta-IN":"/ta","te-IN":"/te","ml-IN":"/ml","mr-IN":"/mr","gu-IN":"/gu","bn-IN":"/bn","or-IN":"/or","ur-IN":"/ur","x-default":"/"};
@@ -27,14 +28,14 @@ export const metadata: Metadata = {
     type: "website",
     url: `${site}/`,
     siteName: "ROHILLA DRIVE",
-    title: "ROHILLA DRIVE | Cars & Automotive Services Network",
-    description: "Cars, buying and selling, new-vehicle assistance, inspection, repair, RC/RTO, finance, insurance, roadside and connected automotive services from ROHILLA DRIVE.",
+    title: "Used Cars, Sell Car & Vehicle Services in Ambala | ROHILLA DRIVE",
+    description: "Buy used cars, sell your car and request vehicle services in Ambala through ROHILLA DRIVE by Rohilla Multibrand Cars.",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "ROHILLA DRIVE official website" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ROHILLA DRIVE | Cars & Automotive Services Network",
-    description: "Vehicle buying, selling, new-car assistance, inspection, repair, detailing, RC/RTO, finance, insurance and mobility support from ROHILLA DRIVE.",
+    title: "Used Cars, Sell Car & Vehicle Services in Ambala | ROHILLA DRIVE",
+    description: "Used cars, car selling, new-car assistance and vehicle services in Ambala from ROHILLA DRIVE by Rohilla Multibrand Cars.",
     images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
@@ -94,5 +95,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <HomeExperienceEnhancer />
     <LanguageExperience />
     <PublicQuickLinks />
+    <Analytics />
   </body></html>;
 }
