@@ -20,7 +20,7 @@ export default function PublicQuickLinks(){
    <a href="/assistant" style={{...base,background:"#2a2110",color:"#f4d38a"}}>ROHILLA DRIVE Assistant</a>
    <a href="/language-assist" style={{...base,background:"#312e81",color:"#eef2ff"}}>Language Assistance</a>
    <a href="/new-vehicles" style={{...base,background:"#173326",color:"#f4d38a"}}>New Vehicle Assistance</a>
-   <a href="/business-hub" style={{...base,background:"#111827",color:"#fff"}}>Business Hub</a>
+   <a href="/business-hub" style={{...base,background:"#111827",color:"#fff"}}>Create Business Account / Business Hub</a>\n   <a href="/dealer" style={{...base,background:"#fff",color:"#111827",border:"1px solid #d1d5db"}}>Dealer Sign In</a>\n   <a href="/partner" style={{...base,background:"#fff",color:"#111827",border:"1px solid #d1d5db"}}>Partner Sign In</a>
    <button onClick={()=>setOpen(false)} style={{border:"1px solid #d1d5db",background:"#fff",color:"#111827",borderRadius:12,padding:"9px 12px",fontWeight:900}}>Close Menu</button>
   </div>}
   <button onClick={()=>setOpen(x=>!x)} aria-expanded={open} aria-label="ROHILLA DRIVE quick menu" style={{border:"1px solid #d7b56d",background:"#111827",color:"#f4d38a",borderRadius:999,padding:"11px 15px",fontWeight:900,boxShadow:"0 8px 24px rgba(0,0,0,.22)",fontSize:13}}>{open?"× Close":"Menu"}</button>
