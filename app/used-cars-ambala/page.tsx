@@ -5,7 +5,7 @@ import AmbalaLeadFunnel from "../components/AmbalaLeadFunnel";
 export const revalidate=300;
 
 export const metadata:Metadata={
-  title:"Used Cars in Ambala | Second Hand Cars",
+  title:"Used Cars in Ambala | Second Hand Cars for Sale",
   description:"Browse current used and second hand cars in Ambala City from ROHILLA DRIVE by Rohilla Multibrand Cars. View price, year, fuel, kilometres, photos and enquire directly.",
   alternates:{canonical:"/used-cars-ambala"},
   openGraph:{
@@ -67,7 +67,7 @@ export default async function UsedCarsAmbala(){
     <section className="hero" style={{paddingTop:52,paddingBottom:52}}>
       <div className="heroText">
         <span>ROHILLA MULTIBRAND CARS • AMBALA CITY</span>
-        <h1>Used Cars in Ambala City</h1>
+        <h1>Used Cars & Second Hand Cars for Sale in Ambala</h1>
         <p className="heroSub">Second hand cars • Pre-owned cars • Direct vehicle enquiry</p>
         <p>Browse current ROHILLA DRIVE listings in Ambala with available price, year, kilometres, fuel, ownership and vehicle photos. Inventory changes as vehicles are added or sold.</p>
         <div className="row" style={{marginTop:18}}>
