@@ -17,7 +17,7 @@ export default function PublicQuickLinks(){
    {shareNote&&<small style={{color:"#166534",fontWeight:900}}>{shareNote}</small>}
    <a href="/inventory" style={{...base,background:"#0f172a",color:"#fff"}}>Browse Full Inventory</a>
    <a href="/sell" style={{...base,background:"#7c2d12",color:"#fff"}}>Sell / List My Vehicle</a>
-   <a href="/assistant" style={{...base,background:"#2a2110",color:"#f4d38a"}}>ROHILLA DRIVE Assistant</a>
+   <a href="/assistant" style={{...base,background:"#2a2110",color:"#f4d38a"}}>CarMentor</a>
    <a href="/language-assist" style={{...base,background:"#312e81",color:"#eef2ff"}}>Language Assistance</a>
    <a href="/new-vehicles" style={{...base,background:"#173326",color:"#f4d38a"}}>New Vehicle Assistance</a>
    <a href="/business-hub" style={{...base,background:"#111827",color:"#fff"}}>Create Business Account / Business Hub</a>

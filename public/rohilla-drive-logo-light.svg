@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 180" role="img" aria-labelledby="title desc"><title id="title">ROHILLA DRIVE</title><desc id="desc">Rohilla Drive logo for light backgrounds</desc><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#1597ff"/><stop offset="1" stop-color="#55d6be"/></linearGradient></defs><circle cx="90" cy="90" r="70" fill="none" stroke="url(#g)" stroke-width="12"/><path d="M45 112c20-30 70-55 90-10" fill="none" stroke="#07111f" stroke-width="10" stroke-linecap="round"/><path d="M63 72h54l-18 28H78z" fill="none" stroke="#07111f" stroke-width="9" stroke-linejoin="round"/><text x="180" y="82" font-family="Arial,Helvetica,sans-serif" font-size="45" font-weight="800" letter-spacing="4" fill="#07111f">ROHILLA</text><text x="180" y="132" font-family="Arial,Helvetica,sans-serif" font-size="38" font-weight="700" letter-spacing="8" fill="url(#g)">DRIVE</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 170" role="img" aria-labelledby="t d">
+<title id="t">ROHILLA DRIVE</title><desc id="d">Rohilla Drive automotive brand mark for light backgrounds</desc>
+<rect x="10" y="18" width="128" height="128" rx="34" fill="#08111F"/>
+<text x="29" y="105" font-family="Arial,Helvetica,sans-serif" font-size="64" font-weight="900" letter-spacing="-6" fill="#FFFFFF">RD</text>
+<path d="M76 124 C82 100 86 77 90 42" fill="none" stroke="#2F6BFF" stroke-width="10" stroke-linecap="round"/>
+<path d="M91 112 L96 91 M99 77 L103 58" stroke="#D6B25E" stroke-width="5" stroke-linecap="round"/>
+<text x="165" y="82" font-family="Arial,Helvetica,sans-serif" font-size="48" font-weight="900" letter-spacing="2" fill="#08111F">ROHILLA</text>
+<text x="165" y="128" font-family="Arial,Helvetica,sans-serif" font-size="42" font-weight="800" letter-spacing="5" fill="#2F6BFF">DRIVE</text>
+<rect x="555" y="103" width="122" height="3" rx="2" fill="#D6B25E"/>
+<text x="555" y="95" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700" letter-spacing="2.2" fill="#475569">AUTOMOTIVE</text>
+</svg>

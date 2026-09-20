@@ -42,7 +42,7 @@ export default function Home(){
  </div>;
  return <main>
  <header>
-  <div className="brand"><img className="rdLogo" src="/rohilla-drive-logo.svg" alt="Rohilla Drive"/><small>by Rohilla Multibrand Cars</small></div>
+  <div className="brand"><img className="rdLogo" src="/rohilla-drive-logo.svg" alt="Rohilla Drive"/></div>
   <nav><a href="/inventory">Cars</a><a href="/sell-car-ambala">Sell Your Car</a><a href="#services">Services</a><a href="#about">About</a></nav>
   <div className="topActions"><a className="call" href="/verify">Verify Vehicle</a>{socialLinks}<button className="waTop" onClick={()=>whatsapp("Hello Rohilla Drive, I want to know about available cars.")}>WhatsApp</button></div>
  </header>
@@ -54,24 +54,24 @@ export default function Home(){
  <section className="hero"><div className="heroText">
   <span>ROHILLA DRIVE • BY ROHILLA MULTIBRAND CARS</span>
   <h1>Buy & Sell Cars in Ambala.</h1>
-  <p className="heroSub">Used Cars • Sell Your Car • New Car Enquiry • Vehicle Services</p>
-  <p>Browse available cars or tell us exactly what you need. If the right car is not listed, send your requirement and our team will follow up.</p>
-  <div className="search"><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by brand, model, year or city..."/><select value={fuel} onChange={e=>setFuel(e.target.value)}><option>All</option><option>Petrol</option><option>Diesel</option><option>CNG</option><option>Electric</option><option>Hybrid</option></select><button onClick={browseInventory}>Search Cars</button></div>
+  <p className="heroSub">Used Cars • Sell Your Car • New Cars • Vehicle Services</p>
+  <p>Browse available cars, sell your car or share your requirement. Need help choosing? CarMentor can guide you.</p>
+  <div className="search"><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by brand, model, year or city..."/><select value={fuel} onChange={e=>setFuel(e.target.value)}><option>All</option><option>Petrol</option><option>Diesel</option><option>CNG</option><option>Electric</option><option>Hybrid</option></select><button onClick={browseInventory}>Search Cars</button></div><div className="carMentorNudge"><span>Not sure what to choose?</span><a href="/assistant">Ask CarMentor →</a></div>
  </div></section>
 
  <section className="section actionSection">
   <div className="primaryActions sixActions">
    <a href="/inventory"><span>🚘</span><b>Available Cars</b></a>
    <a href="/sell-car-ambala"><span>🏷️</span><b>Sell Your Car</b></a>
-   <a href="/find-car-ambala"><span>🎯</span><b>Find a Car</b></a>
+   <a href="/assistant"><span>🎯</span><b>Find a Car</b></a>
    <a href="/new-cars/ambala"><span>✨</span><b>New Cars</b></a>
   </div>
  </section>
 
  <section className="quickLead leadCapture" aria-label="Quick vehicle enquiry">
-  <div className="quickLeadCopy"><span>QUICK CAR ENQUIRY • AMBALA</span><h2>Buy, Sell or Find a Car</h2><p>Share your car requirement and our team will contact you.</p><div className="quickLeadBtns"><a className="secondary" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_quick_lead"})}>Call 7015260003</a><button type="button" className="secondary" onClick={()=>whatsapp("Hello Rohilla Drive, I have a vehicle requirement in Ambala.")}>WhatsApp</button></div></div>
+  <div className="quickLeadCopy"><span>QUICK ENQUIRY • AMBALA</span><h2>Send Your Car Requirement</h2><p>Buying, selling or looking for a specific car? Share the details and we will contact you.</p><div className="quickLeadBtns"><a className="secondary" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_quick_lead"})}>Call 7015260003</a><button type="button" className="secondary" onClick={()=>whatsapp("Hello Rohilla Drive, I have a vehicle requirement in Ambala.")}>WhatsApp</button></div></div>
   <form className="quickLeadForm" data-source="homepage_quick_lead" onSubmit={submitLead}>
-   <select value={leadType} onChange={e=>{const type=e.target.value;setLeadType(type);setLeadMessage(type==='vehicle sale'?'I want to sell my car. Please contact me for the next steps.':type==='new car purchase'?'I am looking for a new car. Please help with model, price and availability.':type==='vehicle service'?'I need vehicle service / inspection assistance. Please contact me.':'I am looking for a used car. Please contact me with suitable options.')}} aria-label="Requirement type"><option value="vehicle purchase">Buy a Used Car</option><option value="vehicle sale">Sell My Car</option><option value="new car purchase">New Car Enquiry</option><option value="vehicle service">Vehicle Service / Inspection</option></select>
+   <select value={leadType} onChange={e=>{const type=e.target.value;setLeadType(type);setLeadMessage(type==='vehicle sale'?'I want to sell my car. Please contact me for the next steps.':type==='new car purchase'?'I am looking for a new car. Please help with model, price and availability.':type==='vehicle service'?'I need vehicle service / inspection assistance. Please contact me.':'I am looking for a used car. Please contact me with suitable options.')}} aria-label="Requirement type"><option value="vehicle purchase">Buy a Used Car</option><option value="vehicle sale">Sell My Car</option><option value="new car purchase">New Car</option><option value="vehicle service">Vehicle Service / Inspection</option></select>
    <input value={leadName} onChange={e=>setLeadName(e.target.value)} placeholder="Your name" required/>
    <input value={leadPhone} onChange={e=>setLeadPhone(e.target.value)} placeholder="Mobile number" inputMode="tel" required/>
    <input value={leadLocation} onChange={e=>setLeadLocation(e.target.value)} placeholder="City / Location" required/>

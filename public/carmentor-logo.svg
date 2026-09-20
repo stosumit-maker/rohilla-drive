@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 170" role="img" aria-labelledby="t d">
+<title id="t">CarMentor by Rohilla Drive</title><desc id="d">CarMentor smart car guidance brand</desc>
+<rect x="10" y="18" width="128" height="128" rx="34" fill="#2F6BFF"/>
+<path d="M40 91 C40 63 60 45 87 45 C104 45 119 53 128 66" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+<path d="M128 66 L110 65 M128 66 L120 50" fill="none" stroke="#D6B25E" stroke-width="7" stroke-linecap="round"/>
+<path d="M45 113 C64 99 86 94 121 96" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+<text x="166" y="92" font-family="Arial,Helvetica,sans-serif" font-size="58" font-weight="900" letter-spacing="-2" fill="#08111F">Car</text>
+<text x="267" y="92" font-family="Arial,Helvetica,sans-serif" font-size="58" font-weight="900" letter-spacing="-2" fill="#2F6BFF">Mentor</text>
+<text x="168" y="126" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700" letter-spacing="2" fill="#64748B">BY ROHILLA DRIVE</text>
+</svg>
