@@ -99,7 +99,7 @@ body:not(:has(.rd-portal)) .floatingWa{box-shadow:0 8px 22px rgba(15,23,42,.16)!
 
 
 /* Lead generation: make the first public conversion path immediate and low-friction. */
-body:not(:has(.rd-portal)) .leadCapture{margin:-28px auto 24px;position:relative;z-index:2;background:#fff;border:1px solid #dfe5ec;box-shadow:0 18px 45px rgba(15,23,42,.12)}
+body:not(:has(.rd-portal)) .leadCapture{margin:18px auto 30px;position:relative;z-index:2;background:#fff;border:1px solid #dfe5ec;box-shadow:0 18px 45px rgba(15,23,42,.12)}
 body:not(:has(.rd-portal)) .leadCapture .quickLeadCopy{min-width:0;flex:1}
 body:not(:has(.rd-portal)) .leadCapture .quickLeadCopy>span{display:block;font-size:10px;font-weight:900;letter-spacing:1.2px;color:#8a6a2f;margin-bottom:8px}
 body:not(:has(.rd-portal)) .leadCapture h2{font-size:25px;line-height:1.12;margin-bottom:8px}
@@ -116,7 +116,7 @@ body:not(:has(.rd-portal)) .quickLeadBtns .secondary{display:inline-flex;align-i
 body:not(:has(.rd-portal)) .inventorySection .head .row{align-items:center;justify-content:flex-end}
 body:not(:has(.rd-portal)) .inventorySection .head .secondary{background:#fff!important;color:#172033!important;border:1px solid #cbd5e1!important}
 @media(max-width:800px){
- body:not(:has(.rd-portal)) .leadCapture{margin:-14px 5% 18px;padding:18px 16px!important;display:block!important}
+ body:not(:has(.rd-portal)) .leadCapture{margin:18px 5% 26px;padding:20px 16px!important;display:block!important}
  body:not(:has(.rd-portal)) .leadCapture .quickLeadCopy{margin-bottom:16px}
  body:not(:has(.rd-portal)) .leadCapture h2{font-size:22px}
  body:not(:has(.rd-portal)) .quickLeadForm{grid-template-columns:1fr}
