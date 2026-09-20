@@ -4,6 +4,7 @@ import "./trusted-assist.css";
 import "./portal.css";
 import "./production-polish.css";
 import type { Metadata } from "next";
+import Script from "next/script";
 import PublicQuickLinks from "./PublicQuickLinks";
 import PublicBackNavigation from "./components/PublicBackNavigation";
 import PublicRegistrationPrefix from "./components/PublicRegistrationPrefix";
@@ -86,6 +87,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return <html lang="en"><body>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+    <Script
+      id="metricool-tracker"
+      strategy="afterInteractive"
+      dangerouslySetInnerHTML={{
+        __html: `function loadScript(a){var b=document.getElementsByTagName("head")[0],c=document.createElement("script");c.type="text/javascript";c.src="https://tracker.metricool.com/resources/be.js";c.onreadystatechange=a;c.onload=a;b.appendChild(c)}loadScript(function(){beTracker.t({hash:"d2a15b616ac5438dd76d2b6436953b26"})});`
+      }}
+    />
     <PortalExperience />
     <PortalCopyPolish />
     <PublicBackNavigation />
