@@ -59,8 +59,8 @@ export default function LanguageExperience(){
    elements.forEach(el=>{const attrs=["placeholder","title","aria-label"];let map=attrOriginals.get(el)||{};attrs.forEach(attr=>{const v=el.getAttribute(attr);if(v&&v.length>1){if(!map[attr])map[attr]=v;items.push({kind:"attr",node:el,attr,value:map[attr]})}});attrOriginals.set(el,map)});
    let configured=true;
    for(let i=0;i<items.length;i+=40){const part=items.slice(i,i+40);const j=await translateBatch(part.map(x=>x.value),target);if(!j.configured){configured=false;break}const out=j.translations||[];part.forEach((item,k)=>{const value=out[k]||item.value;if(item.kind==="text")(item.node as Text).data=value;else (item.node as Element).setAttribute(item.attr!,value)})}
-   setNote(configured?`${language.nativeName} ✓`:"Translation connection pending — your language preference is saved.");
-  }catch{setNote("Language preference saved. Translation service is temporarily unavailable.")}finally{busy.current=false}
+   setNote(configured?`${language.nativeName} ✓`:"");
+  }catch{setNote("")}finally{busy.current=false}
  }
 
  function choose(next:string){

@@ -31,7 +31,7 @@ export default function HomeExperienceEnhancer(){
 
    if(!section)return;
    const title=section.querySelector("h2");
-   if(title&&title.textContent!=="Featured Used / Pre-Owned Inventory")title.textContent="Featured Used / Pre-Owned Inventory";
+   if(title&&title.textContent!=="Available Cars")title.textContent="Available Cars";
    const grid=section.querySelector(".grid");
    if(grid){
     const cards=Array.from(grid.querySelectorAll(":scope > article")) as HTMLElement[];

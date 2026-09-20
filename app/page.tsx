@@ -64,7 +64,7 @@ export default function Home(){
    <a href="/inventory"><span>🚘</span><b>Available Cars</b></a>
    <a href="/sell-car-ambala"><span>🏷️</span><b>Sell Your Car</b></a>
    <a href="/find-car-ambala"><span>🎯</span><b>Find a Car</b></a>
-   <a href="/new-cars/ambala"><span>✨</span><b>New Car Enquiry</b></a>
+   <a href="/new-cars/ambala"><span>✨</span><b>New Cars</b></a>
   </div>
  </section>
 
