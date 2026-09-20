@@ -53,7 +53,7 @@ export default function Home(){
 
  <section className="hero"><div className="heroText">
   <span>ROHILLA DRIVE • BY ROHILLA MULTIBRAND CARS</span>
-  <h1>Buy & Sell Cars in Ambala.<br/><span className="lifeLine">Simple enquiries. Clear vehicle details. Direct assistance.</span></h1>
+  <h1>Buy & Sell Cars in Ambala.</h1>
   <p className="heroSub">Used Cars • Sell Your Car • New Car Enquiry • Vehicle Services</p>
   <p>Browse available cars or tell us exactly what you need. If the right car is not listed, send your requirement and our team will follow up.</p>
   <div className="search"><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by brand, model, year or city..."/><select value={fuel} onChange={e=>setFuel(e.target.value)}><option>All</option><option>Petrol</option><option>Diesel</option><option>CNG</option><option>Electric</option><option>Hybrid</option></select><button onClick={browseInventory}>Search Cars</button></div>
@@ -69,7 +69,7 @@ export default function Home(){
  </section>
 
  <section className="quickLead leadCapture" aria-label="Quick vehicle enquiry">
-  <div className="quickLeadCopy"><span>QUICK ENQUIRY • AMBALA</span><h2>Tell us what you need</h2><p>Buying, selling or looking for vehicle assistance? Send the requirement once and we will follow up.</p><div className="quickLeadBtns"><a className="secondary" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_quick_lead"})}>Call 7015260003</a><button type="button" className="secondary" onClick={()=>whatsapp("Hello Rohilla Drive, I have a vehicle requirement in Ambala.")}>WhatsApp</button></div></div>
+  <div className="quickLeadCopy"><span>QUICK CAR ENQUIRY • AMBALA</span><h2>Buy, Sell or Find a Car</h2><p>Share your car requirement and our team will contact you.</p><div className="quickLeadBtns"><a className="secondary" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_quick_lead"})}>Call 7015260003</a><button type="button" className="secondary" onClick={()=>whatsapp("Hello Rohilla Drive, I have a vehicle requirement in Ambala.")}>WhatsApp</button></div></div>
   <form className="quickLeadForm" data-source="homepage_quick_lead" onSubmit={submitLead}>
    <select value={leadType} onChange={e=>{const type=e.target.value;setLeadType(type);setLeadMessage(type==='vehicle sale'?'I want to sell my car. Please contact me for the next steps.':type==='new car purchase'?'I am looking for a new car. Please help with model, price and availability.':type==='vehicle service'?'I need vehicle service / inspection assistance. Please contact me.':'I am looking for a used car. Please contact me with suitable options.')}} aria-label="Requirement type"><option value="vehicle purchase">Buy a Used Car</option><option value="vehicle sale">Sell My Car</option><option value="new car purchase">New Car Enquiry</option><option value="vehicle service">Vehicle Service / Inspection</option></select>
    <input value={leadName} onChange={e=>setLeadName(e.target.value)} placeholder="Your name" required/>
