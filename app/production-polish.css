@@ -4,10 +4,10 @@
 /* Public surfaces only. Private workspaces keep their own portal visual system. */
 body:not(:has(.rd-portal)){background:#f5f7fa;color:#101828}
 body:not(:has(.rd-portal)) header{border-bottom:1px solid #e2e7ee;box-shadow:0 4px 18px rgba(15,23,42,.045)}
-body:not(:has(.rd-portal)) .publicAccessBar{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:8px 5%;background:#fff;border-bottom:1px solid #e2e7ee;color:#475467;font-size:11px;font-weight:800}
-body:not(:has(.rd-portal)) .publicAccessBar span{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#667085;margin-right:2px}
-body:not(:has(.rd-portal)) .publicAccessBar a{display:inline-flex;align-items:center;min-height:32px;padding:6px 10px;border:1px solid #d5dde7;border-radius:999px;background:#fff;color:#172033;text-decoration:none;font-size:10px;font-weight:850}
-body:not(:has(.rd-portal)) .publicAccessBar a:first-of-type{background:#101b2d;color:#fff;border-color:#101b2d}
+body:not(:has(.rd-portal)) .publicAccessBar{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;padding:7px 5%;background:#f5f7fa;border-top:1px solid #e6ebf1;border-bottom:1px solid #e6ebf1;color:#667085;font-size:10px;font-weight:750}
+body:not(:has(.rd-portal)) .publicAccessBar span{font-size:8.5px;letter-spacing:.9px;text-transform:uppercase;color:#7b8798;margin-right:2px}
+body:not(:has(.rd-portal)) .publicAccessBar a{display:inline-flex;align-items:center;min-height:30px;padding:5px 9px;border:1px solid #d8e0e9;border-radius:999px;background:#fff;color:#475467;text-decoration:none;font-size:9.5px;font-weight:800}
+body:not(:has(.rd-portal)) .publicAccessBar a:first-of-type{background:#fff;color:#344054;border-color:#cfd8e3}
 body:not(:has(.rd-portal)) .hero{background:linear-gradient(135deg,#07101d 0%,#0d1a2d 58%,#17243a 100%)!important;padding-top:70px!important;padding-bottom:68px!important;border-bottom:1px solid rgba(215,181,109,.16)}
 body:not(:has(.rd-portal)) .heroText>span{color:#d7b56d!important;letter-spacing:1.4px!important}
 body:not(:has(.rd-portal)) .hero h1{letter-spacing:-1.7px;line-height:.98!important;max-width:920px}
@@ -22,20 +22,22 @@ body:not(:has(.rd-portal)) .search input,
 body:not(:has(.rd-portal)) .search select{border-color:#d7dde6;background:#fff;color:#172033}
 body:not(:has(.rd-portal)) .search button{background:linear-gradient(135deg,#14233a,#08111f);border:1px solid #14233a;box-shadow:none}
 
-/* Replace decorative emoji-heavy navigation with a cleaner text-led presentation. */
-body:not(:has(.rd-portal)) .primaryActions span,
-body:not(:has(.rd-portal)) .compactServices span,
+/* Consistent automotive line icons replace decorative emoji markers. */
 body:not(:has(.rd-portal)) .compactNetwork span,
 body:not(:has(.rd-portal)) .compactMobility span{display:none!important}
+body:not(:has(.rd-portal)) .premiumSvg{width:22px;height:22px;flex:0 0 auto;color:#8a6a2f;display:block}
+body:not(:has(.rd-portal)) .primaryActions .premiumSvg{width:23px;height:23px}
+body:not(:has(.rd-portal)) .compactServices .premiumSvg{width:19px;height:19px;color:#667085}
 body:not(:has(.rd-portal)) .primaryActions button,
 body:not(:has(.rd-portal)) .primaryActions a{min-height:64px!important;border-radius:12px!important;border:1px solid #dfe5ec!important;background:#fff!important;color:#172033!important;box-shadow:0 5px 16px rgba(15,23,42,.045)!important;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease!important}
 body:not(:has(.rd-portal)) .primaryActions button:hover,
 body:not(:has(.rd-portal)) .primaryActions a:hover{transform:translateY(-1px);border-color:#bfc9d7!important;box-shadow:0 8px 22px rgba(15,23,42,.075)!important}
 body:not(:has(.rd-portal)) .primaryActions b{font-size:12px!important;letter-spacing:.18px;line-height:1.2}
 
-body:not(:has(.rd-portal)) .trustedAssistStrip{animation:none!important;filter:none!important;will-change:auto;border-color:rgba(215,181,109,.56);background:linear-gradient(135deg,#0b1422,#172338);box-shadow:0 10px 26px rgba(7,16,29,.12);grid-template-columns:minmax(0,1fr) auto!important;padding:14px 16px!important}
+body:not(:has(.rd-portal)) .trustedAssistStrip{animation:none!important;filter:none!important;will-change:auto;border-color:rgba(215,181,109,.56);background:linear-gradient(135deg,#0b1422,#172338);box-shadow:0 10px 26px rgba(7,16,29,.12);grid-template-columns:auto minmax(0,1fr) auto!important;padding:14px 16px!important}
 body:not(:has(.rd-portal)) .trustedAssistStrip:after{display:none!important}
-body:not(:has(.rd-portal)) .trustedIcon{display:none!important}
+body:not(:has(.rd-portal)) .trustedIcon{display:grid!important;width:36px;height:36px;place-items:center;border-radius:10px;border:1px solid rgba(215,181,109,.34);background:rgba(215,181,109,.08)}
+body:not(:has(.rd-portal)) .trustedIcon .premiumSvg{width:20px;height:20px;color:#e0bf7c}
 body:not(:has(.rd-portal)) .trustedCopy b{font-size:11px;letter-spacing:1.1px;color:#d7b56d}
 body:not(:has(.rd-portal)) .trustedCopy em{font-size:14px;color:#f8fafc;font-weight:750}
 body:not(:has(.rd-portal)) .trustedCopy small{color:#aebaca;line-height:1.45}
@@ -88,8 +90,9 @@ body:not(:has(.rd-portal)) .floatingWa{box-shadow:0 8px 22px rgba(15,23,42,.16)!
  body:not(:has(.rd-portal)) .primaryActions button,
  body:not(:has(.rd-portal)) .primaryActions a{min-height:52px!important;padding:7px 6px!important}
  body:not(:has(.rd-portal)) .primaryActions b{font-size:11px!important}
- body:not(:has(.rd-portal)) .trustedAssistStrip{grid-template-columns:1fr!important;padding:12px!important}
- body:not(:has(.rd-portal)) .trustedCta{grid-column:auto!important;margin-top:3px}
+ body:not(:has(.rd-portal)) .trustedAssistStrip{grid-template-columns:auto minmax(0,1fr)!important;padding:12px!important}
+ body:not(:has(.rd-portal)) .trustedIcon{width:32px;height:32px}
+ body:not(:has(.rd-portal)) .trustedCta{grid-column:2!important;margin-top:3px}
  body:not(:has(.rd-portal)) .trustedCopy em{font-size:12px}
  body:not(:has(.rd-portal)) .joinStrip{padding:10px}
  body:not(:has(.rd-portal)) .compactServices button,
