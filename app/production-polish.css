@@ -28,6 +28,7 @@ body:not(:has(.rd-portal)) .compactMobility span{display:none!important}
 body:not(:has(.rd-portal)) .premiumSvg{width:22px;height:22px;flex:0 0 auto;color:#8a6a2f;display:block}
 body:not(:has(.rd-portal)) .primaryActions .premiumSvg{width:23px;height:23px}
 body:not(:has(.rd-portal)) .compactServices .premiumSvg{width:19px;height:19px;color:#667085}
+body:not(:has(.rd-portal)) .photo .premiumSvg{width:52px;height:52px;color:#7b8798}
 body:not(:has(.rd-portal)) .primaryActions button,
 body:not(:has(.rd-portal)) .primaryActions a{min-height:64px!important;border-radius:12px!important;border:1px solid #dfe5ec!important;background:#fff!important;color:#172033!important;box-shadow:0 5px 16px rgba(15,23,42,.045)!important;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease!important}
 body:not(:has(.rd-portal)) .primaryActions button:hover,
