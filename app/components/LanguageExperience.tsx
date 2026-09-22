@@ -5,6 +5,7 @@ import {LANGUAGE_STORAGE_KEY,ROHILLA_LANGUAGES,languageByCode} from "../lib/rohi
 
 const originals=new WeakMap<Text,string>();
 const attrOriginals=new WeakMap<Element,Record<string,string>>();
+const translationCache=new Map<string,string>();
 
 function eligibleText(node:Text){
  const p=node.parentElement;if(!p)return false;
@@ -54,8 +55,21 @@ export default function LanguageExperience(){
  },[code,path]);
 
  async function translateBatch(texts:string[],target:string){
-  const r=await fetch("/api/translate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({texts,target,source:"en-IN"})});
-  return await r.json();
+  const keys=texts.map(text=>`${target}\u0000${text}`);
+  const cached=keys.map(key=>translationCache.get(key));
+  const missingIndexes=cached.map((value,index)=>value===undefined?index:-1).filter(index=>index>=0);
+  if(!missingIndexes.length)return {translations:cached as string[],configured:true,provider:"browser_cache"};
+  const missingTexts=missingIndexes.map(index=>texts[index]);
+  const r=await fetch("/api/translate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({texts:missingTexts,target,source:"en-IN"})});
+  const j=await r.json();
+  if(!r.ok||!j.configured)return j;
+  const translated=(j.translations||[]) as string[];
+  missingIndexes.forEach((originalIndex,k)=>{
+   const value=translated[k]||texts[originalIndex];
+   translationCache.set(keys[originalIndex],value);
+   cached[originalIndex]=value;
+  });
+  return {...j,translations:cached as string[]};
  }
 
  async function translateVisiblePage(target:string){
@@ -64,15 +78,24 @@ export default function LanguageExperience(){
   try{
    const root=document.body;
    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes:Text[]=[];let n:Node|null;
-   while((n=walker.nextNode())){const t=n as Text;if(!eligibleText(t))continue;if(!originals.has(t))originals.set(t,t.data);nodes.push(t);if(nodes.length>=240)break}
+   while((n=walker.nextNode())){const t=n as Text;if(!eligibleText(t))continue;if(!originals.has(t))originals.set(t,t.data);nodes.push(t);if(nodes.length>=500)break}
    const elements=[...root.querySelectorAll("input[placeholder],textarea[placeholder],[title],[aria-label]")].filter(el=>!el.closest("[data-no-translate]"));
    const items:{kind:"text"|"attr";node:Text|Element;attr?:string;value:string}[]=[];
    nodes.forEach(node=>items.push({kind:"text",node,value:originals.get(node)||node.data}));
    elements.forEach(el=>{const attrs=["placeholder","title","aria-label"];let map=attrOriginals.get(el)||{};attrs.forEach(attr=>{const v=el.getAttribute(attr);if(v&&v.length>1){if(!map[attr])map[attr]=v;items.push({kind:"attr",node:el,attr,value:map[attr]})}});attrOriginals.set(el,map)});
    let configured=true;
-   for(let i=0;i<items.length;i+=12){const part=items.slice(i,i+12);const j=await translateBatch(part.map(x=>x.value),target);if(!j.configured){configured=false;break}const out=j.translations||[];part.forEach((item,k)=>{const value=out[k]||item.value;if(item.kind==="text")(item.node as Text).data=value;else (item.node as Element).setAttribute(item.attr!,value)})}
-   setNote(configured?`${language.nativeName} ✓`:"");
-  }catch{setNote("")}finally{busy.current=false}
+   const parts:{items:typeof items;texts:string[]}[]=[];
+   for(let i=0;i<items.length;i+=20){const part=items.slice(i,i+20);parts.push({items:part,texts:part.map(x=>x.value)})}
+   for(let i=0;i<parts.length&&configured;i+=4){
+    const group=parts.slice(i,i+4);
+    const results=await Promise.all(group.map(part=>translateBatch(part.texts,target)));
+    results.forEach((j,index)=>{
+     if(!j.configured){configured=false;return}
+     const out=j.translations||[];group[index].items.forEach((item,k)=>{const value=out[k]||item.value;if(item.kind==="text")(item.node as Text).data=value;else (item.node as Element).setAttribute(item.attr!,value)})
+    });
+   }
+   setNote(configured?`${language.nativeName} ✓`:"Translation unavailable — please try again.");
+  }catch{setNote("Translation unavailable — please try again.")}finally{busy.current=false}
  }
 
  function choose(next:string){
