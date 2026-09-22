@@ -138,8 +138,8 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
   {ready&&<div className="rdPortalTopbar" data-no-translate>
    <div className="rdPortalTopbarInner">
     <a className="rdPortalIdentity" href="/admin" aria-label="Administration dashboard">
-     <span className="rdPortalMonogram">RD</span>
-     <span className="rdPortalIdentityCopy"><b>ROHILLA DRIVE</b><small>Administration Console</small></span>
+     <img className="rdPortalBrandLogo" src="/rohilla-drive-logo-light.svg" alt="Rohilla Drive"/>
+     <span className="rdPortalIdentityCopy"><small>Administration Console</small></span>
     </a>
     <nav className="rdPortalNav" aria-label="Administration navigation">
      {primaryNavLinks.map(link=><a key={link.href} href={link.href} style={navItemStyle} className={path===link.href?"active":""} aria-current={path===link.href?"page":undefined}>{link.label}</a>)}
