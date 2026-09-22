@@ -64,7 +64,7 @@ export default function Home(){
  <header>
   <div className="brand"><img className="rdLogo" src="/rohilla-drive-logo.svg" alt="Rohilla Drive"/></div>
   <nav><a href="/inventory">Cars</a><a href="/sell-car-ambala">Sell Your Car</a><a href="#services">Services</a><a href="#about">About</a></nav>
-  <div className="topActions"><a className="call" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_header"})}>Call</a>{socialLinks}<button className="waTop" onClick={()=>whatsapp("Hello Rohilla Drive, I want to know about available cars.")}>WhatsApp</button></div>
+  <div className="topActions"><button type="button" className="headerLanguage" data-no-translate onClick={()=>window.dispatchEvent(new Event("rohilla-open-language"))} aria-label="Change website language">🌐 <span>Language</span></button><a className="call" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_header"})}>Call</a>{socialLinks}<button className="waTop" onClick={()=>whatsapp("Hello Rohilla Drive, I want to know about available cars.")}>WhatsApp</button></div>
  </header>
 
  <section className="hero"><div className="heroText">
