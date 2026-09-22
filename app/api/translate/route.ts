@@ -15,16 +15,23 @@ async function googleTranslate(texts:string[],target:string,source?:string){
 }
 
 async function gatewayTranslate(texts:string[],target:string,source?:string){
- const model=process.env.ROHILLA_TRANSLATE_MODEL||"openai/gpt-5.6-sol";
- const {text}=await generateText({
-  model,
-  system:"You are Rohilla Drive's translation layer. Translate faithfully, preserve vehicle model names, prices, registration codes, phone numbers and meaning. Do not add commentary. Return JSON only as {\"translations\":[...]} with exactly one output for each input.",
-  prompt:JSON.stringify({source:source||"auto",target,texts}),
-  providerOptions:{gateway:{tags:["rohilla-drive","translation"],disallowPromptTraining:true}}
- });
- const parsed=cleanJson(text);const out=parsed?.translations;
- if(!Array.isArray(out)||out.length!==texts.length)throw new Error("AI Gateway returned an invalid translation array");
- return out.map((x:any,i:number)=>typeof x==="string"?x:texts[i]);
+ const preferred=process.env.ROHILLA_TRANSLATE_MODEL;
+ const models=[preferred,"google/gemini-3.1-flash-lite","openai/gpt-5.4-mini"].filter((x,i,a):x is string=>Boolean(x)&&a.indexOf(x)===i);
+ let lastError:unknown;
+ for(const model of models){
+  try{
+   const {text}=await generateText({
+    model,
+    system:"You are Rohilla Drive's translation layer. Translate faithfully and naturally. Preserve brand names, vehicle model names, prices, registration codes, phone numbers and meaning. Do not add commentary. Return JSON only as {\"translations\":[...]} with exactly one output for each input.",
+    prompt:JSON.stringify({source:source||"auto",target,texts}),
+    providerOptions:{gateway:{tags:["rohilla-drive","translation"],disallowPromptTraining:true}}
+   });
+   const parsed=cleanJson(text);const out=parsed?.translations;
+   if(!Array.isArray(out)||out.length!==texts.length)throw new Error("AI Gateway returned an invalid translation array");
+   return {translations:out.map((x:any,i:number)=>typeof x==="string"?x:texts[i]),model};
+  }catch(error){lastError=error}
+ }
+ throw lastError||new Error("No translation model available");
 }
 
 export async function POST(req:Request){
@@ -44,7 +51,8 @@ export async function POST(req:Request){
   if(!texts.length)return NextResponse.json({translations:[],configured:true,provider:"none_needed"},{headers});
   if(source&&target===source)return NextResponse.json({translations:texts,configured:true,provider:"identity"},{headers});
   try{const out=await googleTranslate(texts,target,source);if(out)return NextResponse.json({translations:out,configured:true,provider:"google_cloud_translation"},{headers})}catch{}
-  try{const out=await gatewayTranslate(texts,target,source);return NextResponse.json({translations:out,configured:true,provider:"vercel_ai_gateway"},{headers})}catch{
+  try{const out=await gatewayTranslate(texts,target,source);return NextResponse.json({translations:out.translations,configured:true,provider:"vercel_ai_gateway",model:out.model},{headers})}catch(error){
+   console.error("Rohilla translation gateway unavailable",error);
    return NextResponse.json({translations:texts,configured:false,provider:"gateway_unavailable",error:"Translation service is temporarily unavailable."},{status:200,headers});
   }
  }catch{return NextResponse.json({error:"Translation request could not be processed"},{status:400,headers:{"Cache-Control":"no-store"}})}
