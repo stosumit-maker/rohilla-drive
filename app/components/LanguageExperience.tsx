@@ -14,7 +14,7 @@ function eligibleText(node:Text){
 }
 
 function restoreVisiblePage(){
- const root=document.querySelector("main")||document.body;
+ const root=document.body;
  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n:Node|null;
  while((n=walker.nextNode())){const t=n as Text;const original=originals.get(t);if(original!==undefined&&t.data!==original)t.data=original}
  const elements=[...root.querySelectorAll("input[placeholder],textarea[placeholder],[title],[aria-label]")];
@@ -35,6 +35,9 @@ export default function LanguageExperience(){
  useEffect(()=>{
   const saved=localStorage.getItem(LANGUAGE_STORAGE_KEY);
   if(saved){setCode(saved);setHasSaved(true)}
+  const open=()=>setShow(true);
+  window.addEventListener("rohilla-open-language",open);
+  return()=>window.removeEventListener("rohilla-open-language",open);
  },[privatePortal]);
 
  useEffect(()=>{
@@ -44,7 +47,7 @@ export default function LanguageExperience(){
   restoreVisiblePage();
   if(code==="en-IN"){setNote("");return}
   translateVisiblePage(code);
-  const root=document.querySelector("main");if(!root)return;
+  const root=document.body;if(!root)return;
   const observer=new MutationObserver(()=>{if(debounce.current)window.clearTimeout(debounce.current);debounce.current=window.setTimeout(()=>translateVisiblePage(code),450)});
   observer.observe(root,{childList:true,subtree:true});
   return()=>{observer.disconnect();if(debounce.current)window.clearTimeout(debounce.current)};
@@ -59,7 +62,7 @@ export default function LanguageExperience(){
   if(busy.current||privatePortal)return;
   busy.current=true;setNote("Translating…");
   try{
-   const root=document.querySelector("main")||document.body;
+   const root=document.body;
    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes:Text[]=[];let n:Node|null;
    while((n=walker.nextNode())){const t=n as Text;if(!eligibleText(t))continue;if(!originals.has(t))originals.set(t,t.data);nodes.push(t);if(nodes.length>=240)break}
    const elements=[...root.querySelectorAll("input[placeholder],textarea[placeholder],[title],[aria-label]")].filter(el=>!el.closest("[data-no-translate]"));
@@ -80,8 +83,8 @@ export default function LanguageExperience(){
  if(privatePortal)return null;
 
  return <>
-  <button onClick={()=>setShow(true)} aria-label="Choose language" data-no-translate style={{position:"fixed",right:12,top:72,zIndex:10020,border:"1px solid #d7b56d",background:"#111827",color:"#f4d38a",borderRadius:999,padding:"8px 11px",fontWeight:800,boxShadow:"0 6px 20px rgba(0,0,0,.2)"}}>Language · {language.nativeName}</button>
-  {note&&code!=="en-IN"&&<div data-no-translate style={{position:"fixed",right:12,top:112,zIndex:10019,maxWidth:280,fontSize:11,padding:"6px 9px",borderRadius:9,background:"rgba(17,24,39,.94)",color:"#fff"}}>{note}</div>}
+  <button onClick={()=>setShow(true)} aria-label="Choose website language" data-no-translate style={{position:"fixed",right:10,top:82,zIndex:10020,border:"2px solid #d7b56d",background:"#fff",color:"#111827",borderRadius:999,padding:"10px 13px",fontWeight:900,fontSize:12,boxShadow:"0 8px 24px rgba(0,0,0,.22)",display:"inline-flex",alignItems:"center",gap:6}}>🌐 Language: {language.nativeName} ▾</button>
+  {note&&code!=="en-IN"&&<div data-no-translate style={{position:"fixed",right:10,top:130,zIndex:10019,maxWidth:280,fontSize:11,padding:"6px 9px",borderRadius:9,background:"rgba(17,24,39,.94)",color:"#fff"}}>{note}</div>}
   {show&&<div data-no-translate role="dialog" aria-modal="true" aria-label="Choose your language" style={{position:"fixed",inset:0,zIndex:10050,background:"rgba(3,7,18,.82)",display:"flex",alignItems:"center",justifyContent:"center",padding:"14px max(12px,env(safe-area-inset-right))"}}>
    <div style={{width:"min(620px,100%)",maxHeight:"88dvh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"#fff",color:"#111827",borderRadius:22,padding:"18px 16px 16px",boxShadow:"0 28px 80px rgba(0,0,0,.35)"}}>
     <div style={{display:"flex",justifyContent:"space-between",gap:10,alignItems:"flex-start"}}>
