@@ -8,7 +8,6 @@ import Script from "next/script";
 import PublicQuickLinks from "./PublicQuickLinks";
 import PublicBackNavigation from "./components/PublicBackNavigation";
 import PublicRegistrationPrefix from "./components/PublicRegistrationPrefix";
-import LanguageExperience from "./components/LanguageExperience";
 import HomeExperienceEnhancer from "./components/HomeExperienceEnhancer";
 import LegalFooter from "./components/LegalFooter";
 import PortalExperience from "./components/PortalExperience";
@@ -101,7 +100,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     {children}
     <LegalFooter />
     <HomeExperienceEnhancer />
-    <LanguageExperience />
     <PublicQuickLinks />
     <Analytics />
   </body></html>;
