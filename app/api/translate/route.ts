@@ -36,7 +36,7 @@ export async function POST(req:Request){
  if(declaredLength>20000)return NextResponse.json({error:"Translation request is too large"},{status:413,headers:{"Cache-Control":"no-store"}});
  try{
   const body=await req.json();const raw=Array.isArray(body?.texts)?body.texts:[body?.text];
-  if(raw.length>4)return NextResponse.json({error:"Too many translation items"},{status:413,headers:{"Cache-Control":"no-store"}});
+  if(raw.length>20)return NextResponse.json({error:"Too many translation items"},{status:413,headers:{"Cache-Control":"no-store"}});
   const texts=raw.filter((x:any)=>typeof x==="string").map((x:string)=>x.trim()).filter(Boolean);
   if(texts.some((x:string)=>x.length>2000)||texts.reduce((sum:number,x:string)=>sum+x.length,0)>6000)return NextResponse.json({error:"Translation request is too large"},{status:413,headers:{"Cache-Control":"no-store"}});
   const target=normalize(String(body?.target||"en-IN"));const source=body?.source&&body.source!=="auto"?normalize(String(body.source)):undefined;
