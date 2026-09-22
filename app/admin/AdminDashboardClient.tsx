@@ -71,7 +71,7 @@ async function add(e:React.FormEvent){
   }
   setPublishProgress({stage:'Uploading vehicle photos…',done:0,total:files.length,percent:20});
   let media:string[]=[];
-  try{media=await uploadPhotos(data.id,files)}catch(err:any){setMsg(err.message||'Photo upload failed. Vehicle saved as draft so you can retry safely.');setPublishProgress({stage:'Upload paused — saved as draft',done:0,total:files.length,percent:0});await load();return}
+  try{media=await uploadPhotos(data.id,files)}catch(err:any){await db.from('vehicles').update({status:'archived'}).eq('id',data.id);submissionId.current='';setAllowDuplicateOnce(false);setMsg((err?.message?err.message+' — ':'')+'Upload interrupted. Incomplete attempt is hidden; press Publish to retry safely.');setPublishProgress({stage:'Upload interrupted — safe to retry',done:0,total:files.length,percent:0});await load();return}
   setPublishProgress({stage:'Finalizing listing…',done:files.length,total:files.length,percent:92});
   const published=await db.from('vehicles').update({status:'published'}).eq('id',data.id);if(published.error)throw new Error(published.error.message);
   setPublishProgress({stage:'Published. Preparing social queue…',done:files.length,total:files.length,percent:97});
