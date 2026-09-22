@@ -15,7 +15,7 @@ function parseVehicleText(input:string){
  const model=Object.keys(modelBrands).sort((a,b)=>b.length-a.length).find(name=>lower.includes(name))||'';
  let brand=brandAliases.find(([key])=>lower.includes(key))?.[1]||modelBrands[model]||'';
  const yearMatch=clean.match(/\b(20(?:0\d|1\d|2\d))(?:\s*\/\s*(20(?:0\d|1\d|2\d)))?\b/);const year=yearMatch?.[1]||'';
- const lakhKm=lower.match(/(\d+(?:\.\d+)?)\s*(?:lac|lakh|lacs|lakhs)\s*(?:km|kms|driven)?/i);
+ const lakhKm=lower.match(/(\d+(?:\.\d+)?)\s*(?:lac|lakh|lacs|lakhs)\s*(?:km|kms|driven)\b/i);
  const directKm=lower.match(/(\d{1,3}(?:,\d{3})+|\d{4,6})\s*(?:km|kms|kilomet(?:er|re)s?|driven)\b/i);
  const km=lakhKm?Math.round(Number(lakhKm[1])*100000):directKm?Number(directKm[1].replace(/,/g,'')):'';
  const priceMatch=lower.match(/(?:asking(?:\s*price)?|price|rate|₹|rs\.?|inr)\s*[:=-]?\s*(\d+(?:[.,]\d+)*)\s*(lac|lakh|lacs|lakhs|l)?/i);
@@ -24,7 +24,7 @@ function parseVehicleText(input:string){
  const ownerWords:Record<string,number>={first:1,second:2,third:3,fourth:4};const owner=ownerMatch?(ownerMatch[1]?Number(ownerMatch[1]):ownerWords[String(ownerMatch[2]).toLowerCase()]):'';
  const fuelMatch=lower.match(/\b(petrol|diesel|cng|electric|ev|hybrid)\b/i);const fuel=fuelMatch?(fuelMatch[1].toLowerCase()==='ev'?'Electric':fuelMatch[1][0].toUpperCase()+fuelMatch[1].slice(1).toLowerCase()):'';
  const cityMatch=clean.match(/(?:location|city)\s*[:=-]?\s*([A-Za-z ]{2,28}?)(?=\s+(?:price|rate|₹|rs\.?|\d{4,6}\s*km|\d+\s*(?:st|nd|rd|th)?\s*owner)|$)/i);const city=cityMatch?.[1]?.trim()||'Ambala City';
- let variant='';if(model){const idx=lower.indexOf(model.toLowerCase());if(idx>=0){const tail=clean.slice(idx+model.length).trim();variant=tail.split(/\b(?:petrol|diesel|cng|electric|hybrid|automatic|manual|amt|dct|cvt|\d+\s*(?:st|nd|rd|th)?\s*owner|\d[\d,.]*\s*(?:km|kms|lac|lakh)|price|rate|asking|₹|rs\.)\b/i)[0].trim().replace(/^(?:-|:)+|(?:-|:)+$/g,'').trim();if(variant.split(/\s+/).length>5)variant=''}}
+ let variant='';const variantMatch=clean.match(/\b(AX7L|AX7|HTX\+?|GTX\+?|X-?Line|RXT|RXZ|Titanium(?:\s+Plus)?|Trendline|Trend|Highline|Sportz|Asta|Era|Delta|Zeta|Alpha|ZXI(?:\+|\(O\))?|VXI(?:\+|\(O\))?|VDI|LDI|VX|ZX|XZ\+|XT\+|XZ|XT|HSE|SE|L&K|EX|SX\+?)\b/i);if(variantMatch)variant=variantMatch[1];else if(model){const idx=lower.indexOf(model.toLowerCase());if(idx>=0){const tail=clean.slice(idx+model.length).trim();variant=tail.split(/\b(?:petrol|diesel|cng|electric|hybrid|automatic|manual|amt|dct|cvt|\d+\s*(?:st|nd|rd|th)?\s*owner|\d[\d,.]*\s*(?:km|kms|lac|lakh)|price|rate|asking|₹|rs\.)\b/i)[0].trim().replace(/^(?:-|:)+|(?:-|:)+$/g,'').trim();if(variant.split(/\s+/).length>5)variant=''}}
  return {brand,model:model?model.replace(/\b\w/g,x=>x.toUpperCase()):'',variant,year,km,fuel,owner_count:owner,price,city,notes:input.trim()};
 }
 function applyQuickDetails(){if(!quickText.trim()){setMsg('Paste the vehicle details first.');return}const parsed=parseVehicleText(quickText);setF((prev:any)=>({...prev,...Object.fromEntries(Object.entries(parsed).filter(([,v])=>v!==''&&v!==undefined))}));const missing=['brand','model','year','km','fuel','owner_count','price'].filter(key=>(parsed as any)[key]===''||(parsed as any)[key]===undefined);setMsg(missing.length?'Details read. Please check: '+missing.join(', ')+'.':'Details auto-filled. Add photos and publish.');}
