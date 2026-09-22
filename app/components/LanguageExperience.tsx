@@ -13,6 +13,14 @@ function eligibleText(node:Text){
  return text.length>1&&!/^[-–—•|₹0-9.,:+()%/]+$/.test(text);
 }
 
+function restoreVisiblePage(){
+ const root=document.querySelector("main")||document.body;
+ const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n:Node|null;
+ while((n=walker.nextNode())){const t=n as Text;const original=originals.get(t);if(original!==undefined&&t.data!==original)t.data=original}
+ const elements=[...root.querySelectorAll("input[placeholder],textarea[placeholder],[title],[aria-label]")];
+ elements.forEach(el=>{const map=attrOriginals.get(el);if(!map)return;Object.entries(map).forEach(([attr,value])=>el.setAttribute(attr,value))});
+}
+
 export default function LanguageExperience(){
  const path=usePathname();
  const privatePortal=path.startsWith("/admin")||path.startsWith("/dealer")||path.startsWith("/partner");
@@ -26,14 +34,15 @@ export default function LanguageExperience(){
 
  useEffect(()=>{
   const saved=localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  if(saved){setCode(saved);setHasSaved(true)}else if(!privatePortal)setShow(true);
+  if(saved){setCode(saved);setHasSaved(true)}
  },[privatePortal]);
 
  useEffect(()=>{
   document.documentElement.lang=language.translationCode;
   window.dispatchEvent(new CustomEvent("rohilla-language-change",{detail:language}));
-  if(code==="en-IN")return;
   if(privatePortal){setNote("");return}
+  restoreVisiblePage();
+  if(code==="en-IN"){setNote("");return}
   translateVisiblePage(code);
   const root=document.querySelector("main");if(!root)return;
   const observer=new MutationObserver(()=>{if(debounce.current)window.clearTimeout(debounce.current);debounce.current=window.setTimeout(()=>translateVisiblePage(code),450)});
@@ -52,13 +61,13 @@ export default function LanguageExperience(){
   try{
    const root=document.querySelector("main")||document.body;
    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes:Text[]=[];let n:Node|null;
-   while((n=walker.nextNode())){const t=n as Text;if(!eligibleText(t))continue;if(!originals.has(t))originals.set(t,t.data);if(t.data!==originals.get(t))continue;nodes.push(t);if(nodes.length>=240)break}
+   while((n=walker.nextNode())){const t=n as Text;if(!eligibleText(t))continue;if(!originals.has(t))originals.set(t,t.data);nodes.push(t);if(nodes.length>=240)break}
    const elements=[...root.querySelectorAll("input[placeholder],textarea[placeholder],[title],[aria-label]")].filter(el=>!el.closest("[data-no-translate]"));
    const items:{kind:"text"|"attr";node:Text|Element;attr?:string;value:string}[]=[];
    nodes.forEach(node=>items.push({kind:"text",node,value:originals.get(node)||node.data}));
    elements.forEach(el=>{const attrs=["placeholder","title","aria-label"];let map=attrOriginals.get(el)||{};attrs.forEach(attr=>{const v=el.getAttribute(attr);if(v&&v.length>1){if(!map[attr])map[attr]=v;items.push({kind:"attr",node:el,attr,value:map[attr]})}});attrOriginals.set(el,map)});
    let configured=true;
-   for(let i=0;i<items.length;i+=40){const part=items.slice(i,i+40);const j=await translateBatch(part.map(x=>x.value),target);if(!j.configured){configured=false;break}const out=j.translations||[];part.forEach((item,k)=>{const value=out[k]||item.value;if(item.kind==="text")(item.node as Text).data=value;else (item.node as Element).setAttribute(item.attr!,value)})}
+   for(let i=0;i<items.length;i+=12){const part=items.slice(i,i+12);const j=await translateBatch(part.map(x=>x.value),target);if(!j.configured){configured=false;break}const out=j.translations||[];part.forEach((item,k)=>{const value=out[k]||item.value;if(item.kind==="text")(item.node as Text).data=value;else (item.node as Element).setAttribute(item.attr!,value)})}
    setNote(configured?`${language.nativeName} ✓`:"");
   }catch{setNote("")}finally{busy.current=false}
  }
@@ -71,7 +80,7 @@ export default function LanguageExperience(){
  if(privatePortal)return null;
 
  return <>
-  <button onClick={()=>setShow(true)} aria-label="Choose language" data-no-translate style={{position:"fixed",right:12,top:72,zIndex:10020,border:"1px solid #d7b56d",background:"#111827",color:"#f4d38a",borderRadius:999,padding:"8px 11px",fontWeight:800,boxShadow:"0 6px 20px rgba(0,0,0,.2)"}}>🌐 {language.nativeName}</button>
+  <button onClick={()=>setShow(true)} aria-label="Choose language" data-no-translate style={{position:"fixed",right:12,top:72,zIndex:10020,border:"1px solid #d7b56d",background:"#111827",color:"#f4d38a",borderRadius:999,padding:"8px 11px",fontWeight:800,boxShadow:"0 6px 20px rgba(0,0,0,.2)"}}>Language · {language.nativeName}</button>
   {note&&code!=="en-IN"&&<div data-no-translate style={{position:"fixed",right:12,top:112,zIndex:10019,maxWidth:280,fontSize:11,padding:"6px 9px",borderRadius:9,background:"rgba(17,24,39,.94)",color:"#fff"}}>{note}</div>}
   {show&&<div data-no-translate role="dialog" aria-modal="true" aria-label="Choose your language" style={{position:"fixed",inset:0,zIndex:10050,background:"rgba(3,7,18,.82)",display:"flex",alignItems:"center",justifyContent:"center",padding:"14px max(12px,env(safe-area-inset-right))"}}>
    <div style={{width:"min(620px,100%)",maxHeight:"88dvh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"#fff",color:"#111827",borderRadius:22,padding:"18px 16px 16px",boxShadow:"0 28px 80px rgba(0,0,0,.35)"}}>
@@ -83,7 +92,7 @@ export default function LanguageExperience(){
      {ROHILLA_LANGUAGES.map(l=>{const selected=l.code===code;return <button key={l.code} onClick={()=>choose(l.code)} style={{minHeight:64,padding:"10px 11px",borderRadius:14,border:selected?"2px solid #173326":"1px solid #d1d5db",background:selected?"#eef7f1":"#fff",color:"#111827",textAlign:"left",display:"flex",flexDirection:"column",justifyContent:"center",gap:2,boxShadow:selected?"0 0 0 2px rgba(23,51,38,.05)":"none"}}><span style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:6,width:"100%"}}><b style={{fontSize:15,color:"#111827",lineHeight:1.25}}>{l.nativeName}</b>{selected&&<span aria-hidden style={{color:"#166534",fontWeight:900}}>✓</span>}</span><small style={{fontSize:11,color:"#64748b",lineHeight:1.25}}>{l.name}</small></button>})}
     </div>
     {!hasSaved&&<button onClick={()=>choose("en-IN")} style={{width:"100%",marginTop:10,background:"#111827",color:"#fff",border:"1px solid #111827",borderRadius:12,padding:"11px 14px",fontWeight:900}}>Continue in English</button>}
-    <p style={{fontSize:11,color:"#64748b",margin:"11px 2px 0",lineHeight:1.45}}>You can change this anytime from the 🌐 language button. Secure Admin, Dealer and Partner portals use the protected Language Desk.</p>
+    <p style={{fontSize:11,color:"#64748b",margin:"11px 2px 0",lineHeight:1.45}}>You can change this anytime from the Language button. Secure Admin, Dealer and Partner portals use the protected Language Desk.</p>
    </div>
   </div>}
  </>;
