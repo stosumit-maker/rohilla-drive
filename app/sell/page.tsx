@@ -1,5 +1,5 @@
 "use client";
-import {useState} from "react";
+import {useRef,useState} from "react";
 import {supabase} from "../supabaseClient";
 import LegalConsent from "../components/LegalConsent";
 import {newRequestReference} from "../lib/reference";
@@ -10,12 +10,18 @@ const ALLOWED_PHOTO_TYPES=new Set(["image/jpeg","image/png","image/webp","image/
 const extFor=(file:File)=>({"image/jpeg":"jpg","image/png":"png","image/webp":"webp","image/heic":"heic","image/heif":"heif"}[file.type]||"jpg");
 const uuid=()=>typeof crypto!=="undefined"&&"randomUUID" in crypto?crypto.randomUUID():`${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
+
+const cleanRegistration=(value:any)=>String(value||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+const registrationPrefix=(value:any)=>{const s=cleanRegistration(value);return s.match(/^[A-Z]{2}\d{1,2}/)?.[0]||s.match(/^\d{2}BH/)?.[0]||""};
+async function hashRegistration(value:any){const s=cleanRegistration(value);const bytes=new TextEncoder().encode(s);const digest=await crypto.subtle.digest("SHA-256",bytes);return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,"0")).join("")}
+
 export default function SellVehicle(){
  const db=supabase();
  const [f,setF]=useState<any>({vehicle_type:"car_suv",city:"Ambala City"});
  const [photos,setPhotos]=useState<File[]>([]);
  const [busy,setBusy]=useState(false);
  const [msg,setMsg]=useState("");
+ const submitLock=useRef(false);const [progress,setProgress]=useState("");
 
  function choosePhotos(list:File[]){
   const selected=list.slice(0,MAX_PHOTOS);
@@ -28,11 +34,13 @@ export default function SellVehicle(){
  }
 
  async function submit(e:React.FormEvent){
-  e.preventDefault();
+  e.preventDefault();if(submitLock.current)return;
   if(!photos.length){setMsg("Please add at least one clear vehicle photo.");return}
-  setBusy(true);setMsg("Saving your vehicle request securely…");
+  if(!cleanRegistration(f.registration_number)){setMsg("Please enter the full registration number. Only the starting code will ever be shown publicly.");return}
+  submitLock.current=true;setBusy(true);setProgress("Checking duplicate vehicle…");setMsg("Submitting once — duplicate protection is active.");
   const ref=newRequestReference("RDS");
   const token=uuid();
+  const regHash=await hashRegistration(f.registration_number);const regPrefix=registrationPrefix(f.registration_number);
   const paths=photos.map((file,index)=>`${token}/${String(index+1).padStart(2,"0")}-${uuid()}.${extFor(file)}`);
   const details=[
    `Reference: ${ref}`,
@@ -42,7 +50,7 @@ export default function SellVehicle(){
    f.transmission?`Transmission: ${f.transmission}`:"",
    f.owner_count?`Owner: ${f.owner_count}`:"",
    f.expected_price?`Expected price: ₹${Number(f.expected_price).toLocaleString("en-IN")}`:"",
-   f.registration_hint?`Registration: ${f.registration_hint}`:"",
+   regPrefix?`Registration prefix: ${regPrefix}`:"",
    `${photos.length} private seller photo(s) attached for review.`,
    f.notes||""
   ].filter(Boolean).join("\n");
@@ -63,19 +71,22 @@ export default function SellVehicle(){
    budget:f.expected_price?Number(f.expected_price):null,
    public_reference:ref,
    submission_token:token,
-   private_media_paths:paths
+   private_media_paths:paths,
+   vehicle_registration_fingerprint:regHash,
+   registration_prefix:regPrefix||null
   });
-  if(error){setBusy(false);setMsg(error.message);return}
+  if(error){submitLock.current=false;setBusy(false);setProgress("");setMsg((error as any)?.code==="23505"?"This vehicle is already submitted or under review. Duplicate request blocked.":error.message);return}
 
   let uploaded=0;
   let uploadError="";
-  for(let index=0;index<photos.length;index++){
-   const result=await db.storage.from("seller-submission-photos").upload(paths[index],photos[index],{upsert:false,contentType:photos[index].type});
-   if(result.error){uploadError=result.error.message;break}
-   uploaded++;
+  const batchSize=3;
+  for(let i=0;i<photos.length;i+=batchSize){
+   const batch=photos.slice(i,i+batchSize);
+   const results=await Promise.all(batch.map(async(file,j)=>{const index=i+j;const result=await db.storage.from("seller-submission-photos").upload(paths[index],file,{upsert:false,contentType:file.type});if(!result.error){uploaded++;setProgress("Uploading photos "+uploaded+"/"+photos.length)}return result}));
+   const failed=results.find(r=>r.error);if(failed?.error){uploadError=failed.error.message;break}
   }
 
-  setBusy(false);
+  submitLock.current=false;setBusy(false);setProgress("");
   if(uploadError){
    setMsg(`Vehicle request saved ✓ Reference: ${ref}. ${uploaded}/${photos.length} photo(s) uploaded. ROHILLA DRIVE has your request and can contact you if another photo is needed.`);
    return;
@@ -103,12 +114,12 @@ export default function SellVehicle(){
    <input type="number" placeholder="Owner count" value={f.owner_count||""} onChange={e=>setF({...f,owner_count:e.target.value})}/>
    <input type="number" placeholder="Expected price ₹" value={f.expected_price||""} onChange={e=>setF({...f,expected_price:e.target.value})}/>
    <input required placeholder="City" value={f.city||""} onChange={e=>setF({...f,city:e.target.value})}/>
-   <input placeholder="Registration hint (example HR01 / DL / KA)" value={f.registration_hint||""} onChange={e=>setF({...f,registration_hint:e.target.value})}/>
+   <input required placeholder="Full registration number (kept private; public shows only HR01 / DL01)" value={f.registration_number||""} onChange={e=>setF({...f,registration_number:e.target.value})}/>
    <textarea placeholder="Condition, insurance, service history, features or anything important" value={f.notes||""} onChange={e=>setF({...f,notes:e.target.value})}/>
    <label className="upload">Vehicle Photos — 1 to {MAX_PHOTOS}<input required multiple accept="image/jpeg,image/png,image/webp,image/heic,image/heif" type="file" onChange={e=>choosePhotos(Array.from(e.target.files||[]))}/></label>
    {photos.length>0&&<small>{photos.length} selected • max 8 MB each • private until reviewed</small>}
    <LegalConsent/>
-   <button disabled={busy}>{busy?"Submitting securely…":"Submit Vehicle & Private Photos"}</button>
+   {busy&&<div className="notice">{progress||"Submitting securely…"} Please do not tap Submit again.</div>}<button disabled={busy}>{busy?"Submitting…":"Submit Vehicle & Private Photos"}</button>
   </form>{msg&&<div className="notice">{msg}</div>}<div className="notice"><b>Dealer or automotive business?</b> <a href="/business-hub">Open Rohilla Business Hub →</a></div></section>
  </main>
 }
