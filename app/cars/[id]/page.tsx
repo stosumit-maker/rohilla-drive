@@ -9,7 +9,7 @@ const site="https://www.rohilladrive.com";
 async function getCar(id:string){
  const db=supabase();
  const {data}=await db.from("vehicles")
-  .select("id,brand,model,variant,year,km,fuel,transmission,owner_count,asking_price,city,public_notes,registration_prefix,status,created_at,vehicle_photos(url,sort_order)")
+  .select("id,brand,model,variant,year,km,fuel,transmission,owner_count,asking_price,city,public_notes,registration_prefix,status,created_at,vehicle_photos(url,sort_order),vehicle_media(id,url,media_kind,media_category,sort_order)")
   .eq("id",id)
   .eq("status","published")
   .single();

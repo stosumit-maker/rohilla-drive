@@ -10,6 +10,7 @@ const emptyCounts:Counts={sales:0,services:0,dealers:0,partners:0,verification:0
 const navLinks=[
  {href:"/admin",label:"Dashboard"},
  {href:"/admin/add-vehicle",label:"Inventory"},
+ {href:"/admin/sold",label:"Sold History"},
  {href:"/admin/photo-listing",label:"Photo-First Listing"},
  {href:"/admin/draft-review",label:"Draft Review"},
  {href:"/admin/seller-submissions",label:"Seller Submissions"},
@@ -23,10 +24,9 @@ const navLinks=[
  {href:"/admin/vehicle-ai",label:"Vehicle Intelligence"},
  {href:"/admin/verification",label:"Verification Operations"},
  {href:"/admin/growth",label:"Marketing Studio"},
- {href:"/admin/language",label:"Language Operations"},
  {href:"/admin/connections",label:"Integrations"}
 ];
-const primaryNavHrefs=new Set(["/admin","/admin/add-vehicle","/admin/seller-submissions","/admin/service-operations","/admin/partner-kyc","/admin/revenue","/admin/deal-rooms","/admin/connections"]);
+const primaryNavHrefs=new Set(["/admin","/admin/add-vehicle","/admin/sold","/admin/seller-submissions","/admin/service-operations","/admin/partner-kyc","/admin/revenue","/admin/deal-rooms","/admin/connections"]);
 const primaryNavLinks=navLinks.filter(link=>primaryNavHrefs.has(link.href));
 const secondaryNavLinks=navLinks.filter(link=>!primaryNavHrefs.has(link.href));
 const navItemStyle={minHeight:40,display:"inline-flex",alignItems:"center"} as const;
