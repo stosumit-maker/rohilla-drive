@@ -190,3 +190,14 @@
  .adminDuplicateWarning>div{display:grid;grid-template-columns:1fr}
  .adminDuplicateWarning button{width:100%}
 }
+
+.adminSectionTitleRow{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.adminSaleModal{max-width:560px!important}
+.adminSaleModal label{display:block;margin:12px 0 5px;font-size:10px;font-weight:900;color:#475467}
+.adminSaleModal select,.adminSaleModal textarea{width:100%;border:1px solid #d0d5dd;border-radius:9px;padding:11px;background:#fff}
+.adminMediaRequirements{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;padding:12px;border-top:1px solid #e6ebf1}
+.adminMediaRequirements>p{grid-column:1/-1;margin:0;color:#667085;font-size:10px}
+.adminMediaRequirements label{display:grid;gap:6px;padding:10px;border:1px solid #e3e8ef;border-radius:9px;background:#fbfcfd;font-size:9.5px;font-weight:850;color:#344054}
+.adminMediaRequirements input{font-size:9px;max-width:100%}
+@media(max-width:720px){.adminMediaRequirements{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.adminMediaRequirements{grid-template-columns:1fr}}
