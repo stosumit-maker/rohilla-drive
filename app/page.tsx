@@ -6,6 +6,26 @@ import { track } from "@vercel/analytics";
 
 type Vehicle = { id:string; brand:string; model:string; variant?:string; year:number; km:number; fuel:string; owner_count?:number; asking_price:number; city?:string; public_notes?:string; vehicle_photos?:{url:string;sort_order?:number}[] };
 
+function PremiumIcon({name}:{name:string}){
+ const base=<></>;
+ const common={className:"premiumSvg",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:1.8,strokeLinecap:"round" as const,strokeLinejoin:"round" as const,"aria-hidden":true};
+ switch(name){
+  case "car":return <svg {...common}><path d="M4 14l1.5-4.5A2 2 0 0 1 7.4 8h9.2a2 2 0 0 1 1.9 1.5L20 14"/><path d="M3 14h18v4H3z"/><circle cx="7" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg>;
+  case "sell":return <svg {...common}><path d="M20 13l-7 7-9-9V4h7z"/><circle cx="8.5" cy="8.5" r="1"/></svg>;
+  case "find":return <svg {...common}><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5"/><path d="M8 10.5h5"/></svg>;
+  case "new":return <svg {...common}><path d="M3.5 15l1.5-4.5A2 2 0 0 1 6.9 9h7.2"/><path d="M3 15h13v3H3z"/><circle cx="6" cy="18" r="1.4"/><circle cx="14" cy="18" r="1.4"/><path d="M18 4v5M15.5 6.5h5"/></svg>;
+  case "finance":return <svg {...common}><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h4"/></svg>;
+  case "shield":return <svg {...common}><path d="M12 3l7 3v5c0 4.6-2.8 7.8-7 10-4.2-2.2-7-5.4-7-10V6z"/><path d="m9.5 12 1.7 1.7 3.6-3.6"/></svg>;
+  case "document":return <svg {...common}><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg>;
+  case "wrench":return <svg {...common}><path d="M14.5 6.5a4 4 0 0 0-5 5L4 17l3 3 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-3-3z"/></svg>;
+  case "detail":return <svg {...common}><path d="M12 3l1.4 3.6L17 8l-3.6 1.4L12 13l-1.4-3.6L7 8l3.6-1.4zM18 14l.8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8z"/></svg>;
+  case "roadside":return <svg {...common}><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M6.3 6.3l3.6 3.6M14.1 14.1l3.6 3.6M17.7 6.3l-3.6 3.6M9.9 14.1l-3.6 3.6"/></svg>;
+  case "exchange":return <svg {...common}><path d="M7 7h11l-3-3M17 17H6l3 3"/><path d="m18 7-3 3M6 17l3-3"/></svg>;
+  case "trusted":return <svg {...common}><path d="M12 3l7 3v5c0 4.6-2.8 7.8-7 10-4.2-2.2-7-5.4-7-10V6z"/><path d="M8.5 12.5 11 15l4.5-5"/></svg>;
+  default:return base;
+ }
+}
+
 export default function Home(){
  const db=supabase(); const [cars,setCars]=useState<Vehicle[]>([]); const [loading,setLoading]=useState(true); const [search,setSearch]=useState(""); const [fuel,setFuel]=useState("All"); const [leadOpen,setLeadOpen]=useState(false); const [leadMessage,setLeadMessage]=useState("I am looking for a used car. Please contact me with suitable options."); const [leadType,setLeadType]=useState("vehicle purchase"); const [leadName,setLeadName]=useState(""); const [leadPhone,setLeadPhone]=useState(""); const [leadLocation,setLeadLocation]=useState(""); const [leadTime,setLeadTime]=useState(""); const [leadBusy,setLeadBusy]=useState(false);
  useEffect(()=>{async function loadCars(){const {data}=await db.from("vehicles").select("id,brand,model,variant,year,km,fuel,owner_count,asking_price,city,public_notes,vehicle_photos(url,sort_order)").eq("status","published").order("created_at",{ascending:false}).limit(6);setCars((data||[]) as Vehicle[]);setLoading(false)}loadCars()},[]);
@@ -34,7 +54,7 @@ export default function Home(){
   const wa=`ROHILLA DRIVE ENQUIRY\n\n${leadMessage}\n\nName: ${leadName}\nPhone: ${leadPhone}\nLocation: ${leadLocation}\n${leadTime?`Preferred time: ${leadTime}\n`:''}\nROHILLA DRIVE\n7015260003`;
   resetLead();continueOnWhatsapp(wa);
  }
- const services=[['🔍','Vehicle Inspection','vehicle inspection'],['💳','Finance Assistance','vehicle finance'],['🛡️','Insurance Assistance','insurance'],['📄','RC Transfer','RC / ownership transfer'],['🔧','Workshop / Repairs','workshop service'],['✨','Detailing','vehicle detailing'],['🚨','Roadside Assistance','RSA assistance'],['🔄','Exchange Assistance','vehicle exchange']];
+ const services=[['find','Vehicle Inspection','vehicle inspection'],['finance','Finance Assistance','vehicle finance'],['shield','Insurance Assistance','insurance'],['document','RC Transfer','RC / ownership transfer'],['wrench','Workshop / Repairs','workshop service'],['detail','Detailing','vehicle detailing'],['roadside','Roadside Assistance','RSA assistance'],['exchange','Exchange Assistance','vehicle exchange']];
  const socialLinks=<div className="socialIcons">
   <a href="https://www.instagram.com/rohillamultibrandcars/" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram" className="instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
   <a href="https://www.facebook.com/profile.php?id=100094277025442" target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook" className="facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-3.3 0-5 2-5 5v2H6v4h3v5h4v-5h3.2l.8-4H13V9c0-.7.3-1 1-1Z"/></svg></a>
@@ -44,12 +64,8 @@ export default function Home(){
  <header>
   <div className="brand"><img className="rdLogo" src="/rohilla-drive-logo.svg" alt="Rohilla Drive"/></div>
   <nav><a href="/inventory">Cars</a><a href="/sell-car-ambala">Sell Your Car</a><a href="#services">Services</a><a href="#about">About</a></nav>
-  <div className="topActions"><a className="call" href="/verify">Verify Vehicle</a>{socialLinks}<button className="waTop" onClick={()=>whatsapp("Hello Rohilla Drive, I want to know about available cars.")}>WhatsApp</button></div>
+  <div className="topActions"><a className="call" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_header"})}>Call</a>{socialLinks}<button className="waTop" onClick={()=>whatsapp("Hello Rohilla Drive, I want to know about available cars.")}>WhatsApp</button></div>
  </header>
-
- <div className="publicAccessBar" data-no-translate>
-  <span>For Automotive Businesses</span><a href="/business-hub">Business Hub</a><a href="/dealer">Dealer Sign In</a><a href="/partner">Partner Sign In</a>
- </div>
 
  <section className="hero"><div className="heroText">
   <span>ROHILLA DRIVE • BY ROHILLA MULTIBRAND CARS</span>
@@ -60,29 +76,33 @@ export default function Home(){
  </div></section>
 
  <section className="section actionSection">
-  <div className="primaryActions sixActions">
-   <a href="/inventory"><span>🚘</span><b>Available Cars</b></a>
-   <a href="/sell-car-ambala"><span>🏷️</span><b>Sell Your Car</b></a>
-   <a href="/assistant"><span>🎯</span><b>Find a Car</b></a>
-   <a href="/new-cars/ambala"><span>✨</span><b>New Cars</b></a>
+  <div className="primaryActions">
+   <a href="/inventory"><PremiumIcon name="car"/><b>Browse Cars</b></a>
+   <a href="/sell-car-ambala"><PremiumIcon name="sell"/><b>Sell Your Car</b></a>
+   <a href="/assistant"><PremiumIcon name="find"/><b>Find a Car</b></a>
+   <a href="/new-cars/ambala"><PremiumIcon name="new"/><b>New Cars</b></a>
   </div>
  </section>
+
+ <div className="publicAccessBar" data-no-translate>
+  <span>For Automotive Businesses</span><a href="/business-hub">Business Hub</a><a href="/dealer">Dealer Sign In</a><a href="/partner">Partner Sign In</a>
+ </div>
 
  <section className="quickLead leadCapture" aria-label="Quick vehicle enquiry">
   <div className="quickLeadCopy"><span>QUICK ENQUIRY • AMBALA</span><h2>Send Your Car Requirement</h2><p>Buying, selling or looking for a specific car? Share the details and we will contact you.</p><div className="quickLeadBtns"><a className="secondary" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_quick_lead"})}>Call 7015260003</a><button type="button" className="secondary" onClick={()=>whatsapp("Hello Rohilla Drive, I have a vehicle requirement in Ambala.")}>WhatsApp</button></div></div>
   <form className="quickLeadForm" data-source="homepage_quick_lead" onSubmit={submitLead}>
-   <select value={leadType} onChange={e=>{const type=e.target.value;setLeadType(type);setLeadMessage(type==='vehicle sale'?'I want to sell my car. Please contact me for the next steps.':type==='new car purchase'?'I am looking for a new car. Please help with model, price and availability.':type==='vehicle service'?'I need vehicle service / inspection assistance. Please contact me.':'I am looking for a used car. Please contact me with suitable options.')}} aria-label="Requirement type"><option value="vehicle purchase">Buy a Used Car</option><option value="vehicle sale">Sell My Car</option><option value="new car purchase">New Car</option><option value="vehicle service">Vehicle Service / Inspection</option></select>
+   <select value={leadType} onChange={e=>{const type=e.target.value;setLeadType(type);setLeadMessage(type==='vehicle sale'?'I want to sell my car. Please contact me for the next steps.':type==='new car purchase'?'I am looking for a new car. Please help with model, price and availability.':type==='vehicle service'?'I need vehicle service / inspection assistance. Please contact me.':'I am looking for a used car. Please contact me with suitable options.')}} aria-label="Requirement type"><option value="vehicle purchase">Find a Car</option><option value="vehicle sale">Sell My Car</option><option value="new car purchase">New Car</option><option value="vehicle service">Vehicle Service / Inspection</option></select>
    <input value={leadName} onChange={e=>setLeadName(e.target.value)} placeholder="Your name" required/>
    <input value={leadPhone} onChange={e=>setLeadPhone(e.target.value)} placeholder="Mobile number" inputMode="tel" required/>
    <input value={leadLocation} onChange={e=>setLeadLocation(e.target.value)} placeholder="City / Location" required/>
    <textarea value={leadMessage} onChange={e=>setLeadMessage(e.target.value)} rows={3} placeholder="Car, budget or requirement" required/>
-   <button type="submit" disabled={leadBusy}>{leadBusy?'Submitting…':'Send Enquiry & Continue on WhatsApp'}</button>
+   <button type="submit" disabled={leadBusy}>{leadBusy?'Submitting…':'Send Requirement & Continue on WhatsApp'}</button>
   </form>
  </section>
 
  <section className="section inventorySection" id="inventory">
-  <div className="head"><div><h2>Cars Available Now</h2><p>{loading?"Loading available cars...":cars.length?"Latest published cars from Rohilla Drive. Open any listing for full details.":"No cars are published right now. Send your requirement and we will contact you with suitable options."}</p></div><div className="row"><button className="secondary" onClick={()=>openLead("vehicle purchase")}>Send Your Car Requirement</button><a className="textLink" href="/inventory">View All Cars →</a></div></div>
-  {loading?<p>Loading cars...</p>:cars.length===0?<div className="card"><div className="body"><h3>Looking for a specific car?</h3><p>Tell us the model, budget and location. We will follow up with suitable options.</p><button onClick={()=>openLead("vehicle purchase")}>Send Requirement</button></div></div>:<div className="grid">{cars.map(car=>{const photos=[...(car.vehicle_photos||[])].sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));return <article className="card" key={car.id}><div className="photo real swipeGallery">{photos.length?photos.map((photo,index)=><img key={photo.url||index} src={photo.url} alt={`${car.brand} ${car.model} photo ${index+1}`}/>):<span>🚘</span>}</div>{photos.length>1&&<div className="swipeHint">← Swipe →</div>}<div className="body"><label>ROHILLA DRIVE</label><h3>{car.brand} {car.model}</h3>{car.variant&&<p>{car.variant}</p>}<small>{car.year} • {Number(car.km).toLocaleString("en-IN")} km • {car.fuel}{car.owner_count?` • ${car.owner_count} Owner`:""}</small><strong>₹{Number(car.asking_price).toLocaleString("en-IN")}</strong><a className="call" href={`/cars/${car.id}`} style={{display:"block",textAlign:"center",marginBottom:"10px"}}>View Details</a><button onClick={()=>openVehicleEnquiry(car)}>Enquire on WhatsApp</button></div></article>})}</div>}
+  <div className="head"><div><h2>Cars Available Now</h2><p>{loading?"Loading available cars...":cars.length?"Latest published cars from Rohilla Drive. Open any listing for full details.":"No cars are published right now. Send your requirement and we will contact you with suitable options."}</p></div><div className="row"><button className="secondary" onClick={()=>openLead("vehicle purchase")}>Find a Car</button><a className="textLink" href="/inventory">View All Cars →</a></div></div>
+  {loading?<p>Loading cars...</p>:cars.length===0?<div className="card"><div className="body"><h3>Looking for a specific car?</h3><p>Tell us the model, budget and location. We will follow up with suitable options.</p><button onClick={()=>openLead("vehicle purchase")}>Send Requirement</button></div></div>:<div className="grid">{cars.map(car=>{const photos=[...(car.vehicle_photos||[])].sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));return <article className="card" key={car.id}><div className="photo real swipeGallery">{photos.length?photos.map((photo,index)=><img key={photo.url||index} src={photo.url} alt={`${car.brand} ${car.model} photo ${index+1}`}/>):<PremiumIcon name="car"/>}</div>{photos.length>1&&<div className="swipeHint">← Swipe →</div>}<div className="body"><label>ROHILLA DRIVE</label><h3>{car.brand} {car.model}</h3>{car.variant&&<p>{car.variant}</p>}<small>{car.year} • {Number(car.km).toLocaleString("en-IN")} km • {car.fuel}{car.owner_count?` • ${car.owner_count} Owner`:""}</small><strong>₹{Number(car.asking_price).toLocaleString("en-IN")}</strong><a className="call" href={`/cars/${car.id}`} style={{display:"block",textAlign:"center",marginBottom:"10px"}}>View Details</a><button onClick={()=>openVehicleEnquiry(car)}>Enquire on WhatsApp</button></div></article>})}</div>}
  </section>
 
  <section className="section compactSection localSearchLinks" aria-label="Cars and vehicle services in Ambala">
@@ -92,11 +112,11 @@ export default function Home(){
 
  <section className="section compactSection" id="services">
   <div className="head compactHead"><div><h2>Vehicle Services</h2><p>Inspection, RC transfer, repairs, detailing and other assistance through Rohilla Drive.</p></div><div className="row"><a className="textLink" href="/car-services/ambala">View Vehicle Services →</a></div></div>
-  <div className="compactServices">{services.map(s=><button key={s[1]} onClick={()=>openServiceLead(s[2])}><span>{s[0]}</span><b>{s[1]}</b></button>)}</div>
+  <div className="compactServices">{services.map(s=><button key={s[1]} onClick={()=>openServiceLead(s[2])}><PremiumIcon name={s[0]}/><b>{s[1]}</b></button>)}</div>
  </section>
 
  <section className="section actionSection">
-  <a className="trustedAssistStrip" href="/trusted-assist"><span className="trustedIcon">🤝</span><span className="trustedCopy"><b>ROHILLA TRUSTED ASSIST</b><em>Vehicle assistance when you cannot manage it personally.</em><small>NRI / remote owners • Defence personnel • Senior citizens • Outstation support</small></span><span className="trustedCta">View Trusted Assist →</span></a>
+  <a className="trustedAssistStrip" href="/trusted-assist"><span className="trustedIcon"><PremiumIcon name="trusted"/></span><span className="trustedCopy"><b>ROHILLA TRUSTED ASSIST</b><em>Vehicle assistance when you cannot manage it personally.</em><small>NRI / remote owners • Defence personnel • Senior citizens • Outstation support</small></span><span className="trustedCta">View Trusted Assist →</span></a>
   <div className="joinStrip"><div><b>Dealer or automotive service business?</b><span> Rohilla Drive also has dedicated business access for dealers and service partners.</span></div><div className="joinActions"><a href="/business-hub">Business Hub</a><a href="/join/preowned">Dealer Registration</a><a href="/join/partner">Service Partner Registration</a></div></div>
  </section>
 
@@ -106,6 +126,6 @@ export default function Home(){
 
  <footer><img className="rdFooterLogo" src="/rohilla-drive-logo.svg" alt="Rohilla Drive"/><div className="footerCopy"><p>Buy • Sell • Vehicle Assistance<br/>by Rohilla Multibrand Cars • Ambala City</p><p><a className="premiumPhone" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_footer"})}><span>CALL</span>7015260003</a></p><div className="footerSocial">{socialLinks}</div></div></footer>
  <button className="floatingWa" onClick={()=>whatsapp("Hello Rohilla Drive, I want to enquire about a car or vehicle service.")}>WhatsApp</button>
- {leadOpen&&<div className="overlay"><div className="modal"><button className="x" onClick={resetLead}>×</button><h2>{leadType==='new car purchase'?'New Car Enquiry':leadType==='vehicle purchase'?'Car Enquiry':leadType==='vehicle sale'?'Sell Your Car':leadType==='Rohilla Trusted Assist'?'Rohilla Trusted Assist':`Request ${leadType}`}</h2><p>{leadType==='Rohilla Trusted Assist'?"Tell us what needs to be managed. We will confirm the requirement with you before any work proceeds.":['vehicle purchase','vehicle sale','new car purchase'].includes(leadType)?(leadType==='new car purchase'?"Tell us the brand, model or budget you have in mind. We will help with available options.":"Tell us your requirement and our team will contact you."):"Your request is saved with Rohilla Drive and our team will coordinate the next step."}</p><form data-source="homepage_modal" onSubmit={submitLead}><input value={leadName} onChange={e=>setLeadName(e.target.value)} placeholder="Your name" required/><input value={leadPhone} onChange={e=>setLeadPhone(e.target.value)} placeholder="Mobile number" inputMode="tel" required/><input value={leadLocation} onChange={e=>setLeadLocation(e.target.value)} placeholder="City / Location" required/><input value={leadTime} onChange={e=>setLeadTime(e.target.value)} placeholder="Preferred time (optional)"/><textarea value={leadMessage} onChange={e=>setLeadMessage(e.target.value)} rows={5} required/><button type="submit" disabled={leadBusy}>{leadBusy?'Submitting…':'Save Enquiry & Continue on WhatsApp'}</button></form></div></div>}
+ {leadOpen&&<div className="overlay"><div className="modal"><button className="x" onClick={resetLead}>×</button><h2>{leadType==='new car purchase'?'New Cars':leadType==='vehicle purchase'?'Find a Car':leadType==='vehicle sale'?'Sell Your Car':leadType==='Rohilla Trusted Assist'?'Rohilla Trusted Assist':`Request ${leadType}`}</h2><p>{leadType==='Rohilla Trusted Assist'?"Tell us what needs to be managed. We will confirm the requirement with you before any work proceeds.":['vehicle purchase','vehicle sale','new car purchase'].includes(leadType)?(leadType==='new car purchase'?"Tell us the brand, model or budget you have in mind. We will help with available options.":"Tell us your requirement and our team will contact you."):"Your request is saved with Rohilla Drive and our team will coordinate the next step."}</p><form data-source="homepage_modal" onSubmit={submitLead}><input value={leadName} onChange={e=>setLeadName(e.target.value)} placeholder="Your name" required/><input value={leadPhone} onChange={e=>setLeadPhone(e.target.value)} placeholder="Mobile number" inputMode="tel" required/><input value={leadLocation} onChange={e=>setLeadLocation(e.target.value)} placeholder="City / Location" required/><input value={leadTime} onChange={e=>setLeadTime(e.target.value)} placeholder="Preferred time (optional)"/><textarea value={leadMessage} onChange={e=>setLeadMessage(e.target.value)} rows={5} required/><button type="submit" disabled={leadBusy}>{leadBusy?'Submitting…':'Save Requirement & Continue on WhatsApp'}</button></form></div></div>}
  </main>
 }

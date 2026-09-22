@@ -10,7 +10,7 @@ export default function HomeExperienceEnhancer(){
   let cleanupSearch:undefined|(()=>void);
   const apply=()=>{
    const section=document.getElementById("inventory");
-   const navInventory=Array.from(document.querySelectorAll("header nav a")).find(a=>a.textContent?.trim()==="Inventory") as HTMLAnchorElement|undefined;
+   const navInventory=Array.from(document.querySelectorAll("header nav a")).find(a=>a.textContent?.trim()==="Cars") as HTMLAnchorElement|undefined;
    if(navInventory)navInventory.href="/inventory";
 
    const heroSearch=document.querySelector(".hero .search");
@@ -24,21 +24,16 @@ export default function HomeExperienceEnhancer(){
     if(input){const key=(e:KeyboardEvent)=>{if(e.key==="Enter"){e.preventDefault();route()}};input.addEventListener("keydown",key);cleanupSearch=()=>input.removeEventListener("keydown",key)}
    }
 
-   const usedButton=Array.from(document.querySelectorAll(".primaryActions button")).find(b=>b.textContent?.includes("Used Cars")) as HTMLButtonElement|undefined;
-   if(usedButton&&!usedButton.getAttribute("data-rd-inventory-route")){
-    usedButton.setAttribute("data-rd-inventory-route","1");usedButton.onclick=(e)=>{e.preventDefault();e.stopPropagation();window.location.href="/inventory"};
-   }
-
    if(!section)return;
    const title=section.querySelector("h2");
-   if(title&&title.textContent!=="Available Cars")title.textContent="Available Cars";
+   if(title&&title.textContent!=="Cars Available Now")title.textContent="Cars Available Now";
    const grid=section.querySelector(".grid");
    if(grid){
     const cards=Array.from(grid.querySelectorAll(":scope > article")) as HTMLElement[];
     cards.forEach((card,index)=>{card.style.display=index<6?"":"none"});
     if(cards.length>6&&!section.querySelector("#browse-full-inventory")){
      const wrap=document.createElement("div");wrap.id="browse-full-inventory";wrap.style.cssText="display:flex;justify-content:center;margin-top:18px";
-     const link=document.createElement("a");link.href="/inventory";link.className="call";link.textContent=`Browse Full Inventory (${cards.length}) →`;
+     const link=document.createElement("a");link.href="/inventory";link.className="call";link.textContent=`Browse Cars (${cards.length}) →`;
      wrap.appendChild(link);grid.insertAdjacentElement("afterend",wrap);
     }
    }
