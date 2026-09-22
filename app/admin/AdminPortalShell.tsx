@@ -26,6 +26,9 @@ const navLinks=[
  {href:"/admin/language",label:"Language Operations"},
  {href:"/admin/connections",label:"Integrations"}
 ];
+const primaryNavHrefs=new Set(["/admin","/admin/add-vehicle","/admin/seller-submissions","/admin/service-operations","/admin/partner-kyc","/admin/revenue","/admin/deal-rooms","/admin/connections"]);
+const primaryNavLinks=navLinks.filter(link=>primaryNavHrefs.has(link.href));
+const secondaryNavLinks=navLinks.filter(link=>!primaryNavHrefs.has(link.href));
 const navItemStyle={minHeight:40,display:"inline-flex",alignItems:"center"} as const;
 const contextStyle={maxWidth:1340,margin:"0 auto",padding:"10px 22px 0",display:"flex",alignItems:"center",gap:10,flexWrap:"wrap" as const};
 const backStyle={display:"inline-flex",alignItems:"center",minHeight:40,padding:"8px 12px",border:"1px solid #98a2b3",borderRadius:999,background:"#fff",color:"#101828",fontSize:12,fontWeight:900,textDecoration:"none",boxShadow:"0 2px 8px rgba(15,23,42,.08)"};
@@ -139,13 +142,19 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
      <span className="rdPortalIdentityCopy"><b>ROHILLA DRIVE</b><small>Administration Console</small></span>
     </a>
     <nav className="rdPortalNav" aria-label="Administration navigation">
-     {navLinks.map(link=><a key={link.href} href={link.href} style={navItemStyle} className={path===link.href?"active":""} aria-current={path===link.href?"page":undefined}>{link.label}</a>)}
+     {primaryNavLinks.map(link=><a key={link.href} href={link.href} style={navItemStyle} className={path===link.href?"active":""} aria-current={path===link.href?"page":undefined}>{link.label}</a>)}
+     <details className="rdPortalMore">
+      <summary>More</summary>
+      <div className="rdPortalMoreMenu">
+       {secondaryNavLinks.map(link=><a key={link.href} href={link.href} className={path===link.href?"active":""}>{link.label}</a>)}
+       <a href="/business-hub">Business Hub</a>
+       <button onClick={enablePush}>{pushEnabled?"Alerts Enabled":"Enable Alerts"}</button>
+       {pushEnabled&&<button onClick={testPush}>Send Test Alert</button>}
+      </div>
+     </details>
     </nav>
     <div className="rdPortalUtilities">
-     <button onClick={loadCounts}>Refresh Queues</button>
-     <button className="premium" onClick={enablePush}>{pushEnabled?"Administrator Alerts Enabled":"Enable Administrator Alerts"}</button>
-     {pushEnabled&&<button onClick={testPush}>Test Alert</button>}
-     <a href="/business-hub">Business Hub</a>
+     <button onClick={loadCounts}>Refresh</button>
      <a className="premium" href="/">Public Website</a>
      <button onClick={signOut}>Sign Out</button>
     </div>
