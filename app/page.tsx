@@ -72,7 +72,11 @@ export default function Home(){
   <h1>Buy & Sell Cars in Ambala.</h1>
   <p className="heroSub">Used Cars • Sell Your Car • New Cars • Vehicle Services</p>
   <p>Browse available cars, sell your car or share your requirement. Need help choosing? CarMentor can guide you.</p>
-  <div className="search"><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by brand, model, year or city..."/><select value={fuel} onChange={e=>setFuel(e.target.value)}><option>All</option><option>Petrol</option><option>Diesel</option><option>CNG</option><option>Electric</option><option>Hybrid</option></select><button onClick={browseInventory}>Search Cars</button></div><div className="carMentorNudge"><span>Not sure what to choose?</span><a href="/assistant">Ask CarMentor →</a></div>
+  <div className="search"><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by brand, model, year or city..."/><select value={fuel} onChange={e=>setFuel(e.target.value)}><option>All</option><option>Petrol</option><option>Diesel</option><option>CNG</option><option>Electric</option><option>Hybrid</option></select><button onClick={browseInventory}>Search Cars</button></div><div className="carMentorSpotlight" data-no-translate>
+   <div className="carMentorLogoPanel"><img className="cmHeroLogo" src="/carmentor-logo.svg" alt="CarMentor by Rohilla Drive"/></div>
+   <div className="carMentorSpotlightCopy"><b>Your smart car guide</b><span>Share your budget, usage and preferences. CarMentor helps you shortlist the right car from Rohilla Drive.</span></div>
+   <a href="/assistant">Ask CarMentor</a>
+  </div>
  </div></section>
 
  <section className="section actionSection">
