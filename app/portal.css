@@ -25,3 +25,100 @@
 .rd-dealer-portal:has(.auth)>.rdPortalTopbar,.rd-partner-portal:has(.auth)>.rdPortalTopbar,.rd-partner-portal:has(>main.section)>.rdPortalTopbar{display:none}
 @media(max-width:1100px){.rdPortalTopbarInner{grid-template-columns:1fr auto}.rdPortalNav{grid-column:1/-1;order:3;padding-top:2px}.rdPortalIdentity{min-width:0}.rdPortalUtilities{grid-column:2}.rd-portal .grid{grid-template-columns:repeat(2,1fr)}.rd-portal .stats-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.rdPortalTopbarInner{padding:10px 12px 8px;gap:9px}.rdPortalMonogram{width:34px;height:34px}.rdPortalIdentityCopy b{font-size:12px}.rdPortalIdentityCopy small{font-size:8px}.rdPortalUtilities a,.rdPortalUtilities button{font-size:9px;padding:7px 8px}.rdPortalNav{gap:3px}.rdPortalNav a{font-size:9px;padding:7px 8px}.rdPortalOpsInner{padding:7px 12px}.rdPortalMetric{font-size:9px;padding:5px 7px}.rd-portal main>header{margin:12px 12px 0;padding:13px 14px;border-radius:13px}.rd-portal main>header .brand b{font-size:14px}.rd-portal main>header .brand small{font-size:8px}.rd-portal .section{padding:20px 13px}.rd-portal .section>h1{font-size:24px}.rd-portal .section>h2{font-size:20px}.rd-portal .auth{margin:5vh 12px 7vh;padding:26px 20px;border-radius:16px}.rd-portal .auth h1{font-size:23px}.rd-portal .grid,.rd-portal .stats-grid{grid-template-columns:1fr}.rd-portal .adminForm{grid-template-columns:1fr}.rd-portal .adminForm textarea,.rd-portal .adminForm .upload,.rd-portal .adminForm>button{grid-column:auto}.rd-portal .adminForm>button{width:100%}.rd-portal .request-top,.rd-portal .vehicle-box{align-items:flex-start;flex-direction:column}}
+
+
+/* Administration command-center refinement */
+.rd-admin-portal .rdPortalTopbar{box-shadow:0 10px 32px rgba(2,8,23,.18)}
+.rd-admin-portal .rdPortalTopbarInner{max-width:1500px;grid-template-columns:230px minmax(0,1fr) auto;padding:12px 22px 10px;gap:16px}
+.rd-admin-portal .rdPortalIdentity{min-width:0;gap:10px}
+.rdPortalBrandLogo{display:block;width:154px;max-height:38px;object-fit:contain;object-position:left center}
+.rd-admin-portal .rdPortalIdentityCopy small{margin-top:0;color:#98a6b9;font-size:8px;letter-spacing:1.35px}
+.rd-admin-portal .rdPortalNav{overflow:visible;gap:4px;align-items:center}
+.rd-admin-portal .rdPortalNav>a{font-size:10px;padding:8px 9px;min-height:36px!important}
+.rdPortalMore{position:relative;flex:0 0 auto}
+.rdPortalMore summary{list-style:none;cursor:pointer;color:#d3dae4;font-size:10px;font-weight:800;padding:9px 11px;border:1px solid #314056;border-radius:8px;background:#101d30;white-space:nowrap}
+.rdPortalMore summary::-webkit-details-marker{display:none}
+.rdPortalMore[open] summary{color:#111827;background:#fff;border-color:#fff}
+.rdPortalMoreMenu{position:absolute;top:44px;right:0;width:260px;max-height:62vh;overflow:auto;display:grid;gap:5px;padding:9px;border:1px solid #d8e0e9;border-radius:13px;background:#fff;box-shadow:0 20px 55px rgba(2,8,23,.24);z-index:10060}
+.rdPortalMoreMenu a,.rdPortalMoreMenu button{display:flex!important;align-items:center!important;justify-content:flex-start!important;min-height:38px!important;padding:8px 10px!important;border-radius:8px!important;border:1px solid transparent!important;background:#fff!important;color:#344054!important;font-size:10px!important;font-weight:800!important;text-decoration:none!important;box-shadow:none!important}
+.rdPortalMoreMenu a:hover,.rdPortalMoreMenu button:hover{background:#f5f7fa!important;border-color:#e1e7ee!important;transform:none!important}
+.rdPortalMoreMenu a.active{background:#101b2d!important;color:#fff!important}
+.rd-admin-portal .rdPortalUtilities{gap:6px}
+.rd-admin-portal .rdPortalUtilities a,.rd-admin-portal .rdPortalUtilities button{font-size:10px;padding:8px 9px;min-height:36px}
+.rd-admin-portal .rdPortalOps{background:#091321}
+.rd-admin-portal .rdPortalOpsInner{max-width:1500px;padding:7px 22px;gap:6px}
+.rd-admin-portal .rdPortalMetric{border-color:#223147;background:#0e1a2b;padding:5px 8px;font-size:9px;border-radius:7px}
+.rd-admin-portal .rdPortalMetric b{font-size:11px}
+
+.rd-admin-portal main{padding-bottom:44px}
+.rd-admin-portal .adminDashboardIntro{padding-top:34px;padding-bottom:18px}
+.adminEyebrow,.adminSectionKicker{font-size:9px;font-weight:900;letter-spacing:1.45px;color:#8a6a2f;margin-bottom:8px}
+.adminDashboardHeading{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:20px}
+.adminDashboardHeading h1{margin:0 0 6px;font-size:32px;line-height:1.05;letter-spacing:-1px;color:#101828}
+.adminDashboardHeading p{margin:0;max-width:720px;color:#667085;font-size:13px;line-height:1.55}
+.adminHeaderActions{display:flex;gap:8px;flex-wrap:wrap}
+.adminHeaderActions a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 14px;border-radius:9px;background:#101b2d;border:1px solid #101b2d;color:#fff;text-decoration:none;font-size:11px;font-weight:850}
+.adminHeaderActions a.secondaryAction{background:#fff;color:#101828;border-color:#d0d5dd}
+.adminOverviewGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.adminOverviewCard{display:block;min-width:0;padding:17px 18px;border:1px solid #dde4ec;border-radius:13px;background:#fff;text-decoration:none;color:#101828;box-shadow:0 8px 24px rgba(15,23,42,.045);transition:.16s ease}
+.adminOverviewCard:hover{transform:translateY(-2px);border-color:#c3cdda;box-shadow:0 12px 28px rgba(15,23,42,.075)}
+.adminOverviewCard span{display:block;color:#667085;font-size:10px;font-weight:850;letter-spacing:.35px;text-transform:uppercase}
+.adminOverviewCard strong{display:block;margin:9px 0 4px;font-size:30px;line-height:1;color:#101828;letter-spacing:-1px}
+.adminOverviewCard small{color:#7b8798;font-size:10px}
+.adminQuickActions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:10px}
+.adminQuickActions a{display:flex;min-width:0;flex-direction:column;gap:4px;padding:12px 14px;border:1px solid #e3e8ef;border-radius:11px;background:#f9fafb;color:#101828;text-decoration:none}
+.adminQuickActions b{font-size:11px}
+.adminQuickActions span{font-size:9.5px;line-height:1.4;color:#667085}
+.rd-admin-portal .adminVehiclePanel{margin-top:10px;margin-bottom:16px;padding:22px;border:1px solid #e0e6ed;border-radius:16px;background:#fff;box-shadow:0 8px 26px rgba(15,23,42,.04)}
+.rd-admin-portal .adminVehiclePanel h2{margin:0 0 6px;font-size:21px}
+.rd-admin-portal .adminVehiclePanel>p{margin-bottom:16px;color:#667085}
+.rd-admin-portal .adminVehiclePanel .adminForm{max-width:none}
+.rd-admin-portal .section:not(.adminDashboardIntro):not(.adminVehiclePanel){border-top:1px solid #e6ebf1}
+.rd-admin-portal .section:not(.adminDashboardIntro):not(.adminVehiclePanel)>h2{font-size:19px}
+.rd-admin-portal .application{box-shadow:none;border-color:#e2e8f0}
+.rd-admin-portal .grid .card{box-shadow:none}
+.rd-admin-portal .grid .card:hover{border-color:#cbd5e1}
+
+.rd-admin-portal:has(.auth){background:radial-gradient(circle at 15% 10%,rgba(202,168,106,.11),transparent 30%),linear-gradient(145deg,#07101d 0%,#111d30 45%,#f4f6f9 45%,#f4f6f9 100%)}
+.rd-admin-portal:has(.auth) main{display:grid;place-items:center;min-height:100vh;padding:24px}
+.rd-admin-portal:has(.auth) .auth{width:min(440px,100%);margin:0;padding:34px;border-radius:20px;border:1px solid #dfe5ec;box-shadow:0 28px 80px rgba(2,8,23,.18)}
+.rd-admin-portal:has(.auth) .auth:before{content:"ROHILLA DRIVE • SECURE ADMIN";background:#0f1b2d;color:#e6c989;border-color:#273750}
+.rd-admin-portal:has(.auth) .auth h1{font-size:25px}
+.rd-admin-portal:has(.auth) .auth h2{font-size:15px;font-weight:700}
+
+@media(max-width:1180px){
+ .rd-admin-portal .rdPortalTopbarInner{grid-template-columns:210px minmax(0,1fr);gap:10px}
+ .rd-admin-portal .rdPortalUtilities{grid-column:2;grid-row:1}
+ .rd-admin-portal .rdPortalNav{grid-column:1/-1;grid-row:2;overflow-x:auto;overflow-y:visible}
+ .adminOverviewGrid,.adminQuickActions{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:720px){
+ .rd-admin-portal .rdPortalTopbarInner{display:grid;grid-template-columns:minmax(0,1fr) auto;padding:9px 11px 7px}
+ .rdPortalBrandLogo{width:126px;max-height:30px}
+ .rd-admin-portal .rdPortalIdentityCopy{display:none}
+ .rd-admin-portal .rdPortalUtilities{grid-column:2;grid-row:1;gap:5px}
+ .rd-admin-portal .rdPortalUtilities>button:first-child{display:none}
+ .rd-admin-portal .rdPortalUtilities a,.rd-admin-portal .rdPortalUtilities button{font-size:8.5px;padding:6px 7px;min-height:30px}
+ .rd-admin-portal .rdPortalNav{grid-column:1/-1;grid-row:2;margin-top:2px;overflow-x:auto;gap:3px;padding-bottom:1px}
+ .rd-admin-portal .rdPortalNav>a{font-size:8.5px;padding:6px 8px;min-height:31px!important}
+ .rdPortalMore summary{font-size:8.5px;padding:7px 9px}
+ .rdPortalMoreMenu{position:fixed;left:10px;right:10px;top:98px;width:auto;max-height:70vh}
+ .rd-admin-portal .rdPortalOpsInner{padding:6px 11px}
+ .rd-admin-portal .adminDashboardIntro{padding:24px 13px 12px}
+ .adminDashboardHeading{display:block;margin-bottom:15px}
+ .adminDashboardHeading h1{font-size:27px}
+ .adminDashboardHeading p{font-size:12px}
+ .adminHeaderActions{margin-top:13px}
+ .adminHeaderActions a{flex:1;min-width:130px}
+ .adminOverviewGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .adminOverviewCard{padding:13px}
+ .adminOverviewCard span{font-size:8.5px;line-height:1.25}
+ .adminOverviewCard strong{font-size:25px;margin:7px 0 3px}
+ .adminQuickActions{grid-template-columns:1fr 1fr;gap:7px}
+ .adminQuickActions a{padding:10px}
+ .adminQuickActions span{font-size:8.5px}
+ .rd-admin-portal .adminVehiclePanel{margin:8px 12px 14px;padding:16px;border-radius:14px}
+ .rd-admin-portal .section:not(.adminDashboardIntro):not(.adminVehiclePanel){padding-left:13px;padding-right:13px}
+ .rd-admin-portal:has(.auth) main{padding:14px}
+ .rd-admin-portal:has(.auth) .auth{padding:27px 20px}
+}
