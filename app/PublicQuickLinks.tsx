@@ -18,7 +18,6 @@ export default function PublicQuickLinks(){
    <a href="/inventory" style={{...base,background:"#0f172a",color:"#fff"}}>Browse Cars</a>
    <a href="/sell-car-ambala" style={{...base,background:"#7c2d12",color:"#fff"}}>Sell Your Car</a>
    <a href="/assistant" style={{...base,background:"#2a2110",color:"#f4d38a"}}>CarMentor</a>
-   <button onClick={()=>{setOpen(false);window.dispatchEvent(new Event("rohilla-open-language"))}} style={{...base,background:"#312e81",color:"#eef2ff",border:0,width:"100%",cursor:"pointer"}}>Change Website Language</button>
    <a href="/new-cars/ambala" style={{...base,background:"#173326",color:"#f4d38a"}}>New Cars</a>
    <a href="/business-hub" style={{...base,background:"#111827",color:"#fff"}}>Business Hub</a>
    <a href="/dealer" style={{...base,background:"#fff",color:"#111827",border:"1px solid #d1d5db"}}>Dealer Sign In</a>
