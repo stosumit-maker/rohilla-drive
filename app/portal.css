@@ -122,3 +122,50 @@
  .rd-admin-portal:has(.auth) main{padding:14px}
  .rd-admin-portal:has(.auth) .auth{padding:27px 20px}
 }
+
+
+/* Fast admin intake: keep daily inventory work above the fold. */
+.adminFastDesk{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);gap:12px;margin:0 0 14px}
+.adminFastCard{display:flex;flex-direction:column;min-width:0;padding:18px;border:1px solid #dfe6ee;border-radius:14px;background:#fff;box-shadow:0 10px 26px rgba(15,23,42,.045)}
+.adminFastCard>span{font-size:9px;font-weight:900;letter-spacing:1.35px;color:#8a6a2f;margin-bottom:7px}
+.adminFastCard h2{margin:0 0 6px;font-size:19px;letter-spacing:-.3px;color:#101828}
+.adminFastCard p{margin:0 0 12px;font-size:11.5px;line-height:1.5;color:#667085}
+.adminFastCard textarea,.adminFastCard select{width:100%;border:1px solid #cfd8e3;border-radius:10px;background:#fbfcfd;color:#101828;padding:11px 12px;font:inherit;outline:none}
+.adminFastCard textarea{min-height:118px;resize:vertical;line-height:1.5}
+.adminFastCard textarea:focus,.adminFastCard select:focus{border-color:#8da1bb;box-shadow:0 0 0 3px rgba(16,27,45,.06)}
+.adminFastCard button{margin-top:10px;min-height:42px}
+.adminFastSold select{min-height:44px}
+.adminFastSold>a{display:inline-flex;align-items:center;justify-content:center;margin-top:8px;min-height:38px;border:1px solid #d7dee7;border-radius:9px;background:#fff;color:#344054;text-decoration:none;font-size:10px;font-weight:850}
+.adminFastSold button:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
+.adminFastPublishForm{display:grid!important;grid-template-columns:1fr!important;gap:11px!important}
+.adminParsedSummary{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:8px}
+.adminParsedSummary>div{min-width:0;padding:12px;border:1px solid #e3e8ef;border-radius:10px;background:#f8fafc}
+.adminParsedSummary span{display:block;margin-bottom:5px;font-size:8.5px;font-weight:900;letter-spacing:1px;color:#7b8798}
+.adminParsedSummary b{display:block;font-size:11px;line-height:1.45;color:#101828;overflow-wrap:anywhere}
+.adminManualDetails{border:1px solid #e0e6ed;border-radius:10px;background:#fff;overflow:hidden}
+.adminManualDetails summary{cursor:pointer;padding:11px 13px;font-size:10.5px;font-weight:850;color:#344054;background:#fbfcfd;list-style:none}
+.adminManualDetails summary::-webkit-details-marker{display:none}
+.adminManualDetails summary:after{content:"＋";float:right;color:#667085}
+.adminManualDetails[open] summary:after{content:"−"}
+.adminManualGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;padding:12px;border-top:1px solid #e6ebf1}
+.adminManualGrid textarea{grid-column:1/-1;min-height:90px}
+.adminPhotoUpload{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;min-height:58px!important;padding:12px 14px!important;border:1px dashed #aab6c6!important;background:#fbfcfd!important;cursor:pointer}
+.adminPhotoUpload input{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.adminPhotoUpload span{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 10px;border-radius:8px;background:#101b2d;color:#fff;font-size:9.5px;font-weight:850}
+.adminPublishButton{width:100%!important;min-height:48px!important;font-size:12px!important;letter-spacing:.15px}
+.adminActionMessage{margin:11px 0 0!important;font-weight:750;color:#344054}
+#quick-add,#quick-sold,#inventory-list{scroll-margin-top:170px}
+
+@media(max-width:920px){
+ .adminFastDesk{grid-template-columns:1fr}
+ .adminParsedSummary{grid-template-columns:1fr}
+ .adminManualGrid{grid-template-columns:1fr 1fr}
+ .adminManualGrid textarea{grid-column:1/-1}
+}
+@media(max-width:620px){
+ .adminFastCard{padding:14px}
+ .adminFastCard textarea{min-height:132px}
+ .adminManualGrid{grid-template-columns:1fr}
+ .adminManualGrid textarea{grid-column:auto}
+ .adminPhotoUpload{align-items:flex-start!important;flex-direction:column!important}
+}

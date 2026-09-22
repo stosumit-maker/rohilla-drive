@@ -138,7 +138,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
   {ready&&<div className="rdPortalTopbar" data-no-translate>
    <div className="rdPortalTopbarInner">
     <a className="rdPortalIdentity" href="/admin" aria-label="Administration dashboard">
-     <img className="rdPortalBrandLogo" src="/rohilla-drive-logo-light.svg" alt="Rohilla Drive"/>
+     <img className="rdPortalBrandLogo" src="/rohilla-drive-logo.svg" alt="Rohilla Drive"/>
      <span className="rdPortalIdentityCopy"><small>Administration Console</small></span>
     </a>
     <nav className="rdPortalNav" aria-label="Administration navigation">
