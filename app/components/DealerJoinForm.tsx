@@ -12,6 +12,35 @@ export default function DealerJoinForm({kind}:{kind:"oem"|"preowned"}){
  const next=isOem
   ?"Applications are reviewed before Dealer Workspace access is enabled. Approved businesses can receive eligible new-vehicle enquiries and use quote or test-drive coordination workflows."
   :"Applications are reviewed before Dealer Workspace access is enabled. Approved dealers can submit inventory and use the workflows enabled for their account.";
- async function signup(e:React.FormEvent<HTMLFormElement>){e.preventDefault();setBusy(true);setMsg("Creating account…");const x=new FormData(e.currentTarget);const email=String(x.get("email")),password=String(x.get("password")),name=String(x.get("name")),mobile=String(x.get("mobile")),business=String(x.get("business_name")),city=String(x.get("city")),address=String(x.get("address"));const service=isOem?"OEM / Authorised New Vehicle Dealer":"Pre-Owned / Used Vehicle Dealer";const {data,error}=await db.auth.signUp({email,password,options:{data:{network_role:"dealer",dealer_type:kind,name,phone:mobile,business_name:business,address,city,service_categories:service}}});if(error){setBusy(false);setMsg(error.message);return}if(!data.user){setBusy(false);setMsg("Account could not be created.");return}const {error:appError}=await db.from("dealer_applications").insert({applicant_user_id:data.user.id,business_name:business,contact_name:name,mobile,city,address,inventory_count:Number(x.get("inventory_count")||0),services:[service,String(x.get("brands")||""),String(x.get("services")||"")].filter(Boolean).join(" • "),message:String(x.get("message")||""),status:"new"});setBusy(false);if(appError){setMsg(appError.message);return}setMsg("Application submitted. ROHILLA DRIVE will review your account. You can sign in to the Dealer Workspace after approval.")}
+ async function signup(e:React.FormEvent<HTMLFormElement>){
+  e.preventDefault();setBusy(true);setMsg("Creating account…");
+  const x=new FormData(e.currentTarget);
+  const email=String(x.get("email")),password=String(x.get("password")),name=String(x.get("name")),mobile=String(x.get("mobile")),business=String(x.get("business_name")),city=String(x.get("city")),address=String(x.get("address"));
+  const service=isOem?"OEM / Authorised New Vehicle Dealer":"Pre-Owned / Used Vehicle Dealer";
+  const inventoryCount=Number(x.get("inventory_count")||0);
+  const serviceCategories=[service,String(x.get("brands")||""),String(x.get("services")||"")].filter(Boolean).join(" • ");
+  const applicationMessage=String(x.get("message")||"");
+  const {data,error}=await db.auth.signUp({
+   email,
+   password,
+   options:{data:{
+    network_role:"dealer",
+    application_source:"trusted_signup_v2",
+    dealer_type:kind,
+    name,
+    phone:mobile,
+    business_name:business,
+    address,
+    city,
+    service_categories:serviceCategories,
+    application_message:applicationMessage,
+    inventory_count:inventoryCount
+   }}
+  });
+  setBusy(false);
+  if(error){setMsg(error.message);return}
+  if(!data.user){setMsg("Account could not be created.");return}
+  setMsg("Application submitted. ROHILLA DRIVE will review your account. If email verification is requested, complete it before signing in to the Dealer Workspace.");
+ }
  return <main><header><div className="brand"><b>ROHILLA DRIVE</b><small>{title} Registration</small></div><div className="row"><a className="call" href="/dealer">Dealer Workspace Sign In</a><a className="call" href="/business-hub">Business Hub</a></div></header><section className="hero"><div className="heroText"><span>DIRECT REGISTRATION</span><h1>{title}</h1><p>Create your business account and submit the application for review.</p></div></section><section className="section"><div className="notice"><b>Who this is for:</b> {who}</div><div className="notice"><b>What happens next:</b> {next}</div></section><section className="section"><form className="adminForm" onSubmit={signup}><input name="name" placeholder="Contact Name" required/><input name="business_name" placeholder={isOem?"Dealership / Showroom Name":"Business / Dealership Name"} required/><input name="mobile" placeholder="Mobile Number" required/><input name="email" type="email" placeholder="Email Address" required/><input name="password" type="password" minLength={6} placeholder="Create Password" required/><input name="city" placeholder="City / Territory" required/><input name="address" placeholder="Business Address" required/>{isOem?<><input name="brands" placeholder="Authorised OEM Brand(s)" required/><input name="services" placeholder="New Car / Bike / Commercial / EV / Fleet Sales Team"/></>:<><input name="inventory_count" type="number" min="0" placeholder="Approximate Inventory Count"/><input name="brands" placeholder="Main Brands / Categories"/><input name="services" placeholder="Cars / SUVs / Two-Wheelers / Commercial / EV / Other"/></>}<textarea name="message" placeholder="Coverage, team, authorisation status, categories and business requirements"/><LegalConsent regulated/><button disabled={busy}>{busy?"Submitting…":"Create Account & Submit for Approval"}</button></form>{msg&&<div className="notice">{msg}</div>}<div className="notice">Already registered? <a href="/dealer"><b>Sign In to Dealer Workspace →</b></a></div></section></main>
 }
