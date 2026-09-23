@@ -435,3 +435,65 @@ body:not(:has(.rd-portal)) .carPage .notice{
     grid-template-columns:1fr 1fr!important;
   }
 }
+
+
+/* Final launch fix: keep gallery controls out of image layout flow. */
+body:not(:has(.rd-portal)) .carPage .detailViewer .photoArrow{
+  position:absolute!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  z-index:4!important;
+  width:36px!important;
+  height:42px!important;
+  min-width:36px!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:9px!important;
+  background:rgba(9,18,31,.78)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.28)!important;
+  font-size:26px!important;
+  line-height:1!important;
+}
+body:not(:has(.rd-portal)) .carPage .detailViewer .photoArrow.left{left:8px!important}
+body:not(:has(.rd-portal)) .carPage .detailViewer .photoArrow.right{right:8px!important}
+body:not(:has(.rd-portal)) .carPage .detailViewer .zoomButton{
+  position:absolute!important;
+  right:8px!important;
+  bottom:8px!important;
+  z-index:4!important;
+  width:auto!important;
+  min-width:0!important;
+  padding:6px 9px!important;
+  margin:0!important;
+  border-radius:8px!important;
+  background:rgba(9,18,31,.78)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.28)!important;
+  font-size:10px!important;
+  line-height:1.1!important;
+}
+body:not(:has(.rd-portal)) .carPage .detailViewer .photoCounter{
+  position:absolute!important;
+  left:8px!important;
+  bottom:8px!important;
+  z-index:4!important;
+  padding:5px 8px!important;
+  margin:0!important;
+  border-radius:999px!important;
+  background:rgba(9,18,31,.78)!important;
+  color:#fff!important;
+  font-size:10px!important;
+  font-weight:850!important;
+  line-height:1.1!important;
+}
+@media(max-width:800px){
+  body:not(:has(.rd-portal)) .carPage .detailViewer .photoArrow{
+    width:32px!important;
+    height:38px!important;
+    min-width:32px!important;
+    font-size:23px!important;
+  }
+  body:not(:has(.rd-portal)) .carPage .detailViewer .zoomButton{padding:5px 7px!important;font-size:9px!important}
+  body:not(:has(.rd-portal)) .carPage .detailViewer .photoCounter{padding:4px 7px!important;font-size:9px!important}
+}
