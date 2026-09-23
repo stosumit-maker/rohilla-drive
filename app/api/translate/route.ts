@@ -51,9 +51,10 @@ export async function POST(req:Request){
   if(!texts.length)return NextResponse.json({translations:[],configured:true,provider:"none_needed"},{headers});
   if(source&&target===source)return NextResponse.json({translations:texts,configured:true,provider:"identity"},{headers});
   try{const out=await googleTranslate(texts,target,source);if(out)return NextResponse.json({translations:out,configured:true,provider:"google_cloud_translation"},{headers})}catch{}
-  try{const out=await gatewayTranslate(texts,target,source);return NextResponse.json({translations:out.translations,configured:true,provider:"vercel_ai_gateway",model:out.model},{headers})}catch(error){
-   console.error("Rohilla translation gateway unavailable",error);
-   return NextResponse.json({translations:texts,configured:false,provider:"gateway_unavailable",error:"Translation service is temporarily unavailable."},{status:200,headers});
+  const gatewayEnabled=process.env.ROHILLA_ENABLE_AI_TRANSLATION==="true";
+  if(!gatewayEnabled)return NextResponse.json({translations:texts,configured:false,provider:"translation_fallback"},{status:200,headers});
+  try{const out=await gatewayTranslate(texts,target,source);return NextResponse.json({translations:out.translations,configured:true,provider:"vercel_ai_gateway",model:out.model},{headers})}catch{
+   return NextResponse.json({translations:texts,configured:false,provider:"gateway_unavailable"},{status:200,headers});
   }
  }catch{return NextResponse.json({error:"Translation request could not be processed"},{status:400,headers:{"Cache-Control":"no-store"}})}
 }
