@@ -7,8 +7,7 @@ const links=[
  {href:"/partner",label:"Dashboard"},
  {href:"/partner/kyc",label:"KYC & Documents"},
  {href:"/partner/deals",label:"Deal Management"},
- {href:"/partner/growth",label:"Marketing Studio"},
- {href:"/partner/language",label:"Language Operations"}
+ {href:"/partner/growth",label:"Marketing Studio"}
 ];
 const navItemStyle={minHeight:40,display:"inline-flex",alignItems:"center"} as const;
 const contextStyle={maxWidth:1340,margin:"0 auto",padding:"10px 22px 0",display:"flex",alignItems:"center",gap:10,flexWrap:"wrap" as const};
@@ -71,7 +70,7 @@ export default function PartnerLayout({children}:{children:React.ReactNode}){
     <nav className="rdPortalNav" aria-label="Partner workspace navigation">
      {visibleLinks.map(link=><a key={link.href} href={link.href} style={navItemStyle} className={path===link.href?"active":""} aria-current={path===link.href?"page":undefined}>{link.label}</a>)}
     </nav>
-    <div className="rdPortalUtilities"><a href="/business-hub">Business Hub</a><a className="premium" href="/">Public Website</a><button onClick={signOut}>Sign Out</button></div>
+    <div className="rdPortalUtilities"><a href="/business-hub">Business Hub</a><a className="premium" href="/">Home</a><button onClick={signOut}>Sign Out</button></div>
    </div>
   </div>}
   {partnerRole&&isInner&&(ready||isKyc)&&<div className="rdPortalContextBar" data-no-translate style={contextStyle}><a href="/partner" aria-label="Back to Partner Dashboard" style={backStyle}>← Back to Dashboard</a><span style={sectionStyle}>Current section: {current?.label||"Partner Workspace"}</span></div>}
