@@ -32,7 +32,7 @@ export default function CarDetailClient({initialCar}:{initialCar:any}){
    </div>
    <div className="carInfo">
     <label>ROHILLA DRIVE</label><h1>{c.brand} {c.model} {c.variant}</h1>
-    <div className="specs"><span>{c.year}</span><span>{Number(c.km||0).toLocaleString("en-IN")} km</span><span>{c.fuel}</span>{c.transmission&&<span>{c.transmission}</span>}{c.owner_count&&<span>{c.owner_count} Owner</span>}{c.city&&<span>{c.city}</span>}{c.registration_prefix&&<span>{c.registration_prefix}</span>}</div>
+    <div className="specs"><span>{c.year}</span><span>{Number(c.km||0).toLocaleString("en-IN")} km</span><span>{c.fuel}</span>{c.transmission&&<span>{c.transmission}</span>}{c.owner_count&&<span>{c.owner_count} Owner</span>}{c.city&&<span>{c.city}</span>}</div>
     <h2>₹{Number(c.asking_price||0).toLocaleString("en-IN")}</h2>
     {c.public_notes&&<p>{c.public_notes}</p>}
     <button type="button" className="primary" onClick={()=>{track("Enquiry Open",{surface:"vehicle_detail",brand:c.brand,model:c.model});setEnquire(true)}}>Enquire / Continue on WhatsApp</button>
