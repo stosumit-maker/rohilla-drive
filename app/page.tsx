@@ -70,13 +70,13 @@ export default function Home(){
  </header>
 
  <section className="hero"><div className="heroText">
-  <span>ROHILLA DRIVE • BY ROHILLA MULTIBRAND CARS</span>
-  <h1>Buy & Sell Cars in Ambala.</h1>
+  <span>ROHILLA DRIVE • AMBALA CITY</span>
+  <h1>Buy, Sell & Find Cars in Ambala</h1>
   <p className="heroSub">Used Cars • Sell Your Car • New Cars • Vehicle Services</p>
-  <p>Browse available cars, sell your car or share your requirement. Need help choosing? CarMentor can guide you.</p>
+  <p>Browse cars, sell your car, or tell us what you need.</p>
   <div className="search"><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by brand, model, year or city..."/><select value={fuel} onChange={e=>setFuel(e.target.value)}><option>All</option><option>Petrol</option><option>Diesel</option><option>CNG</option><option>Electric</option><option>Hybrid</option></select><button onClick={browseInventory}>Search Cars</button></div><div className="carMentorSpotlight">
    <div className="carMentorLogoPanel"><img className="cmHeroLogo" src="/carmentor-logo.svg" alt="CarMentor by Rohilla Drive"/></div>
-   <div className="carMentorSpotlightCopy"><b>Your smart car guide</b><span>Share your budget, usage and preferences. CarMentor helps you shortlist the right car from Rohilla Drive.</span></div>
+   <div className="carMentorSpotlightCopy"><b>Need help choosing?</b><span>Tell CarMentor your budget and preferred car.</span></div>
    <a href="/assistant">Ask CarMentor</a>
   </div>
  </div></section>
@@ -91,43 +91,43 @@ export default function Home(){
  </section>
 
  <div className="publicAccessBar">
-  <span>For Automotive Businesses</span><a href="/business-hub">Business Hub</a><a href="/dealer">Dealer Sign In</a><a href="/partner">Partner Sign In</a>
+  <span>For Businesses</span><a href="/business-hub">Business Hub</a><a href="/dealer">Dealer Sign In</a><a href="/partner">Partner Sign In</a>
  </div>
 
  <section className="quickLead leadCapture" aria-label="Quick vehicle enquiry">
-  <div className="quickLeadCopy"><span>QUICK ENQUIRY • AMBALA</span><h2>Send Your Car Requirement</h2><p>Buying, selling or looking for a specific car? Share the details and we will contact you.</p><div className="quickLeadBtns"><a className="secondary" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_quick_lead"})}>Call 7015260003</a><button type="button" className="secondary" onClick={()=>whatsapp("Hello Rohilla Drive, I have a vehicle requirement in Ambala.")}>WhatsApp</button></div></div>
+  <div className="quickLeadCopy"><span>QUICK ENQUIRY</span><h2>Tell Us What You Need</h2><p>Buying, selling or looking for a car? Send the details and we’ll contact you.</p><div className="quickLeadBtns"><a className="secondary" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_quick_lead"})}>Call 7015260003</a><button type="button" className="secondary" onClick={()=>whatsapp("Hello Rohilla Drive, I have a vehicle requirement in Ambala.")}>WhatsApp</button></div></div>
   <form className="quickLeadForm" data-source="homepage_quick_lead" onSubmit={submitLead}>
    <select value={leadType} onChange={e=>{const type=e.target.value;setLeadType(type);setLeadMessage(type==='vehicle sale'?'I want to sell my car. Please contact me for the next steps.':type==='new car purchase'?'I am looking for a new car. Please help with model, price and availability.':type==='vehicle service'?'I need vehicle service / inspection assistance. Please contact me.':'I am looking for a used car. Please contact me with suitable options.')}} aria-label="Requirement type"><option value="vehicle purchase">Find a Car</option><option value="vehicle sale">Sell My Car</option><option value="new car purchase">New Cars</option><option value="vehicle service">Vehicle Service / Inspection</option></select>
    <input value={leadName} onChange={e=>setLeadName(e.target.value)} placeholder="Your name" required/>
    <input value={leadPhone} onChange={e=>setLeadPhone(e.target.value)} placeholder="Mobile number" inputMode="tel" required/>
    <input value={leadLocation} onChange={e=>setLeadLocation(e.target.value)} placeholder="City / Location" required/>
    <textarea value={leadMessage} onChange={e=>setLeadMessage(e.target.value)} rows={3} placeholder="Car, budget or requirement" required/>
-   <button type="submit" disabled={leadBusy}>{leadBusy?'Submitting…':'Send Requirement & Continue on WhatsApp'}</button>
+   <button type="submit" disabled={leadBusy}>{leadBusy?'Submitting…':'Send & Continue on WhatsApp'}</button>
   </form>
  </section>
 
  <section className="section inventorySection" id="inventory">
-  <div className="head"><div><h2>Cars Available Now</h2><p>{loading?"Loading available cars...":cars.length?"Latest published cars from Rohilla Drive. Open any listing for full details.":"No cars are published right now. Send your requirement and we will contact you with suitable options."}</p></div><div className="row"><button className="secondary" onClick={()=>openLead("vehicle purchase")}>Find a Car</button><a className="textLink" href="/inventory">View All Cars →</a></div></div>
+  <div className="head"><div><h2>Cars Available Now</h2><p>{loading?"Loading available cars...":cars.length?"Current cars available from Rohilla Drive.":"No cars are published right now. Send your requirement and we will contact you with suitable options."}</p></div><div className="row"><button className="secondary" onClick={()=>openLead("vehicle purchase")}>Find a Car</button><a className="textLink" href="/inventory">View All Cars →</a></div></div>
   {loading?<p>Loading cars...</p>:cars.length===0?<div className="card"><div className="body"><h3>Looking for a specific car?</h3><p>Tell us the model, budget and location. We will follow up with suitable options.</p><button onClick={()=>openLead("vehicle purchase")}>Send Requirement</button></div></div>:<div className="grid">{cars.map(car=>{const photos=[...(car.vehicle_photos||[])].sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));return <article className="card compactVehicleCard" key={car.id}><VehicleCardGallery photos={photos} title={`${car.brand} ${car.model} ${car.variant||""}`.trim()}/><div className="body compactVehicleBody"><h3><a className="vehicleTitleLink" href={`/cars/${car.id}`}>{car.brand} {car.model}{car.variant?` ${car.variant}`:""}</a></h3><small>{car.year} • {Number(car.km).toLocaleString("en-IN")} km • {car.fuel}{car.owner_count?` • ${car.owner_count} Owner`:""}</small><div className="compactPriceRow"><strong>₹{Number(car.asking_price).toLocaleString("en-IN")}</strong><a className="vehicleDetailsLink" href={`/cars/${car.id}`}>Details →</a></div><div className="row vehicleCardActions"><button style={{flex:1}} onClick={()=>openVehicleEnquiry(car)}>Enquire / WhatsApp</button><button className="secondary bookVehicleButton" style={{flex:1}} onClick={()=>setBookingVehicle(car)}>Book Now</button></div></div></article>})}</div>}
  </section>
 
  <section className="section compactSection localSearchLinks" aria-label="Cars and vehicle services in Ambala">
-  <div className="head compactHead"><div><h2>Cars & Vehicle Help in Ambala</h2><p>Quick access to the pages customers use most.</p></div></div>
+  <div className="head compactHead"><div><h2>Popular Links</h2><p>Quick access to cars and vehicle services.</p></div></div>
   <div className="joinActions"><a href="/used-cars-ambala">Used Cars in Ambala</a><a href="/used-cars-under-5-lakh-ambala">Cars Under ₹5 Lakh</a><a href="/find-car-ambala">Find a Car</a><a href="/sell-car-ambala">Sell Your Car</a><a href="/verify">Vehicle Verification</a><a href="/car-services/ambala">Vehicle Services</a></div>
  </section>
 
  <section className="section compactSection" id="services">
-  <div className="head compactHead"><div><h2>Vehicle Services</h2><p>Inspection, RC transfer, repairs, detailing and other assistance through Rohilla Drive.</p></div><div className="row"><a className="textLink" href="/car-services/ambala">View Vehicle Services →</a></div></div>
+  <div className="head compactHead"><div><h2>Vehicle Services</h2><p>Inspection, RC transfer, repairs, detailing and more.</p></div><div className="row"><a className="textLink" href="/car-services/ambala">View Vehicle Services →</a></div></div>
   <div className="compactServices">{services.map(s=><button key={s[1]} onClick={()=>openServiceLead(s[2])}><PremiumIcon name={s[0]}/><b>{s[1]}</b></button>)}</div>
  </section>
 
  <section className="section actionSection">
-  <a className="trustedAssistStrip" href="/trusted-assist"><span className="trustedIcon"><PremiumIcon name="trusted"/></span><span className="trustedCopy"><b>ROHILLA TRUSTED ASSIST</b><em>Vehicle assistance when you cannot manage it personally.</em><small>NRI / remote owners • Defence personnel • Senior citizens • Outstation support</small></span><span className="trustedCta">View Trusted Assist →</span></a>
+  <a className="trustedAssistStrip" href="/trusted-assist"><span className="trustedIcon"><PremiumIcon name="trusted"/></span><span className="trustedCopy"><b>ROHILLA TRUSTED ASSIST</b><em>Help with your vehicle when you cannot manage it yourself.</em><small>NRI / remote owners • Defence personnel • Senior citizens • Outstation support</small></span><span className="trustedCta">View Trusted Assist →</span></a>
   <div className="joinStrip"><div><b>Dealer or automotive service business?</b><span> Rohilla Drive also has dedicated business access for dealers and service partners.</span></div><div className="joinActions"><a href="/business-hub">Business Hub</a><a href="/join/preowned">Dealer Registration</a><a href="/join/partner">Service Partner Registration</a></div></div>
  </section>
 
  <section className="section dark compactAbout" id="about">
-  <div className="about"><h2>ROHILLA DRIVE</h2><p className="brandPromise">Cars first. Vehicle assistance when you need it.</p><p>Rohilla Drive by Rohilla Multibrand Cars is based in Ambala City. The public website focuses first on buying and selling cars, with vehicle services and business-partner access available as supporting sections.</p><p><a className="call" href="/coverage">View Service Coverage</a></p></div>
+  <div className="about"><h2>ROHILLA DRIVE</h2><p className="brandPromise">Cars first. Simple vehicle help when you need it.</p><p>Rohilla Drive by Rohilla Multibrand Cars, Ambala City. Buy, sell and get vehicle assistance from one place.</p><p><a className="call" href="/coverage">View Service Coverage</a></p></div>
  </section>
 
  <footer><img className="rdFooterLogo" src="/rohilla-drive-logo.svg" alt="Rohilla Drive"/><div className="footerCopy"><p>Buy • Sell • Vehicle Assistance<br/>by Rohilla Multibrand Cars • Ambala City</p><p><a className="premiumPhone" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_footer"})}><span>CALL</span>7015260003</a></p><div className="footerSocial">{socialLinks}</div></div></footer>

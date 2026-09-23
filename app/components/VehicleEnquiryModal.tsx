@@ -102,16 +102,16 @@ export default function VehicleEnquiryModal({
     <div className="overlay" role="dialog" aria-modal="true" aria-label="Vehicle enquiry">
       <div className="modal">
         <button type="button" className="x" onClick={onClose} aria-label="Close enquiry form">×</button>
-        <h2>{mode==="booking" ? "Book / Reserve this vehicle" : "Enquire about this vehicle"}</h2>
+        <h2>{mode==="booking" ? "Book this car" : "Enquire about this car"}</h2>
         <p><b>{vehicle.year || ""} {vehicle.brand} {vehicle.model} {vehicle.variant || ""}</b></p>
-        <p>{mode==="booking" ? "Send a booking request. Final reservation is confirmed by Rohilla Drive after availability verification; no payment is taken on this page." : "Your enquiry will be saved first, then WhatsApp will open with the same vehicle details."}</p>
+        <p>{mode==="booking" ? "Send your details. We’ll confirm availability before any booking." : "Send your details and continue on WhatsApp."}</p>
         <form className="adminForm" onSubmit={submit}>
           <input required placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} />
           <input required inputMode="tel" placeholder="Mobile / WhatsApp number" value={phone} onChange={(e) => setPhone(e.target.value)} />
           <input placeholder="Your city / location" value={location} onChange={(e) => setLocation(e.target.value)} />
           <textarea placeholder={mode==="booking" ? "Any preferred visit time, exchange or finance requirement" : "Any question, exchange or finance requirement"} value={message} onChange={(e) => setMessage(e.target.value)} />
           <LegalConsent />
-          <button disabled={busy}>{busy ? (mode==="booking" ? "Saving booking request…" : "Saving enquiry…") : (mode==="booking" ? "Send Booking Request & Continue on WhatsApp" : "Save Enquiry & Continue on WhatsApp")}</button>
+          <button disabled={busy}>{busy ? (mode==="booking" ? "Saving booking request…" : "Saving enquiry…") : (mode==="booking" ? "Send Booking Request" : "Send Enquiry")}</button>
         </form>
         {error && <div className="notice">{error}</div>}
       </div>
