@@ -38,7 +38,7 @@ export default function CarDetailClient({initialCar}:{initialCar:any}){
     <label>ROHILLA DRIVE</label><h1>{c.brand} {c.model} {c.variant}</h1>
     <div className="specs"><span>{c.year}</span><span>{Number(c.km||0).toLocaleString("en-IN")} km</span><span>{c.fuel}</span>{c.transmission&&<span>{c.transmission}</span>}{c.owner_count&&<span>{c.owner_count} Owner</span>}{c.city&&<span>{c.city}</span>}</div>
     <h2>₹{Number(c.asking_price||0).toLocaleString("en-IN")}</h2>
-    {c.public_notes&&<p>{c.public_notes}</p>}
+    {c.public_notes&&<details className="vehicleDescription"><summary>Vehicle description</summary><p>{c.public_notes}</p></details>}
     <div className="vehicleDetailActions"><button type="button" className="primary" onClick={()=>{track("Enquiry Open",{surface:"vehicle_detail",brand:c.brand,model:c.model});setEnquire(true)}}>Enquire / WhatsApp</button><button type="button" className="secondary bookVehicleButton" onClick={()=>{track("Booking Open",{surface:"vehicle_detail",brand:c.brand,model:c.model});setBooking(true)}}>Book Now</button></div>
     <a className="call big" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"vehicle_detail",brand:c.brand,model:c.model})}>Call 7015260003</a>
     <div className="notice" style={{marginTop:18}}><b>Looking for a similar car?</b> <a href="/find-car-ambala">Send your model and budget requirement →</a></div>
