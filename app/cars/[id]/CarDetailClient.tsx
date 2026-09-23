@@ -6,7 +6,7 @@ import {track} from "@vercel/analytics";
 
 export default function CarDetailClient({initialCar}:{initialCar:any}){
  const c=initialCar;
- const [active,setActive]=useState(0),[fullscreen,setFullscreen]=useState(false),[zoom,setZoom]=useState(1),[enquire,setEnquire]=useState(false),[mediaView,setMediaView]=useState<any>(null),[mediaIndex,setMediaIndex]=useState(0);
+ const [active,setActive]=useState(0),[fullscreen,setFullscreen]=useState(false),[zoom,setZoom]=useState(1),[enquire,setEnquire]=useState(false),[booking,setBooking]=useState(false),[mediaView,setMediaView]=useState<any>(null),[mediaIndex,setMediaIndex]=useState(0);
  const touchStart=useRef<{x:number;y:number}|null>(null);
  const spinDrag=useRef<{x:number;index:number}|null>(null);
  const photos=[...(c.vehicle_photos||[])].sort((a:any,b:any)=>(a.sort_order||0)-(b.sort_order||0));
@@ -39,12 +39,13 @@ export default function CarDetailClient({initialCar}:{initialCar:any}){
     <div className="specs"><span>{c.year}</span><span>{Number(c.km||0).toLocaleString("en-IN")} km</span><span>{c.fuel}</span>{c.transmission&&<span>{c.transmission}</span>}{c.owner_count&&<span>{c.owner_count} Owner</span>}{c.city&&<span>{c.city}</span>}</div>
     <h2>₹{Number(c.asking_price||0).toLocaleString("en-IN")}</h2>
     {c.public_notes&&<p>{c.public_notes}</p>}
-    <button type="button" className="primary" onClick={()=>{track("Enquiry Open",{surface:"vehicle_detail",brand:c.brand,model:c.model});setEnquire(true)}}>Enquire / Continue on WhatsApp</button>
+    <div className="vehicleDetailActions"><button type="button" className="primary" onClick={()=>{track("Enquiry Open",{surface:"vehicle_detail",brand:c.brand,model:c.model});setEnquire(true)}}>Enquire / WhatsApp</button><button type="button" className="bookNow" onClick={()=>{track("Booking Open",{surface:"vehicle_detail",brand:c.brand,model:c.model});setBooking(true)}}>Book Now</button></div>
     <a className="call big" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"vehicle_detail",brand:c.brand,model:c.model})}>Call 7015260003</a>
     <div className="notice" style={{marginTop:18}}><b>Looking for a similar car?</b> <a href="/find-car-ambala">Send your model and budget requirement →</a></div>
    </div>
   </section>
   {fullscreen&&currentPhoto&&<div className="overlay" role="dialog" aria-modal="true" aria-label="Vehicle photo viewer"><div className="modal" style={{maxWidth:"min(1100px,96vw)",width:"96vw"}}><button className="x" onClick={()=>{setFullscreen(false);setZoom(1)}} aria-label="Close photo viewer">×</button><div style={{display:"flex",gap:8,justifyContent:"center",marginBottom:10}}><button className="secondary" onClick={()=>setZoom(z=>Math.max(1,z-.5))}>−</button><button className="secondary" onClick={()=>setZoom(1)}>100%</button><button className="secondary" onClick={()=>setZoom(z=>Math.min(4,z+.5))}>+</button></div><div onTouchStart={touchBegin} onTouchEnd={touchEnd} style={{overflow:"auto",textAlign:"center",maxHeight:"78vh"}}><img src={currentPhoto} alt={`${c.brand} ${c.model} enlarged`} draggable={false} style={{maxWidth:"100%",transform:`scale(${zoom})`,transformOrigin:"center center",transition:"transform .12s ease"}}/></div>{photos.length>1&&<div className="row" style={{justifyContent:"center",marginTop:12}}><button onClick={previous}>Previous</button><span>{active+1} / {photos.length}</span><button onClick={next}>Next</button></div>}</div></div>}
-  {enquire&&<VehicleEnquiryModal vehicle={c} source="vehicle_detail_page" onClose={()=>setEnquire(false)}/>}
+  {enquire&&<VehicleEnquiryModal vehicle={c} source="vehicle_detail_page" intent="enquiry" onClose={()=>setEnquire(false)}/>}
+  {booking&&<VehicleEnquiryModal vehicle={c} source="vehicle_detail_page" intent="booking" onClose={()=>setBooking(false)}/>}
  </main>;
 }
