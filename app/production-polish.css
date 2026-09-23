@@ -308,3 +308,130 @@ body:not(:has(.rd-portal)) .bookVehicleButton{font-weight:850}
  body:not(:has(.rd-portal)) .vehicleCardActions{display:grid;grid-template-columns:1fr 1fr}
  body:not(:has(.rd-portal)) .vehicleCardActions button:last-child:nth-child(3){grid-column:1/-1}
 }
+
+
+/* Launch-ready vehicle detail sizing: one consistent frame, compact information panel. */
+body:not(:has(.rd-portal)) .carPage .detailViewer{
+  height:340px!important;
+  aspect-ratio:auto!important;
+  background:#0b1220;
+}
+body:not(:has(.rd-portal)) .carPage .detailViewer>img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+}
+body:not(:has(.rd-portal)) .carPage .detailThumbs{
+  padding:6px 0 0!important;
+  gap:5px!important;
+}
+body:not(:has(.rd-portal)) .carPage .detailThumbs .thumb{
+  flex:0 0 64px!important;
+  width:64px!important;
+  min-width:64px!important;
+  height:46px!important;
+}
+body:not(:has(.rd-portal)) .carPage .photoColumn>.swipeHint{
+  margin:4px 0 0!important;
+  font-size:10px!important;
+  line-height:1.2!important;
+}
+body:not(:has(.rd-portal)) .carPage .carDetail{
+  max-width:1060px!important;
+  margin:18px auto 24px!important;
+  padding:0 14px!important;
+  grid-template-columns:minmax(0,1.12fr) minmax(290px,.68fr)!important;
+  gap:16px!important;
+}
+body:not(:has(.rd-portal)) .carPage .carInfo{
+  padding:10px 11px!important;
+  border-radius:12px!important;
+}
+body:not(:has(.rd-portal)) .carPage .carInfo>label{
+  font-size:9px!important;
+  padding:4px 6px!important;
+}
+body:not(:has(.rd-portal)) .carPage .carInfo h1{
+  font-size:26px!important;
+  margin:6px 0 7px!important;
+  line-height:1.05!important;
+}
+body:not(:has(.rd-portal)) .carPage .carInfo h2{
+  font-size:25px!important;
+  margin:8px 0 7px!important;
+}
+body:not(:has(.rd-portal)) .carPage .carInfo .specs{
+  gap:4px!important;
+}
+body:not(:has(.rd-portal)) .carPage .carInfo .specs span{
+  padding:5px 7px!important;
+  font-size:10px!important;
+}
+body:not(:has(.rd-portal)) .carPage .vehicleDescription{
+  margin:7px 0 0;
+  border-top:1px solid #e5eaf0;
+  border-bottom:1px solid #e5eaf0;
+  padding:6px 0;
+}
+body:not(:has(.rd-portal)) .carPage .vehicleDescription summary{
+  cursor:pointer;
+  font-size:11px;
+  font-weight:850;
+  color:#344054;
+}
+body:not(:has(.rd-portal)) .carPage .vehicleDescription p{
+  margin:6px 0 1px!important;
+  font-size:12px!important;
+  line-height:1.4!important;
+}
+body:not(:has(.rd-portal)) .carPage .vehicleDetailActions{
+  gap:6px!important;
+  margin-top:8px!important;
+}
+body:not(:has(.rd-portal)) .carPage .vehicleDetailActions button{
+  min-height:38px!important;
+  padding:7px 8px!important;
+  font-size:11px!important;
+}
+body:not(:has(.rd-portal)) .carPage .carInfo .big{
+  margin-top:6px!important;
+  padding:8px!important;
+  font-size:12px!important;
+}
+body:not(:has(.rd-portal)) .carPage .notice{
+  margin-top:8px!important;
+  padding:8px!important;
+  font-size:11px!important;
+}
+@media(max-width:800px){
+  body:not(:has(.rd-portal)) .carPage .carDetail{
+    margin:8px auto 16px!important;
+    padding:0 8px!important;
+    gap:8px!important;
+  }
+  body:not(:has(.rd-portal)) .carPage .detailViewer{
+    height:210px!important;
+    border-radius:10px!important;
+  }
+  body:not(:has(.rd-portal)) .carPage .detailThumbs .thumb{
+    flex-basis:54px!important;
+    width:54px!important;
+    min-width:54px!important;
+    height:40px!important;
+  }
+  body:not(:has(.rd-portal)) .carPage .carInfo{
+    padding:9px 10px!important;
+  }
+  body:not(:has(.rd-portal)) .carPage .carInfo h1{
+    font-size:22px!important;
+    margin:5px 0 6px!important;
+  }
+  body:not(:has(.rd-portal)) .carPage .carInfo h2{
+    font-size:22px!important;
+    margin:7px 0 6px!important;
+  }
+  body:not(:has(.rd-portal)) .carPage .vehicleDetailActions{
+    grid-template-columns:1fr 1fr!important;
+  }
+}
