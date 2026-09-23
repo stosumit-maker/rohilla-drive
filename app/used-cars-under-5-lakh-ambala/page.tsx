@@ -41,8 +41,8 @@ export default async function UsedCarsUnderFiveLakhAmbala(){
       <span>BUDGET USED CARS • AMBALA CITY</span>
       <h1>Used Cars Under ₹5 Lakh in Ambala</h1>
       <p className="heroSub">Second hand cars • Live published stock • Direct enquiry</p>
-      <p>Browse actual ROHILLA DRIVE inventory currently priced up to ₹5 lakh in Ambala. If the exact car you want is not listed, send your budget and model requirement for direct follow-up.</p>
-      <div className="row" style={{marginTop:18}}><a className="call" href="#ambala-enquiry">Send My Requirement</a><a className="call" href="/used-cars-ambala">All Used Cars in Ambala</a><a className="secondary" href="tel:+917015260003">Call 7015260003</a></div>
+      <p>Browse current cars priced up to ₹5 lakh. If you don’t see the right one, send your budget and model.</p>
+      <div className="row" style={{marginTop:18}}><a className="call" href="#ambala-enquiry">Send Requirement</a><a className="call" href="/used-cars-ambala">All Used Cars in Ambala</a><a className="secondary" href="tel:+917015260003">Call 7015260003</a></div>
     </div></section>
 
     <AmbalaLeadFunnel source="used_cars_under_5_lakh_ambala" defaultMode="buy"/>
@@ -51,10 +51,10 @@ export default async function UsedCarsUnderFiveLakhAmbala(){
     {cars.length?<div className="grid">{cars.map(c=>{const photos=[...(c.vehicle_photos||[])].sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));const first=photos[0]?.url;return <article className="card" key={c.id}><a className="photo real" href={`/cars/${c.id}`} aria-label={`Open ${c.brand} ${c.model} details`}>{first?<img src={first} alt={`${c.year||""} ${c.brand} ${c.model} used car under 5 lakh in Ambala`}/>:<span>Vehicle photo unavailable</span>}</a><div className="body"><label>UNDER ₹5 LAKH • AMBALA</label><h2 style={{fontSize:22}}>{c.brand} {c.model}</h2>{c.variant&&<p>{c.variant}</p>}<small>{c.year||"Year on request"}{c.km!=null?` • ${Number(c.km).toLocaleString("en-IN")} km`:""}{c.fuel?` • ${c.fuel}`:""}{c.owner_count?` • ${c.owner_count} Owner`:""}</small>{c.asking_price!=null&&<strong>₹{Number(c.asking_price).toLocaleString("en-IN")}</strong>}<a className="call" href={`/cars/${c.id}`} style={{display:"block",textAlign:"center"}}>View Car Details</a><div className="row" style={{marginTop:8,gap:6}}><a className="call" href={`/cars/${c.id}?enquire=1`} style={{flex:1,textAlign:"center",padding:"9px 8px",fontSize:11}}>Enquire / WhatsApp</a><a className="secondary" href={`/cars/${c.id}?book=1`} style={{flex:1,textAlign:"center",padding:"9px 8px",fontSize:11,borderRadius:10,fontWeight:800,textDecoration:"none"}}>Book Now</a></div></div></article>})}</div>:<div className="notice"><b>Budget fixed at ₹5 lakh?</b> <a href="#ambala-enquiry">Send the model and budget you need →</a></div>}
     </section>
 
-    <section className="section compactSection"><div className="head"><div><h2>Buying a Budget Used Car in Ambala</h2></div></div><div className="grid">
-      <article className="card"><div className="body"><h3>Compare the actual car</h3><p>Check year, kilometres, fuel, ownership, registration and published photos on each listing instead of relying only on a budget filter.</p></div></article>
-      <article className="card"><div className="body"><h3>Verify before payment</h3><p>Confirm vehicle condition, documents, pending dues and transaction terms before completing a purchase.</p><a className="textLink" href="/verify">Vehicle verification →</a></div></article>
-      <article className="card"><div className="body"><h3>Need a different model?</h3><p>Send a requirement even when the exact car is not in current stock. Your enquiry is saved for direct follow-up.</p><a className="textLink" href="/find-car-ambala">Find a car for me →</a></div></article>
+    <section className="section compactSection"><div className="head"><div><h2>Before You Buy</h2></div></div><div className="grid">
+      <article className="card"><div className="body"><h3>Compare the actual car</h3><p>Check the car’s year, kilometres, fuel, ownership and photos.</p></div></article>
+      <article className="card"><div className="body"><h3>Verify before payment</h3><p>Confirm condition, documents and final terms before payment.</p><a className="textLink" href="/verify">Vehicle verification →</a></div></article>
+      <article className="card"><div className="body"><h3>Need a different model?</h3><p>Send your model and budget if the exact car is not listed.</p><a className="textLink" href="/find-car-ambala">Find a car for me →</a></div></article>
     </div></section>
 
     <section className="section"><div className="head"><div><h2>Used Cars Under ₹5 Lakh in Ambala — FAQs</h2></div></div><div className="grid">{faq.map(([q,a])=><article className="card" key={q}><div className="body"><h3>{q}</h3><p>{a}</p></div></article>)}</div></section>

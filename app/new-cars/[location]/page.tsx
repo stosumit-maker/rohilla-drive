@@ -34,20 +34,20 @@ export default async function RegionalNewCars({params}:{params:Promise<Params>})
     <section className="hero" style={{paddingTop:52,paddingBottom:52}}><div className="heroText">
       <span>NEW CAR ASSISTANCE • {loc.region.toUpperCase()}</span>
       <h1>New Cars in {loc.name}</h1>
-      <p className="heroSub">Brand/model discovery • Dealer quote request • Test drive • Exchange • Finance preference</p>
-      <p>Tell ROHILLA DRIVE what new car you want. We can structure the requirement and coordinate relevant participating authorised dealer teams where available. Final stock, offer, warranty, delivery and pricing come from the seller.</p>
-      <div className="row" style={{marginTop:18}}><a className="call" href="#new-car-enquiry">Request New-Car Options</a><a className="secondary" href={buyPath(loc)}>Used Cars in {loc.name}</a><a className="secondary" href={sellPath(loc)}>Sell Current Car</a></div>
+      <p className="heroSub">Model • Quote • Test Drive • Exchange • Finance</p>
+      <p>Tell us the new car you want. We’ll help with available options; final stock and price come from the authorised seller.</p>
+      <div className="row" style={{marginTop:18}}><a className="call" href="#new-car-enquiry">Send New-Car Request</a><a className="secondary" href={buyPath(loc)}>Used Cars in {loc.name}</a><a className="secondary" href={sellPath(loc)}>Sell Current Car</a></div>
     </div></section>
 
     <NewCarLeadForm defaultCity={loc.name} locationName={loc.name}/>
 
-    <section className="section compactSection"><div className="head"><div><h2>What You Can Include in the Request</h2><p>One structured requirement is more useful than repeatedly searching separate dealers.</p></div></div><div className="grid">
+    <section className="section compactSection"><div className="head"><div><h2>Tell Us What You Want</h2><p>Share as much or as little as you know.</p></div></div><div className="grid">
       <article className="card"><div className="body"><h3>Brand, model & variant</h3><p>Share the exact model if decided, or only the budget and body type if you are still comparing.</p></div></article>
       <article className="card"><div className="body"><h3>Test drive & delivery timing</h3><p>Add your preferred test-drive or delivery timing. Dealer response and availability can vary.</p></div></article>
       <article className="card"><div className="body"><h3>Exchange & finance</h3><p>Tell us if you have an existing vehicle to exchange and whether finance assistance is needed.</p></div></article>
     </div></section>
 
-    <section className="section"><div className="head"><div><h2>Complete Car Journey in {loc.name}</h2><p>ROHILLA DRIVE also captures used-car, seller and automotive-service requirements.</p></div></div><div className="grid">
+    <section className="section"><div className="head"><div><h2>More from Rohilla Drive</h2><p>Used cars, selling and vehicle services.</p></div></div><div className="grid">
       <article className="card"><div className="body"><h3>Used cars</h3><p>Browse current network inventory or save the exact used-car requirement you need.</p><a href={buyPath(loc)}>Used cars in {loc.name} →</a></div></article>
       <article className="card"><div className="body"><h3>Sell / exchange current car</h3><p>Start a seller enquiry or submit full details and private photos.</p><a href={sellPath(loc)}>Sell car in {loc.name} →</a></div></article>
       <article className="card"><div className="body"><h3>Car services</h3><p>Request repair, inspection, detailing, RC/RTO, insurance, finance, roadside and other automotive support.</p><a href={`/car-services/${loc.slug}`}>Car services in {loc.name} →</a></div></article>
@@ -55,7 +55,7 @@ export default async function RegionalNewCars({params}:{params:Promise<Params>})
 
     {related.length>0&&<section className="section"><div className="head"><div><h2>More {loc.region} New-Car Areas</h2></div></div><div className="joinActions">{related.map(x=><a key={x.slug} href={`/new-cars/${x.slug}`}>New cars in {x.name}</a>)}</div></section>}
 
-    <section className="section dark"><div className="about"><h2>ROHILLA DRIVE New Vehicle Network</h2><p>Rohilla Multibrand Cars is based in Ambala City. New-car assistance depends on participating authorised dealers and their service area. We do not represent ourselves as an authorised dealer for every vehicle brand.</p><div className="row"><a className="call" href="tel:+917015260003">Call 7015260003</a><a className="call" href="/coverage">All Coverage Areas</a></div></div></section>
+    <section className="section dark"><div className="about"><h2>New Car Assistance</h2><p>Rohilla Multibrand Cars is based in Ambala City. New-car availability depends on authorised sellers and their service areas.</p><div className="row"><a className="call" href="tel:+917015260003">Call 7015260003</a><a className="call" href="/coverage">All Coverage Areas</a></div></div></section>
 
     <section className="section"><div className="head"><div><h2>New Cars in {loc.name} — FAQs</h2></div></div><div className="grid">{faq.map(([q,a])=><article className="card" key={q}><div className="body"><h3>{q}</h3><p>{a}</p></div></article>)}</div></section>
   </main>;

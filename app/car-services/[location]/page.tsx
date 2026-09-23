@@ -37,25 +37,25 @@ export default async function CarServicesLocation({params}:{params:Promise<Param
       <span>AUTOMOTIVE SERVICES • {loc.region.toUpperCase()}</span>
       <h1>Car Services in {loc.name}</h1>
       <p className="heroSub">Repair • Inspection • Detailing • RC/RTO • Finance • Insurance • Roadside • Tyres/Battery</p>
-      <p>Send one requirement instead of searching multiple providers. ROHILLA DRIVE can coordinate eligible requests with participating businesses where available. We do not claim a physical branch or workshop in every city.</p>
+      <p>Tell us the service you need and your vehicle location. We’ll contact you with the next step.</p>
       <div className="row" style={{marginTop:18}}><a className="call" href="#service-enquiry">Request a Service</a><a className="secondary" href={buyPath(loc)}>Buy / Find a Car</a><a className="secondary" href={sellPath(loc)}>Sell a Car</a></div>
     </div></section>
 
-    <section className="section"><div className="head"><div><h2>Automotive Help Available Through the Network</h2><p>Choose the exact requirement when you submit the form. Partner availability and service area can vary.</p></div></div><div className="grid">
-      {autoServiceIntents.map(item=><article className="card" key={item.id}><div className="body"><label>{item.label}</label><h3>{item.label}</h3><p>{item.short}</p><small>Common searches: {item.searchTerms.join(" • ")}</small><p style={{marginTop:12}}><a className="textLink" href={`#service-enquiry`}>Request {item.label} →</a></p></div></article>)}
+    <section className="section"><div className="head"><div><h2>Choose a Service</h2><p>Select what you need and send a request.</p></div></div><div className="grid">
+      {autoServiceIntents.map(item=><article className="card" key={item.id}><div className="body"><label>{item.label}</label><h3>{item.label}</h3><p>{item.short}</p><p style={{marginTop:12}}><a className="textLink" href={`#service-enquiry`}>Request {item.label} →</a></p></div></article>)}
     </div></section>
 
     <ServiceLeadForm defaultCity={loc.name} locationName={loc.name}/>
 
-    <section className="section compactSection"><div className="head"><div><h2>Car Support Around {loc.name}</h2><p>{loc.marketNote} Nearby markets include {loc.nearby.join(", ")}.</p></div></div><div className="grid">
-      <article className="card"><div className="body"><h3>Buying or selling too?</h3><p>Use the same ROHILLA DRIVE network for used-car buying requirements and seller enquiries.</p><div className="row"><a className="secondary" href={buyPath(loc)}>Find Used Car</a><a className="secondary" href={sellPath(loc)}>Sell Car</a></div></div></article>
-      <article className="card"><div className="body"><h3>New car requirement</h3><p>Share brand, model, budget, exchange and finance preferences for relevant new-vehicle options where participating dealers are available.</p><a className="textLink" href={`/new-cars/${loc.slug}`}>New cars in {loc.name} →</a></div></article>
+    <section className="section compactSection"><div className="head"><div><h2>More Vehicle Help</h2><p>{loc.marketNote} Nearby markets include {loc.nearby.join(", ")}.</p></div></div><div className="grid">
+      <article className="card"><div className="body"><h3>Buying or selling too?</h3><p>You can also browse used cars or sell your current car.</p><div className="row"><a className="secondary" href={buyPath(loc)}>Find Used Car</a><a className="secondary" href={sellPath(loc)}>Sell Car</a></div></div></article>
+      <article className="card"><div className="body"><h3>New car requirement</h3><p>Tell us the brand, model and budget for your new-car requirement.</p><a className="textLink" href={`/new-cars/${loc.slug}`}>New cars in {loc.name} →</a></div></article>
       <article className="card"><div className="body"><h3>Confirm before work starts</h3><p>Check provider identity, scope, estimate, parts, warranty, documents and final price before authorising any work or payment.</p></div></article>
     </div></section>
 
     {related.length>0&&<section className="section"><div className="head"><div><h2>More {loc.region} Service Areas</h2></div></div><div className="joinActions">{related.map(x=><a key={x.slug} href={`/car-services/${x.slug}`}>Car services in {x.name}</a>)}</div></section>}
 
-    <section className="section dark"><div className="about"><h2>ROHILLA DRIVE Automotive Network</h2><p>Rohilla Multibrand Cars is based in Ambala City. ROHILLA DRIVE expands digital enquiry coverage across Haryana, Chandigarh, nearby Punjab markets and selected Rajasthan markets without pretending to have a branch in every city.</p><div className="row"><a className="call" href="tel:+917015260003">Call 7015260003</a><a className="call" href="/coverage">All Coverage Areas</a></div></div></section>
+    <section className="section dark"><div className="about"><h2>ROHILLA DRIVE • Ambala City</h2><p>Rohilla Multibrand Cars is based in Ambala City. Service availability outside Ambala depends on location and provider availability.</p><div className="row"><a className="call" href="tel:+917015260003">Call 7015260003</a><a className="call" href="/coverage">All Coverage Areas</a></div></div></section>
 
     <section className="section"><div className="head"><div><h2>Car Services in {loc.name} — FAQs</h2></div></div><div className="grid">{faq.map(([q,a])=><article className="card" key={q}><div className="body"><h3>{q}</h3><p>{a}</p></div></article>)}</div></section>
   </main>;
