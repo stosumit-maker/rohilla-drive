@@ -1,5 +1,5 @@
 import type {Metadata} from "next";
-import {notFound} from "next/navigation";
+import {notFound,redirect} from "next/navigation";
 import AmbalaLeadFunnel from "../../components/AmbalaLeadFunnel";
 import {buyPath,getMarketLocation,marketLocations,sellPath} from "../../lib/market-locations";
 
@@ -22,7 +22,8 @@ export async function generateMetadata({params}:{params:Promise<Params>}):Promis
 export default async function RegionalSellCar({params}:{params:Promise<Params>}){
   const {location}=await params;
   const loc=getMarketLocation(location);
-  if(!loc||loc.legacySellPath)notFound();
+  if(!loc)notFound();
+  if(loc.legacySellPath)redirect(loc.legacySellPath);
   const site="https://www.rohilladrive.com";
   const canonical=sellPath(loc);
   const related=marketLocations.filter(x=>x.region===loc.region&&x.slug!==loc.slug&&!x.hub).slice(0,8);
