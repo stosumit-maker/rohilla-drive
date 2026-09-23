@@ -1081,3 +1081,53 @@ body:not(:has(.rd-portal)) .carPage .detailViewer>img{
     aspect-ratio:4/3!important;
   }
 }
+
+
+/* Final gallery lock — restore the first morning treatment the user preferred. */
+body:not(:has(.rd-portal)) .premiumVehicleMedia,
+body:not(:has(.rd-portal)) .premiumVehiclePhotoButton{
+  background:#ffffff!important;
+}
+body:not(:has(.rd-portal)) .premiumVehicleMedia{
+  position:relative!important;
+  width:100%!important;
+  height:245px!important;
+  aspect-ratio:auto!important;
+  overflow:hidden!important;
+  border-bottom:1px solid #e5e7eb!important;
+}
+body:not(:has(.rd-portal)) .premiumVehiclePhotoButton{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+}
+body:not(:has(.rd-portal)) .premiumVehicleBackdrop,
+body:not(:has(.rd-portal)) .premiumVehicleShade{
+  display:none!important;
+}
+body:not(:has(.rd-portal)) .premiumVehicleMain{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  padding:0!important;
+  margin:0!important;
+  filter:none!important;
+  background:#ffffff!important;
+}
+body:not(:has(.rd-portal)) .premiumVehicleExpand{
+  background:rgba(15,23,42,.82)!important;
+}
+@media(max-width:800px){
+  body:not(:has(.rd-portal)) .premiumVehicleMedia{
+    height:235px!important;
+    aspect-ratio:auto!important;
+  }
+}
