@@ -21,10 +21,12 @@ export default function VehicleEnquiryModal({
   vehicle,
   source,
   onClose,
+  mode = "enquiry",
 }: {
   vehicle: VehicleEnquiryTarget;
   source: "inventory_page" | "vehicle_detail_page";
   onClose: () => void;
+  mode?: "enquiry" | "booking";
 }) {
   const db = supabase();
   const [name, setName] = useState("");
@@ -40,7 +42,8 @@ export default function VehicleEnquiryModal({
     setBusy(true);
     setError("");
 
-    const ref = newRequestReference("RDQ");
+    const isBooking = mode === "booking";
+    const ref = newRequestReference(isBooking ? "RDB" : "RDQ");
     const description = [
       `Reference: ${ref}`,
       `Interested in ${vehicle.year || ""} ${vehicle.brand} ${vehicle.model} ${vehicle.variant || ""}`.trim(),
@@ -55,7 +58,7 @@ export default function VehicleEnquiryModal({
         vehicle_id: vehicle.id,
         customer_name: name.trim(),
         customer_phone: phone.trim(),
-        requirement: "Vehicle purchase enquiry",
+        requirement: isBooking ? "Vehicle booking request" : "Vehicle purchase enquiry",
         message: description,
         status: "new",
         source,
@@ -74,10 +77,10 @@ export default function VehicleEnquiryModal({
       return;
     }
 
-    track("Lead Submitted",{surface:source,intent:"buy_vehicle",brand:vehicle.brand,model:vehicle.model});
+    track("Lead Submitted",{surface:source,intent:isBooking?"vehicle_booking":"buy_vehicle",brand:vehicle.brand,model:vehicle.model});
 
     const wa = [
-      "ROHILLA DRIVE VEHICLE ENQUIRY",
+      isBooking ? "ROHILLA DRIVE VEHICLE BOOKING REQUEST" : "ROHILLA DRIVE VEHICLE ENQUIRY",
       "",
       `Vehicle: ${vehicle.year || ""} ${vehicle.brand} ${vehicle.model} ${vehicle.variant || ""}`.trim(),
       vehicle.asking_price ? `Price: ₹${Number(vehicle.asking_price).toLocaleString("en-IN")}` : "",
@@ -99,16 +102,16 @@ export default function VehicleEnquiryModal({
     <div className="overlay" role="dialog" aria-modal="true" aria-label="Vehicle enquiry">
       <div className="modal">
         <button type="button" className="x" onClick={onClose} aria-label="Close enquiry form">×</button>
-        <h2>Enquire about this vehicle</h2>
+        <h2>{mode==="booking" ? "Book this vehicle" : "Enquire about this vehicle"}</h2>
         <p><b>{vehicle.year || ""} {vehicle.brand} {vehicle.model} {vehicle.variant || ""}</b></p>
-        <p>Your enquiry will be saved first, then WhatsApp will open with the same vehicle details.</p>
+        <p>{mode==="booking" ? "Send a booking request for this vehicle. Our team will confirm availability and booking terms before any payment." : "Your enquiry will be saved first, then WhatsApp will open with the same vehicle details."}</p>
         <form className="adminForm" onSubmit={submit}>
           <input required placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} />
           <input required inputMode="tel" placeholder="Mobile / WhatsApp number" value={phone} onChange={(e) => setPhone(e.target.value)} />
           <input placeholder="Your city / location" value={location} onChange={(e) => setLocation(e.target.value)} />
-          <textarea placeholder="Any question, exchange or finance requirement" value={message} onChange={(e) => setMessage(e.target.value)} />
+          <textarea placeholder={mode==="booking" ? "Booking note, preferred visit time or any question" : "Any question, exchange or finance requirement"} value={message} onChange={(e) => setMessage(e.target.value)} />
           <LegalConsent />
-          <button disabled={busy}>{busy ? "Saving enquiry…" : "Save Enquiry & Continue on WhatsApp"}</button>
+          <button disabled={busy}>{busy ? (mode==="booking" ? "Saving booking request…" : "Saving enquiry…") : (mode==="booking" ? "Send Booking Request & Continue on WhatsApp" : "Save Enquiry & Continue on WhatsApp")}</button>
         </form>
         {error && <div className="notice">{error}</div>}
       </div>
