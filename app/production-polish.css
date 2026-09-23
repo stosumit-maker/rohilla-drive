@@ -1009,3 +1009,12 @@ body:not(:has(.rd-portal)) .carPage .detailViewer>img{
     min-height:0!important;
   }
 }
+
+
+/* Touch zoom support for full-screen vehicle photos. */
+body:not(:has(.rd-portal)) .fullscreenPhotoStage,
+body:not(:has(.rd-portal)) .fullscreenVehiclePhoto{
+  touch-action:none!important;
+  user-select:none;
+  -webkit-user-drag:none;
+}
