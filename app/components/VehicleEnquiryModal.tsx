@@ -21,10 +21,12 @@ export default function VehicleEnquiryModal({
   vehicle,
   source,
   onClose,
+  intent = "enquiry",
 }: {
   vehicle: VehicleEnquiryTarget;
   source: "inventory_page" | "vehicle_detail_page";
   onClose: () => void;
+  intent?: "enquiry" | "booking";
 }) {
   const db = supabase();
   const [name, setName] = useState("");
@@ -40,10 +42,11 @@ export default function VehicleEnquiryModal({
     setBusy(true);
     setError("");
 
-    const ref = newRequestReference("RDQ");
+    const isBooking=intent==="booking";
+    const ref = newRequestReference(isBooking?"RDB":"RDQ");
     const description = [
       `Reference: ${ref}`,
-      `Interested in ${vehicle.year || ""} ${vehicle.brand} ${vehicle.model} ${vehicle.variant || ""}`.trim(),
+      `${isBooking?"Booking request for":"Interested in"} ${vehicle.year || ""} ${vehicle.brand} ${vehicle.model} ${vehicle.variant || ""}`.trim(),
       vehicle.asking_price ? `Listed price: ₹${Number(vehicle.asking_price).toLocaleString("en-IN")}` : "",
       location.trim() ? `Customer location: ${location.trim()}` : "",
       message.trim(),
@@ -55,7 +58,7 @@ export default function VehicleEnquiryModal({
         vehicle_id: vehicle.id,
         customer_name: name.trim(),
         customer_phone: phone.trim(),
-        requirement: "Vehicle purchase enquiry",
+        requirement: isBooking ? "Vehicle booking request" : "Vehicle purchase enquiry",
         message: description,
         status: "new",
         source,
@@ -74,10 +77,10 @@ export default function VehicleEnquiryModal({
       return;
     }
 
-    track("Lead Submitted",{surface:source,intent:"buy_vehicle",brand:vehicle.brand,model:vehicle.model});
+    track("Lead Submitted",{surface:source,intent:isBooking?"vehicle_booking":"buy_vehicle",brand:vehicle.brand,model:vehicle.model});
 
     const wa = [
-      "ROHILLA DRIVE VEHICLE ENQUIRY",
+      isBooking ? "ROHILLA DRIVE VEHICLE BOOKING REQUEST" : "ROHILLA DRIVE VEHICLE ENQUIRY",
       "",
       `Vehicle: ${vehicle.year || ""} ${vehicle.brand} ${vehicle.model} ${vehicle.variant || ""}`.trim(),
       vehicle.asking_price ? `Price: ₹${Number(vehicle.asking_price).toLocaleString("en-IN")}` : "",
@@ -96,19 +99,19 @@ export default function VehicleEnquiryModal({
   }
 
   return (
-    <div className="overlay" role="dialog" aria-modal="true" aria-label="Vehicle enquiry">
+    <div className="overlay" role="dialog" aria-modal="true" aria-label={intent==="booking"?"Vehicle booking":"Vehicle enquiry"}>
       <div className="modal">
         <button type="button" className="x" onClick={onClose} aria-label="Close enquiry form">×</button>
-        <h2>Enquire about this vehicle</h2>
+        <h2>{intent==="booking"?"Book this vehicle":"Enquire about this vehicle"}</h2>
         <p><b>{vehicle.year || ""} {vehicle.brand} {vehicle.model} {vehicle.variant || ""}</b></p>
-        <p>Your enquiry will be saved first, then WhatsApp will open with the same vehicle details.</p>
+        <p>{intent==="booking"?"Send a booking request. Our team will confirm availability and booking terms before anything is final.":"Your enquiry will be saved first, then WhatsApp will open with the same vehicle details."}</p>
         <form className="adminForm" onSubmit={submit}>
           <input required placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} />
           <input required inputMode="tel" placeholder="Mobile / WhatsApp number" value={phone} onChange={(e) => setPhone(e.target.value)} />
           <input placeholder="Your city / location" value={location} onChange={(e) => setLocation(e.target.value)} />
-          <textarea placeholder="Any question, exchange or finance requirement" value={message} onChange={(e) => setMessage(e.target.value)} />
+          <textarea placeholder={intent==="booking"?"Any booking note, preferred visit time, exchange or finance requirement":"Any question, exchange or finance requirement"} value={message} onChange={(e) => setMessage(e.target.value)} />
           <LegalConsent />
-          <button disabled={busy}>{busy ? "Saving enquiry…" : "Save Enquiry & Continue on WhatsApp"}</button>
+          <button disabled={busy}>{busy ? (intent==="booking"?"Saving booking request…":"Saving enquiry…") : (intent==="booking"?"Request Booking & Continue on WhatsApp":"Save Enquiry & Continue on WhatsApp")}</button>
         </form>
         {error && <div className="notice">{error}</div>}
       </div>
