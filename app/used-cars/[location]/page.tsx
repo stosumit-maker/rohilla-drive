@@ -1,5 +1,5 @@
 import type {Metadata} from "next";
-import {notFound} from "next/navigation";
+import {notFound,redirect} from "next/navigation";
 import {supabase} from "../../supabaseClient";
 import AmbalaLeadFunnel from "../../components/AmbalaLeadFunnel";
 import {buyPath,getMarketLocation,marketLocations,sellPath} from "../../lib/market-locations";
@@ -31,7 +31,8 @@ function matchCity(city:string|null,aliases:string[]){
 export default async function RegionalUsedCars({params}:{params:Promise<Params>}){
   const {location}=await params;
   const loc=getMarketLocation(location);
-  if(!loc||loc.legacyBuyPath)notFound();
+  if(!loc)notFound();
+  if(loc.legacyBuyPath)redirect(loc.legacyBuyPath);
 
   const db=supabase();
   const {data}=await db.from("vehicles").select("id,brand,model,variant,year,km,fuel,owner_count,asking_price,city,registration_prefix,vehicle_photos(url,sort_order)").eq("status","published").order("created_at",{ascending:false}).limit(150);
