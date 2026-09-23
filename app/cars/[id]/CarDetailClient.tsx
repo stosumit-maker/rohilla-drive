@@ -6,7 +6,7 @@ import {track} from "@vercel/analytics";
 
 export default function CarDetailClient({initialCar}:{initialCar:any}){
  const c=initialCar;
- const [active,setActive]=useState(0),[fullscreen,setFullscreen]=useState(false),[zoom,setZoom]=useState(1),[enquire,setEnquire]=useState(false),[mediaView,setMediaView]=useState<any>(null),[mediaIndex,setMediaIndex]=useState(0);
+ const [active,setActive]=useState(0),[fullscreen,setFullscreen]=useState(false),[zoom,setZoom]=useState(1),[enquiryMode,setEnquiryMode]=useState<"enquiry"|"booking"|null>(null),[mediaView,setMediaView]=useState<any>(null),[mediaIndex,setMediaIndex]=useState(0);
  const touchStart=useRef<{x:number;y:number}|null>(null);
  const spinDrag=useRef<{x:number;index:number}|null>(null);
  const photos=[...(c.vehicle_photos||[])].sort((a:any,b:any)=>(a.sort_order||0)-(b.sort_order||0));
@@ -39,7 +39,7 @@ export default function CarDetailClient({initialCar}:{initialCar:any}){
     <div className="specs"><span>{c.year}</span><span>{Number(c.km||0).toLocaleString("en-IN")} km</span><span>{c.fuel}</span>{c.transmission&&<span>{c.transmission}</span>}{c.owner_count&&<span>{c.owner_count} Owner</span>}{c.city&&<span>{c.city}</span>}</div>
     <h2>₹{Number(c.asking_price||0).toLocaleString("en-IN")}</h2>
     {c.public_notes&&<p>{c.public_notes}</p>}
-    <button type="button" className="primary" onClick={()=>{track("Enquiry Open",{surface:"vehicle_detail",brand:c.brand,model:c.model});setEnquire(true)}}>Enquire / Continue on WhatsApp</button>
+    <div className="vehicleActionRow"><button type="button" className="primary" onClick={()=>{track("Enquiry Open",{surface:"vehicle_detail",brand:c.brand,model:c.model});setEnquiryMode("enquiry")}}>Enquire / WhatsApp</button><button type="button" className="secondary bookNowButton" onClick={()=>{track("Booking Open",{surface:"vehicle_detail",brand:c.brand,model:c.model});setEnquiryMode("booking")}}>Book Now</button></div>
     <a className="call big" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"vehicle_detail",brand:c.brand,model:c.model})}>Call 7015260003</a>
     <div className="notice" style={{marginTop:18}}><b>Looking for a similar car?</b> <a href="/find-car-ambala">Send your model and budget requirement →</a></div>
    </div>
