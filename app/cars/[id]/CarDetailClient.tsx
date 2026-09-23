@@ -1,6 +1,6 @@
 "use client";
 
-import {useRef,useState,type TouchEvent} from "react";
+import {useEffect,useRef,useState,type TouchEvent} from "react";
 import VehicleEnquiryModal from "../../components/VehicleEnquiryModal";
 import {track} from "@vercel/analytics";
 
@@ -9,6 +9,7 @@ export default function CarDetailClient({initialCar}:{initialCar:any}){
  const [active,setActive]=useState(0),[fullscreen,setFullscreen]=useState(false),[zoom,setZoom]=useState(1),[enquire,setEnquire]=useState(false),[booking,setBooking]=useState(false),[mediaView,setMediaView]=useState<any>(null),[mediaIndex,setMediaIndex]=useState(0);
  const touchStart=useRef<{x:number;y:number}|null>(null);
  const spinDrag=useRef<{x:number;index:number}|null>(null);
+ useEffect(()=>{const params=new URLSearchParams(window.location.search);if(params.get("book")==="1")setBooking(true);else if(params.get("enquire")==="1")setEnquire(true)},[]);
  const photos=[...(c.vehicle_photos||[])].sort((a:any,b:any)=>(a.sort_order||0)-(b.sort_order||0));
  const currentPhoto=photos[active]?.url;
  const vehicleMedia=[...(c.vehicle_media||[])].sort((a:any,b:any)=>(a.sort_order||0)-(b.sort_order||0));
