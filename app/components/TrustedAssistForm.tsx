@@ -86,13 +86,13 @@ export default function TrustedAssistForm({defaultProfile="NRI / family outside 
   }
 
   return <section className="section" id="trusted-assist-enquiry">
-    <div className="head"><div><h2>Request ROHILLA Trusted Assist</h2><p>If you are away, abroad, posted elsewhere, elderly, or simply unable to manage the vehicle personally, send one request. We contact you first and coordinate the next step only after confirmation.</p></div></div>
+    <div className="head"><div><h2>Need Help Managing Your Vehicle?</h2><p>Tell us what needs to be handled and where the vehicle is. We’ll contact you before any work starts.</p></div></div>
     <div className="row" style={{marginBottom:14}}>
       <a className="call" href="tel:+917015260003">Call 7015260003</a>
       <a className="call" href="https://wa.me/917015260003">WhatsApp Now</a>
       <a className="secondary" href="#trusted-assist-enquiry">Request Callback</a>
     </div>
-    <div className="notice" style={{marginBottom:14}}><b>Call not connected?</b> Use WhatsApp or submit this callback request. The request is saved so the team can follow up.</div>
+    
     <form className="adminForm" onSubmit={submit}>
       <input required placeholder="Your name" value={name} onChange={e=>setName(e.target.value)}/>
       <input required inputMode="tel" placeholder="Mobile number" value={phone} onChange={e=>setPhone(e.target.value)}/>
@@ -105,9 +105,9 @@ export default function TrustedAssistForm({defaultProfile="NRI / family outside 
       <input placeholder="Preferred call time (optional)" value={preferredTime} onChange={e=>setPreferredTime(e.target.value)}/>
       <textarea placeholder="What needs to be managed or checked?" value={notes} onChange={e=>setNotes(e.target.value)}/>
       <LegalConsent/>
-      <button disabled={busy}>{busy?"Saving…":"Save Request & Continue on WhatsApp"}</button>
+      <button disabled={busy}>{busy?"Saving…":"Send Request"}</button>
     </form>
     {msg&&<div className="notice" style={{marginTop:12}}>{msg}</div>}
-    <p style={{fontSize:13,color:"#64748b",marginTop:12}}>ROHILLA DRIVE coordinates eligible requests with its own team or participating partners where available. No work, payment or regulated service should proceed until the scope, provider, estimate and your approval are confirmed.</p>
+    <p style={{fontSize:13,color:"#64748b",marginTop:12}}>We’ll confirm the provider, scope and estimate with you before any work starts.</p>
   </section>;
 }

@@ -40,7 +40,7 @@ export default function VehicleCardGallery({photos,title}:{photos:Photo[];title:
     <img className="premiumVehicleBackdrop" src={current.url} alt="" aria-hidden="true"/>
     <span className="premiumVehicleShade" aria-hidden="true"/>
     <img className="premiumVehicleMain" src={current.url} alt={`${title} photo ${active+1}`}/>
-    <span className="premiumVehicleExpand">Tap to view full photo</span>
+    <span className="premiumVehicleExpand">View photo</span>
    </button>
    {count>1&&<>
     <button type="button" className="premiumMediaArrow left" onClick={e=>{e.stopPropagation();move(-1)}} aria-label="Previous photo">‹</button>

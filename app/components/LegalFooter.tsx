@@ -10,6 +10,6 @@ export default function LegalFooter(){
       <a href="/privacy" style={{fontWeight:700,color:"#334155"}}>Privacy</a>
       <a href="/disclaimer" style={{fontWeight:700,color:"#334155"}}>Disclaimer</a>
     </div>
-    <span>ROHILLA DRIVE • Rohilla Multibrand Cars • Ambala City • 7015260003</span>
+    <span>ROHILLA DRIVE • Ambala City • 7015260003</span>
   </div>;
 }
