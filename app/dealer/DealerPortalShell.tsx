@@ -8,8 +8,7 @@ const links=[
  {href:"/dealer/new-opportunities",label:"New Vehicle Leads"},
  {href:"/dealer/deals",label:"Deal Management"},
  {href:"/dealer/finance",label:"Vehicle Ledger & RC"},
- {href:"/dealer/growth",label:"Marketing Studio"},
- {href:"/dealer/language",label:"Language Operations"}
+ {href:"/dealer/growth",label:"Marketing Studio"}
 ];
 const navItemStyle={minHeight:40,display:"inline-flex",alignItems:"center"} as const;
 const contextStyle={maxWidth:1340,margin:"0 auto",padding:"10px 22px 0",display:"flex",alignItems:"center",gap:10,flexWrap:"wrap" as const};
@@ -63,7 +62,7 @@ export default function DealerLayout({children}:{children:React.ReactNode}){
     <nav className="rdPortalNav" aria-label="Dealer workspace navigation">
      {links.map(link=><a key={link.href} href={link.href} style={navItemStyle} className={path===link.href?"active":""} aria-current={path===link.href?"page":undefined}>{link.label}</a>)}
     </nav>
-    <div className="rdPortalUtilities"><a href="/business-hub">Business Hub</a><a className="premium" href="/">Public Website</a><button onClick={signOut}>Sign Out</button></div>
+    <div className="rdPortalUtilities"><a href="/business-hub">Business Hub</a><a className="premium" href="/">Home</a><button onClick={signOut}>Sign Out</button></div>
    </div>
   </div>}
   {ready&&isInner&&<div className="rdPortalContextBar" data-no-translate style={contextStyle}><a href="/dealer" aria-label="Back to Dealer Dashboard" style={backStyle}>← Back to Dashboard</a><span style={sectionStyle}>Current section: {current?.label||"Dealer Workspace"}</span></div>}
