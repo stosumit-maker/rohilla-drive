@@ -74,7 +74,7 @@ export default function ServiceLeadForm({defaultCity,locationName}:{defaultCity:
   }
 
   return <section className="section" id="service-enquiry">
-    <div className="head"><div><h2>Need an automotive service in {locationName}?</h2><p>Send one request. ROHILLA DRIVE can coordinate it with a suitable participating partner where available. Regulated finance, insurance and RTO-related work is handled only through appropriately authorised providers.</p></div></div>
+    <div className="head"><div><h2>Need a Vehicle Service in {locationName}?</h2><p>Tell us what you need. We’ll contact you with the next step.</p></div></div>
     <form className="adminForm" onSubmit={submit}>
       <input required placeholder="Your name" value={name} onChange={e=>setName(e.target.value)}/>
       <input required inputMode="tel" placeholder="Mobile / WhatsApp number" value={phone} onChange={e=>setPhone(e.target.value)}/>
@@ -84,9 +84,9 @@ export default function ServiceLeadForm({defaultCity,locationName}:{defaultCity:
       <input placeholder="Preferred time (optional)" value={preferredTime} onChange={e=>setPreferredTime(e.target.value)}/>
       <textarea placeholder="What help do you need?" value={notes} onChange={e=>setNotes(e.target.value)}/>
       <LegalConsent/>
-      <button disabled={busy}>{busy?"Saving…":"Save Request & Continue on WhatsApp"}</button>
+      <button disabled={busy}>{busy?"Saving…":"Send Service Request"}</button>
     </form>
     {msg&&<div className="notice" style={{marginTop:12}}>{msg}</div>}
-    <p style={{fontSize:13,color:"#64748b",marginTop:12}}>Submitting a request does not guarantee partner availability, price, turnaround time, finance approval, insurance issuance or RTO outcome. Confirm the provider, scope, documents and final terms before proceeding.</p>
+    <p style={{fontSize:13,color:"#64748b",marginTop:12}}>Service availability, price and final terms must be confirmed before work starts.</p>
   </section>;
 }

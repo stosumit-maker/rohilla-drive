@@ -98,9 +98,9 @@ export default function SellVehicle(){
  }
 
  return <main>
-  <header><div className="brand"><b>ROHILLA DRIVE</b><small>Sell / List Your Vehicle</small></div><div className="row"><a className="call" href="/assistant">Ask Rohilla AI</a><a className="call" href="/business-hub">Business Hub</a></div></header>
-  <section className="hero"><div className="heroText"><span>INDIVIDUAL SELLER</span><h1>Sell or list your vehicle with Rohilla Drive.</h1><p>No dealer account is needed for a personal vehicle. Share the details and clear photos once so ROHILLA DRIVE can review the vehicle and coordinate relevant enquiries.</p></div></section>
-  <section className="section"><div className="notice"><b>Before you submit:</b> Please provide accurate ownership, mileage, condition and document details and confirm that you have the right to sell the vehicle. Seller photos are stored privately for review and are not made public automatically. Final price and transaction decisions remain with the seller and buyer.</div></section>
+  <header><div className="brand"><b>ROHILLA DRIVE</b><small>Sell Your Vehicle</small></div><div className="row"><a className="call" href="/assistant">CarMentor</a><a className="call" href="/business-hub">Business Hub</a></div></header>
+  <section className="hero"><div className="heroText"><span>SELL YOUR VEHICLE</span><h1>Sell Your Car</h1><p>Share your vehicle details and photos. We’ll review them and contact you.</p></div></section>
+  <section className="section"><div className="notice">Please enter accurate vehicle details. Your uploaded photos stay private until reviewed.</div></section>
   <section className="section"><form className="adminForm" onSubmit={submit}>
    <input required placeholder="Your name" value={f.name||""} onChange={e=>setF({...f,name:e.target.value})}/>
    <input required placeholder="Mobile / WhatsApp number" value={f.phone||""} onChange={e=>setF({...f,phone:e.target.value})}/>
@@ -120,7 +120,7 @@ export default function SellVehicle(){
    <label className="upload">Vehicle Photos — 1 to {MAX_PHOTOS}<input required multiple accept="image/jpeg,image/png,image/webp,image/heic,image/heif" type="file" onChange={e=>choosePhotos(Array.from(e.target.files||[]))}/></label>
    {photos.length>0&&<small>{photos.length} selected • max 8 MB each • private until reviewed</small>}
    <LegalConsent/>
-   {busy&&<div className="notice">{progress||"Submitting securely…"} Please do not tap Submit again.</div>}<button disabled={busy}>{busy?"Submitting…":"Submit Vehicle & Private Photos"}</button>
-  </form>{msg&&<div className="notice">{msg}</div>}<div className="notice"><b>Dealer or automotive business?</b> <a href="/business-hub">Open Rohilla Business Hub →</a></div></section>
+   {busy&&<div className="notice">{progress||"Submitting securely…"} Please do not tap Submit again.</div>}<button disabled={busy}>{busy?"Submitting…":"Submit My Car"}</button>
+  </form>{msg&&<div className="notice">{msg}</div>}<div className="notice"><b>Dealer?</b> <a href="/business-hub">Go to Business Hub →</a></div></section>
  </main>
 }

@@ -64,7 +64,7 @@ export default function NewCarLeadForm({defaultCity,locationName}:{defaultCity:s
   }
 
   return <section className="section" id="new-car-enquiry">
-    <div className="head"><div><h2>Request a New Car in {locationName}</h2><p>Share your brand, model, budget, exchange and finance preferences once. ROHILLA DRIVE can coordinate relevant participating dealer options where available.</p></div></div>
+    <div className="head"><div><h2>Looking for a New Car in {locationName}?</h2><p>Tell us the brand, model or budget. We’ll contact you with available options.</p></div></div>
     <form className="adminForm" onSubmit={submit}>
       <input required placeholder="Your name" value={name} onChange={e=>setName(e.target.value)}/>
       <input required inputMode="tel" placeholder="Mobile number" value={phone} onChange={e=>setPhone(e.target.value)}/>
@@ -76,9 +76,9 @@ export default function NewCarLeadForm({defaultCity,locationName}:{defaultCity:s
       <select value={exchange} onChange={e=>setExchange(e.target.value)}><option value="">Exchange existing car?</option><option>Yes</option><option>No</option></select>
       <textarea placeholder="Variant, fuel, automatic/manual, delivery timing or other preference" value={notes} onChange={e=>setNotes(e.target.value)}/>
       <LegalConsent/>
-      <button disabled={busy}>{busy?"Submitting…":"Save New-Car Requirement & Continue on WhatsApp"}</button>
+      <button disabled={busy}>{busy?"Submitting…":"Send Request"}</button>
     </form>
     {msg&&<div className="notice" style={{marginTop:12}}>{msg}</div>}
-    <p style={{fontSize:13,color:"#64748b",marginTop:12}}>Stock, final price, discount, finance approval, insurance, exchange valuation, warranty and delivery are confirmed by the relevant authorised seller/provider. ROHILLA DRIVE does not guarantee a particular offer.</p>
+    <p style={{fontSize:13,color:"#64748b",marginTop:12}}>Final stock, price, finance and delivery are confirmed by the authorised seller or provider.</p>
   </section>;
 }
