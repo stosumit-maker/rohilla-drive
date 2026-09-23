@@ -15,7 +15,7 @@ export default function InventoryClient(){
  async function shareVehicle(car:Vehicle){const url=`${window.location.origin}/cars/${car.id}`;const text=`${car.year} ${car.brand} ${car.model} ${car.variant||""} • ₹${Number(car.asking_price).toLocaleString("en-IN")} • ROHILLA DRIVE`;try{if(navigator.share){await navigator.share({title:`${car.brand} ${car.model} | ROHILLA DRIVE`,text,url});return}await navigator.clipboard.writeText(`${text}\n${url}`);alert("Vehicle link copied") }catch{}}
  return <main>
   <section className="hero" style={{paddingTop:45,paddingBottom:45}}><div className="heroText"><span>ROHILLA DRIVE INVENTORY</span><h1>Find the right vehicle.<br/><span className="lifeLine">Explore current listings.</span></h1><p>Search published inventory by brand, model, year, fuel, category or city.</p></div></section>
-  <section className="section" style={{paddingTop:24}}>
+  <section className="section inventoryListingSection" style={{paddingTop:24}}>
    <div className="search" style={{gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))"}}>
     <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Brand, model, variant, year, registration prefix or city..."/>
     <select value={type} onChange={e=>setType(e.target.value)}><option value="All">All vehicle types</option><option value="car">Cars / SUVs</option><option value="two_wheeler">Two-Wheelers</option><option value="commercial">Commercial</option><option value="tractor_agri">Tractor / Agri</option><option value="ev">EV</option><option value="fleet">Fleet</option><option value="other">Other</option></select>
