@@ -8,6 +8,8 @@ export default function CarDetailClient({initialCar}:{initialCar:any}){
  const c=initialCar;
  const [active,setActive]=useState(0),[fullscreen,setFullscreen]=useState(false),[zoom,setZoom]=useState(1),[enquire,setEnquire]=useState(false),[booking,setBooking]=useState(false),[mediaView,setMediaView]=useState<any>(null),[mediaIndex,setMediaIndex]=useState(0);
  const touchStart=useRef<{x:number;y:number}|null>(null);
+ const pinchStart=useRef<number|null>(null);
+ const pinchZoomStart=useRef(1);
  const spinDrag=useRef<{x:number;index:number}|null>(null);
  useEffect(()=>{const params=new URLSearchParams(window.location.search);if(params.get("book")==="1")setBooking(true);else if(params.get("enquire")==="1")setEnquire(true)},[]);
  const photos=[...(c.vehicle_photos||[])].sort((a:any,b:any)=>(a.sort_order||0)-(b.sort_order||0));
@@ -21,6 +23,10 @@ export default function CarDetailClient({initialCar}:{initialCar:any}){
  function next(){if(!photos.length)return;setZoom(1);setActive((old)=>(old+1)%photos.length)}
  function touchBegin(e:TouchEvent<HTMLDivElement>){if(e.touches.length===1)touchStart.current={x:e.touches[0].clientX,y:e.touches[0].clientY}}
  function touchEnd(e:TouchEvent<HTMLDivElement>){if(!touchStart.current||e.changedTouches.length!==1)return;const dx=e.changedTouches[0].clientX-touchStart.current.x;touchStart.current=null;if(Math.abs(dx)>60)(dx<0?next:previous)()}
+ function touchDistance(e:TouchEvent<HTMLDivElement>){if(e.touches.length<2)return 0;const a=e.touches[0],b=e.touches[1];return Math.hypot(b.clientX-a.clientX,b.clientY-a.clientY)}
+ function fullscreenTouchStart(e:TouchEvent<HTMLDivElement>){if(e.touches.length===2){pinchStart.current=touchDistance(e);pinchZoomStart.current=zoom;touchStart.current=null;return}if(zoom===1)touchBegin(e)}
+ function fullscreenTouchMove(e:TouchEvent<HTMLDivElement>){if(e.touches.length!==2||pinchStart.current===null)return;e.preventDefault();const distance=touchDistance(e);if(distance)setZoom(Math.max(1,Math.min(4,pinchZoomStart.current*(distance/pinchStart.current))))}
+ function fullscreenTouchEnd(e:TouchEvent<HTMLDivElement>){if(e.touches.length<2)pinchStart.current=null;if(zoom>1){touchStart.current=null;return}touchEnd(e)}
  function spinPointerDown(e:any){if(mediaView!=="spin_360"||selectedMedia.length<2)return;spinDrag.current={x:e.clientX,index:mediaIndex};e.currentTarget.setPointerCapture?.(e.pointerId)}
  function spinPointerMove(e:any){if(!spinDrag.current||mediaView!=="spin_360"||selectedMedia.length<2)return;const step=Math.round((e.clientX-spinDrag.current.x)/14);const len=selectedMedia.length;setMediaIndex(((spinDrag.current.index-step)%len+len)%len)}
  function spinPointerUp(e:any){spinDrag.current=null;e.currentTarget.releasePointerCapture?.(e.pointerId)}
@@ -44,7 +50,7 @@ export default function CarDetailClient({initialCar}:{initialCar:any}){
     <div className="notice" style={{marginTop:18}}><b>Looking for a similar car?</b> <a href="/find-car-ambala">Send your model and budget requirement →</a></div>
    </div>
   </section>
-  {fullscreen&&currentPhoto&&<div className="overlay" role="dialog" aria-modal="true" aria-label="Vehicle photo viewer"><div className="modal" style={{maxWidth:"min(1100px,96vw)",width:"96vw"}}><button className="x" onClick={()=>{setFullscreen(false);setZoom(1)}} aria-label="Close photo viewer">×</button><div style={{display:"flex",gap:8,justifyContent:"center",marginBottom:10}}><button className="secondary" onClick={()=>setZoom(z=>Math.max(1,z-.5))}>−</button><button className="secondary" onClick={()=>setZoom(1)}>100%</button><button className="secondary" onClick={()=>setZoom(z=>Math.min(4,z+.5))}>+</button></div><div className="fullscreenPhotoStage" onTouchStart={touchBegin} onTouchEnd={touchEnd}><img className="fullscreenVehiclePhoto" src={currentPhoto} alt={`${c.brand} ${c.model} enlarged`} draggable={false} style={{transform:`scale(${zoom})`,transformOrigin:"center center",transition:"transform .12s ease"}}/></div>{photos.length>1&&<div className="row" style={{justifyContent:"center",marginTop:12}}><button onClick={previous}>Previous</button><span>{active+1} / {photos.length}</span><button onClick={next}>Next</button></div>}</div></div>}
+  {fullscreen&&currentPhoto&&<div className="overlay" role="dialog" aria-modal="true" aria-label="Vehicle photo viewer"><div className="modal" style={{maxWidth:"min(1100px,96vw)",width:"96vw"}}><button className="x" onClick={()=>{setFullscreen(false);setZoom(1)}} aria-label="Close photo viewer">×</button><div style={{display:"flex",gap:8,justifyContent:"center",marginBottom:10}}><button className="secondary" onClick={()=>setZoom(z=>Math.max(1,z-.5))}>−</button><button className="secondary" onClick={()=>setZoom(1)}>100%</button><button className="secondary" onClick={()=>setZoom(z=>Math.min(4,z+.5))}>+</button></div><div className="fullscreenPhotoStage" onTouchStart={fullscreenTouchStart} onTouchMove={fullscreenTouchMove} onTouchEnd={fullscreenTouchEnd}><img className="fullscreenVehiclePhoto" src={currentPhoto} alt={`${c.brand} ${c.model} enlarged`} draggable={false} style={{transform:`scale(${zoom})`,transformOrigin:"center center",transition:"transform .12s ease"}}/></div>{photos.length>1&&<div className="row" style={{justifyContent:"center",marginTop:12}}><button onClick={previous}>Previous</button><span>{active+1} / {photos.length}</span><button onClick={next}>Next</button></div>}</div></div>}
   {enquire&&<VehicleEnquiryModal vehicle={c} source="vehicle_detail_page" onClose={()=>setEnquire(false)}/>}
   {booking&&<VehicleEnquiryModal vehicle={c} source="vehicle_detail_page" mode="booking" onClose={()=>setBooking(false)}/>}
  </main>;
