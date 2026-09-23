@@ -953,3 +953,21 @@ body:not(:has(.rd-portal)) .premiumVehicleExpand{
     height:235px!important;
   }
 }
+
+
+/* Launch lock: original vehicle photo only — no blurred side fill. */
+body:not(:has(.rd-portal)) .premiumVehicleMedia,
+body:not(:has(.rd-portal)) .premiumVehiclePhotoButton{background:#ffffff!important}
+body:not(:has(.rd-portal)) .premiumVehicleBackdrop,
+body:not(:has(.rd-portal)) .premiumVehicleShade{display:none!important}
+body:not(:has(.rd-portal)) .premiumVehicleMain{
+  padding:0!important;
+  filter:none!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:#ffffff!important;
+}
+body:not(:has(.rd-portal)) .vehicleLightbox{backdrop-filter:none!important}
+@media(max-width:800px){
+  body:not(:has(.rd-portal)) .premiumVehicleMedia{height:250px!important}
+}
