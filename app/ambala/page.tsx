@@ -52,24 +52,24 @@ export default function AmbalaHub(){
 
     <section className="hero" style={{paddingTop:52,paddingBottom:52}}><div className="heroText">
       <span>ROHILLA DRIVE • AMBALA CITY, HARYANA</span>
-      <h1>Used Car Dealer in Ambala — Buy, Sell & Vehicle Services</h1>
+      <h1>Cars in Ambala — Buy, Sell & More</h1>
       <p className="heroSub">Buy • Sell • Verify • New Vehicles • Automotive Services</p>
-      <p>ROHILLA DRIVE by Rohilla Multibrand Cars connects customers in Ambala with current used-car inventory, vehicle selling, new-vehicle assistance, verification and supported automotive services through one platform.</p>
+      <p>Browse used cars, sell your car, find a new car or request vehicle services in Ambala.</p>
       <div className="row" style={{marginTop:18}}><a className="call" href="/find-car-ambala">Find My Car</a><a className="call" href="/used-cars-ambala">Used Cars in Ambala</a><a className="call" href="/sell">Sell Your Car</a><a className="secondary" href="/inventory">Browse Inventory</a></div>
     </div></section>
 
     <AmbalaLeadFunnel source="ambala_hub" defaultMode="buy"/>
 
-    <section className="section"><div className="head"><div><h2>Automotive Help in Ambala — One Connected Platform</h2><p>Choose the task you need and go directly to the correct workflow.</p></div></div><div className="grid">{services.map(([title,text,href])=><article className="card" key={title}><div className="body"><h2 style={{fontSize:22}}>{title}</h2><p>{text}</p><a className="textLink" href={href}>Open →</a></div></article>)}</div></section>
+    <section className="section"><div className="head"><div><h2>What Do You Need?</h2><p>Choose an option to continue.</p></div></div><div className="grid">{services.map(([title,text,href])=><article className="card" key={title}><div className="body"><h2 style={{fontSize:22}}>{title}</h2><p>{text}</p><a className="textLink" href={href}>Open →</a></div></article>)}</div></section>
 
-    <section className="section compactSection"><div className="head"><div><h2>Why ROHILLA DRIVE is Useful for Ambala Customers</h2></div></div><div className="grid">
-      <article className="card"><div className="body"><h3>Live published inventory</h3><p>Used vehicles appear from the production inventory rather than a static catalogue. Sold or unpublished vehicles do not stay presented as available inventory.</p></div></article>
-      <article className="card"><div className="body"><h3>Direct enquiry tracking</h3><p>Vehicle enquiries are recorded before the WhatsApp handoff so the selected vehicle and enquiry source can be followed up properly.</p></div></article>
-      <article className="card"><div className="body"><h3>Private seller photos</h3><p>Seller-submitted vehicle photos remain private for review and are not made public automatically.</p></div></article>
-      <article className="card"><div className="body"><h3>Verified partner workflow</h3><p>Service-partner access is approval-controlled, with private KYC documents and structured service operations for supported partner categories.</p></div></article>
+    <section className="section compactSection"><div className="head"><div><h2>Why Customers Use Rohilla Drive</h2></div></div><div className="grid">
+      <article className="card"><div className="body"><h3>Live published inventory</h3><p>Only currently published vehicles are shown as available.</p></div></article>
+      <article className="card"><div className="body"><h3>Direct enquiry tracking</h3><p>Send an enquiry for the exact car you are viewing.</p></div></article>
+      <article className="card"><div className="body"><h3>Private seller photos</h3><p>Seller photos stay private until reviewed.</p></div></article>
+      <article className="card"><div className="body"><h3>Verified partner workflow</h3><p>Service requests are handled through approved business access where required.</p></div></article>
     </div></section>
 
-    <section className="section dark"><div className="about"><h2>Rohilla Multibrand Cars, Ambala City</h2><p>ROHILLA DRIVE is the online customer and business platform operated for Rohilla Multibrand Cars. The platform is designed around Ambala operations while supporting vehicle requirements and network workflows beyond the city as the business grows.</p><p><b>Phone / WhatsApp:</b> {phone}</p><div className="row"><a className="call" href="/used-cars-ambala">Second Hand Cars in Ambala</a><a className="call" href="/new-vehicles">New Vehicle Assistance</a><a className="call" href="/business-hub">Business Hub</a></div></div></section>
+    <section className="section dark"><div className="about"><h2>Rohilla Multibrand Cars, Ambala City</h2><p>Rohilla Drive is the online platform of Rohilla Multibrand Cars, Ambala City.</p><p><b>Phone / WhatsApp:</b> {phone}</p><div className="row"><a className="call" href="/used-cars-ambala">Second Hand Cars in Ambala</a><a className="call" href="/new-vehicles">New Vehicle Assistance</a><a className="call" href="/business-hub">Business Hub</a></div></div></section>
 
     <section className="section"><div className="head"><div><h2>ROHILLA DRIVE Ambala — FAQs</h2></div></div><div className="grid">{faqs.map(([q,a])=><article className="card" key={q}><div className="body"><h3>{q}</h3><p>{a}</p></div></article>)}</div></section>
   </main>;

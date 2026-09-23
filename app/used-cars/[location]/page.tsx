@@ -56,9 +56,9 @@ export default async function RegionalUsedCars({params}:{params:Promise<Params>}
     <section className="hero" style={{paddingTop:52,paddingBottom:52}}><div className="heroText">
       <span>ROHILLA DRIVE • {loc.region.toUpperCase()}</span>
       <h1>Used Cars in {loc.name}</h1>
-      <p className="heroSub">Buy used cars • Sell your car • Direct requirement follow-up</p>
+      <p className="heroSub">Browse cars • Sell your car • Send a requirement</p>
       <p>{loc.marketNote} Coverage is focused around the {loc.corridor}; exact vehicle location and availability must be confirmed before travel or transaction.</p>
-      <div className="row" style={{marginTop:18}}><a className="call" href="#ambala-enquiry">Tell Us the Car You Need</a><a className="call" href={sellPath(loc)}>Sell a Car in {loc.name}</a><a className="secondary" href="/inventory">All Live Inventory</a></div>
+      <div className="row" style={{marginTop:18}}><a className="call" href="#ambala-enquiry">Send Requirement</a><a className="call" href={sellPath(loc)}>Sell a Car in {loc.name}</a><a className="secondary" href="/inventory">All Live Inventory</a></div>
     </div></section>
 
     <AmbalaLeadFunnel source={`regional_${loc.slug}`} defaultMode="buy" defaultCity={loc.name} locationName={loc.name}/>
@@ -67,7 +67,7 @@ export default async function RegionalUsedCars({params}:{params:Promise<Params>}
       {cars.length?<div className="grid">{cars.slice(0,24).map(car=>{const photos=[...(car.vehicle_photos||[])].sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));const first=photos[0]?.url;return <article className="card" key={car.id}><a className="photo real" href={`/cars/${car.id}`} aria-label={`Open ${car.brand} ${car.model} details`}>{first?<img src={first} alt={`${car.year||""} ${car.brand} ${car.model} used car`}/>:<span>Vehicle photo unavailable</span>}</a><div className="body"><label>{car.city||"ROHILLA DRIVE"}</label><h2 style={{fontSize:22}}>{car.brand} {car.model}</h2>{car.variant&&<p>{car.variant}</p>}<small>{car.year||"Year on request"}{car.km!=null?` • ${Number(car.km).toLocaleString("en-IN")} km`:""}{car.fuel?` • ${car.fuel}`:""}</small>{car.asking_price!=null&&<strong>₹{Number(car.asking_price).toLocaleString("en-IN")}</strong>}<a className="call" href={`/cars/${car.id}`} style={{display:"block",textAlign:"center"}}>View Details</a><div className="row" style={{marginTop:8,gap:6}}><a className="call" href={`/cars/${car.id}?enquire=1`} style={{flex:1,textAlign:"center",padding:"9px 8px",fontSize:11}}>Enquire / WhatsApp</a><a className="secondary" href={`/cars/${car.id}?book=1`} style={{flex:1,textAlign:"center",padding:"9px 8px",fontSize:11,borderRadius:10,fontWeight:800,textDecoration:"none"}}>Book Now</a></div></div></article>})}</div>:<div className="notice"><b>Need a specific model?</b> Use the requirement form above. It works even when the exact car is not currently listed.</div>}
     </section>
 
-    <section className="section compactSection"><div className="head"><div><h2>Vehicle Search Around {loc.name}</h2><p>Nearby markets include {loc.nearby.join(", ")}. ROHILLA DRIVE does not claim a physical branch in every city shown; these pages are for genuine buyer/seller requirement coverage.</p></div></div><div className="grid">
+    <section className="section compactSection"><div className="head"><div><h2>Cars Around {loc.name}</h2><p>Nearby markets include {loc.nearby.join(", ")}. Rohilla Drive is based in Ambala City; vehicle location must be confirmed before travel.</p></div></div><div className="grid">
       <article className="card"><div className="body"><h3>Exact model search</h3><p>Send the brand/model, target budget and purchase timing. Your enquiry is saved for direct follow-up.</p></div></article>
       <article className="card"><div className="body"><h3>Sell your current car</h3><p>Start with a callback request or submit full vehicle details and private photos through the seller workflow.</p><a href={sellPath(loc)}>Sell car in {loc.name} →</a></div></article>
       <article className="card"><div className="body"><h3>Check before you travel</h3><p>Confirm actual vehicle city, availability, price, documents and inspection details before travelling or paying anything.</p></div></article>
@@ -75,7 +75,7 @@ export default async function RegionalUsedCars({params}:{params:Promise<Params>}
 
     {related.length>0&&<section className="section"><div className="head"><div><h2>More {loc.region} Markets</h2></div></div><div className="joinActions">{related.map(x=><a key={x.slug} href={buyPath(x)}>Used cars in {x.name}</a>)}</div></section>}
 
-    <section className="section dark"><div className="about"><h2>ROHILLA DRIVE — {loc.name} Vehicle Enquiries</h2><p>Rohilla Multibrand Cars is based in Ambala City. ROHILLA DRIVE uses its online platform to capture genuine vehicle buying and selling requirements across Haryana, Chandigarh, nearby Punjab markets and selected Rajasthan markets as the network expands.</p><div className="row"><a className="call" href="tel:+917015260003">Call 7015260003</a><a className="call" href="/coverage">All Coverage Areas</a></div></div></section>
+    <section className="section dark"><div className="about"><h2>ROHILLA DRIVE — {loc.name} Vehicle Enquiries</h2><p>Rohilla Multibrand Cars is based in Ambala City. Online car enquiries are accepted in selected nearby markets.</p><div className="row"><a className="call" href="tel:+917015260003">Call 7015260003</a><a className="call" href="/coverage">All Coverage Areas</a></div></div></section>
 
     <section className="section"><div className="head"><div><h2>Used Cars in {loc.name} — FAQs</h2></div></div><div className="grid">{faqs.map(([q,a])=><article className="card" key={q}><div className="body"><h3>{q}</h3><p>{a}</p></div></article>)}</div></section>
   </main>;

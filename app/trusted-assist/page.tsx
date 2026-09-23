@@ -37,14 +37,14 @@ export default function TrustedAssist(){
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(serviceSchema)}}/>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/>
     <section className="hero" style={{paddingTop:52,paddingBottom:52}}><div className="heroText">
-      <span>ROHILLA TRUSTED ASSIST • SPECIAL VEHICLE SUPPORT</span>
-      <h1>Away from home? Your vehicle still needs someone you can reach.</h1>
+      <span>ROHILLA TRUSTED ASSIST</span>
+      <h1>Need Help Managing Your Vehicle?</h1>
       <p className="heroSub">NRI families • Defence personnel • Senior citizens • Outstation owners • Busy professionals</p>
-      <p>Tell us what needs to be managed, where the vehicle is, and when we can contact you. ROHILLA DRIVE becomes one enquiry point for eligible vehicle-care coordination instead of making you chase multiple local contacts.</p>
+      <p>Tell us what needs to be handled and where the vehicle is. We’ll contact you before anything moves forward.</p>
       <div className="row" style={{marginTop:18}}><a className="call" href="#trusted-assist-enquiry">Request Trusted Assist</a><a className="call" href="tel:+917015260003">Call 7015260003</a><a className="secondary" href="https://wa.me/917015260003">WhatsApp</a></div>
     </div></section>
 
-    <section className="section"><div className="head"><div><h2>Built for people who cannot manage the vehicle personally</h2><p>Choose the situation closest to yours. Each page explains the same service in the language people actually search for.</p></div></div><div className="grid">
+    <section className="section"><div className="head"><div><h2>Who It’s For</h2><p>Choose the situation closest to yours.</p></div></div><div className="grid">
       {trustedAssistAudiences.map(a=><article className="card" key={a.key}><div className="body"><label>{a.eyebrow}</label><h3>{a.h1}</h3><p>{a.description}</p><a className="textLink" href={a.path}>Open {a.h1} →</a></div></article>)}
     </div></section>
 
@@ -52,7 +52,7 @@ export default function TrustedAssist(){
 
     <TrustedAssistForm defaultProfile="NRI / family outside India" source="trusted_assist_main"/>
 
-    <section className="section dark"><div className="about"><h2>Call missed? You still have two routes.</h2><p><b>WhatsApp 7015260003</b> or submit the callback form above. The purpose is to make sure a customer who reaches the website does not depend on one phone call only.</p><div className="row"><a className="call" href="https://wa.me/917015260003">WhatsApp Now</a><a className="call" href="#trusted-assist-enquiry">Request Callback</a><a className="secondary" href="/coverage">Coverage Areas</a></div></div></section>
+    <section className="section dark"><div className="about"><h2>Prefer WhatsApp?</h2><p>Message 7015260003 or request a callback.</p><div className="row"><a className="call" href="https://wa.me/917015260003">WhatsApp Now</a><a className="call" href="#trusted-assist-enquiry">Request Callback</a><a className="secondary" href="/coverage">Coverage Areas</a></div></div></section>
 
     <section className="section"><div className="head"><div><h2>ROHILLA Trusted Assist — FAQs</h2></div></div><div className="grid">{faq.map(([q,a])=><article className="card" key={q}><div className="body"><h3>{q}</h3><p>{a}</p></div></article>)}</div></section>
   </main>;

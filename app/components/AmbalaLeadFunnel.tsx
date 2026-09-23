@@ -85,12 +85,12 @@ export default function AmbalaLeadFunnel({source="ambala_lead_funnel",defaultMod
 
   return <section className="section" id="ambala-enquiry" style={{paddingTop:30}}>
     <div className="head"><div>
-      <h2>{mode==="buy"?`Looking for a car in ${locationName}? Tell us what you want.`:`Want to sell your car in ${locationName}?`}</h2>
-      <p>{mode==="buy"?`Share the model, budget and timing once. Your ${locationName} requirement is saved for direct follow-up, even when the exact car is not currently published.`:"Send a quick requirement now. You can add full vehicle details and private photos later."}</p>
+      <h2>{mode==="buy"?`Looking for a car in ${locationName}?`:`Want to sell your car in ${locationName}?`}</h2>
+      <p>{mode==="buy"?"Tell us the model, budget and timing.":"Share the basic car details and we’ll contact you."}</p>
     </div></div>
     <div className="row" style={{marginBottom:14}}>
-      <button type="button" className={mode==="buy"?"call":"secondary"} onClick={()=>{setMode("buy");setMsg("")}}>I Want to Buy</button>
-      <button type="button" className={mode==="sell"?"call":"secondary"} onClick={()=>{setMode("sell");setMsg("")}}>I Want to Sell</button>
+      <button type="button" className={mode==="buy"?"call":"secondary"} onClick={()=>{setMode("buy");setMsg("")}}>Buy a Car</button>
+      <button type="button" className={mode==="sell"?"call":"secondary"} onClick={()=>{setMode("sell");setMsg("")}}>Sell a Car</button>
       <a className="secondary" href="tel:+917015260003" onClick={()=>track("Call Click",{surface:"ambala_funnel"})}>Call 7015260003</a>
     </div>
     <form className="adminForm" onSubmit={submit}>
@@ -102,9 +102,9 @@ export default function AmbalaLeadFunnel({source="ambala_lead_funnel",defaultMod
       <input required placeholder="City / location" value={city} onChange={e=>setCity(e.target.value)}/>
       {mode==="buy"&&<select value={timing} onChange={e=>setTiming(e.target.value)}><option>Immediately / this week</option><option>Within 15 days</option><option>Within 30 days</option><option>Just exploring</option></select>}
       <LegalConsent/>
-      <button disabled={busy}>{busy?"Saving…":mode==="buy"?"Save Requirement & Continue on WhatsApp":"Save Sell Request & Continue on WhatsApp"}</button>
+      <button disabled={busy}>{busy?"Saving…":mode==="buy"?"Send Requirement":"Send Sell Request"}</button>
     </form>
     {msg&&<div className="notice" style={{marginTop:12}}>{msg}</div>}
-    <p style={{marginTop:12,fontSize:13,color:"#64748b"}}>No payment is required to send this enquiry. Vehicle availability, condition, price and transaction terms must be confirmed separately before purchase or sale.</p>
+    <p style={{marginTop:12,fontSize:13,color:"#64748b"}}>Availability, condition, price and final terms must be confirmed before any transaction.</p>
   </section>;
 }

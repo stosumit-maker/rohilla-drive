@@ -69,7 +69,7 @@ export default async function UsedCarsAmbala(){
         <span>ROHILLA MULTIBRAND CARS • AMBALA CITY</span>
         <h1>Used Cars & Second Hand Cars for Sale in Ambala</h1>
         <p className="heroSub">Second hand cars • Pre-owned cars • Direct vehicle enquiry</p>
-        <p>Browse current ROHILLA DRIVE listings in Ambala with available price, year, kilometres, fuel, ownership and vehicle photos. Inventory changes as vehicles are added or sold.</p>
+        <p>Browse current used cars in Ambala with price, year, kilometres, fuel and photos.</p>
         <div className="row" style={{marginTop:18}}>
           <a className="call" href="/inventory?city=Ambala%20City">Browse Full Inventory</a>
           <a className="call" href="/find-car-ambala">Tell Us the Car You Need</a>

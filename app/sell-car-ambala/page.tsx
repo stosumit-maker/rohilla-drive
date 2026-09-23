@@ -31,16 +31,16 @@ export default function SellCarAmbala(){
       <span>SELL USED CAR • AMBALA CITY</span>
       <h1>Sell Your Car in Ambala</h1>
       <p className="heroSub">Quick enquiry • Direct follow-up • Private photo option</p>
-      <p>Send the car model, expected price and your contact details once. ROHILLA DRIVE saves the request for follow-up. For a more complete submission, you can also upload vehicle details and private photos.</p>
-      <div className="row" style={{marginTop:18}}><a className="call" href="#ambala-enquiry">Get a Sell-Car Callback</a><a className="call" href="/sell">Submit Full Details & Photos</a><a className="secondary" href="tel:+917015260003">Call 7015260003</a></div>
+      <p>Share your car, expected price and contact details. We’ll follow up.</p>
+      <div className="row" style={{marginTop:18}}><a className="call" href="#ambala-enquiry">Request a Callback</a><a className="call" href="/sell">Add Details & Photos</a><a className="secondary" href="tel:+917015260003">Call 7015260003</a></div>
     </div></section>
     <AmbalaLeadFunnel source="sell_car_ambala" defaultMode="sell"/>
-    <section className="section compactSection"><div className="head"><div><h2>Two Ways to Start Selling</h2><p>Use the quick enquiry when you want a callback first, or submit the complete vehicle when you already have all details and photos ready.</p></div></div><div className="grid">
+    <section className="section compactSection"><div className="head"><div><h2>Choose How to Start</h2><p>Request a callback or send full vehicle details.</p></div></div><div className="grid">
       <article className="card"><div className="body"><h3>Quick callback request</h3><p>Enter your car, expected price, location and mobile number. The request is saved before WhatsApp opens.</p><a className="textLink" href="#ambala-enquiry">Send quick enquiry →</a></div></article>
       <article className="card"><div className="body"><h3>Full vehicle submission</h3><p>Add detailed vehicle information and private photos for review without creating a dealer account.</p><a className="textLink" href="/sell">Submit vehicle & photos →</a></div></article>
       <article className="card"><div className="body"><h3>Direct contact</h3><p>If you prefer to speak first, call or WhatsApp ROHILLA DRIVE on 7015260003.</p><a className="textLink" href="https://wa.me/917015260003">WhatsApp →</a></div></article>
     </div></section>
-    <section className="section dark"><div className="about"><h2>Used Car Selling in Ambala — Clear Next Step</h2><p>Submitting a request does not guarantee purchase or a fixed valuation. Final price and transaction terms depend on the actual vehicle, condition, documentation, inspection and market demand.</p><div className="row"><a className="call" href="/used-cars-ambala">Used Cars in Ambala</a><a className="call" href="/find-car-ambala">Find a Car</a><a className="call" href="/ambala">Ambala Vehicle Hub</a></div></div></section>
+    <section className="section dark"><div className="about"><h2>Before You Sell</h2><p>Submitting a request does not guarantee purchase or a fixed valuation. Final price and transaction terms depend on the actual vehicle, condition, documentation, inspection and market demand.</p><div className="row"><a className="call" href="/used-cars-ambala">Used Cars in Ambala</a><a className="call" href="/find-car-ambala">Find a Car</a><a className="call" href="/ambala">Ambala Vehicle Hub</a></div></div></section>
     <section className="section"><div className="head"><div><h2>Sell Car in Ambala — FAQs</h2></div></div><div className="grid">{faqs.map(([q,a])=><article className="card" key={q}><div className="body"><h3>{q}</h3><p>{a}</p></div></article>)}</div></section>
   </main>;
 }
