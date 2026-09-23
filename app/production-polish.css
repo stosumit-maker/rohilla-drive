@@ -940,3 +940,72 @@ body:not(:has(.rd-portal)) .premiumVehicleExpand{
     aspect-ratio:4/3!important;
   }
 }
+
+
+/* Vehicle photo fidelity lock: render the uploaded photo at its natural ratio, full-width, edge-to-edge. */
+body:not(:has(.rd-portal)) .premiumVehicleMedia{
+  height:auto!important;
+  aspect-ratio:auto!important;
+  background:transparent!important;
+}
+body:not(:has(.rd-portal)) .premiumVehiclePhotoButton{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  line-height:0!important;
+  background:transparent!important;
+}
+body:not(:has(.rd-portal)) .premiumVehicleMain{
+  position:relative!important;
+  inset:auto!important;
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  max-width:none!important;
+  object-fit:initial!important;
+  object-position:initial!important;
+  padding:0!important;
+  margin:0!important;
+  filter:none!important;
+  background:transparent!important;
+}
+body:not(:has(.rd-portal)) .premiumVehicleMediaEmpty{
+  min-height:220px;
+}
+body:not(:has(.rd-portal)) .vehicleLightboxPanel{
+  touch-action:none;
+}
+body:not(:has(.rd-portal)) .vehicleLightboxImage{
+  touch-action:none;
+  user-select:none;
+  -webkit-user-drag:none;
+  transition:none;
+}
+
+/* Vehicle detail page uses the same original-photo rule: no forced crop, no letterbox frame. */
+body:not(:has(.rd-portal)) .carPage .detailViewer{
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:auto!important;
+  background:transparent!important;
+}
+body:not(:has(.rd-portal)) .carPage .detailViewer>img{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  object-fit:initial!important;
+  object-position:initial!important;
+  background:transparent!important;
+}
+@media(max-width:800px){
+  body:not(:has(.rd-portal)) .premiumVehicleMedia{
+    height:auto!important;
+    aspect-ratio:auto!important;
+  }
+  body:not(:has(.rd-portal)) .carPage .detailViewer{
+    height:auto!important;
+    min-height:0!important;
+  }
+}
