@@ -615,3 +615,40 @@ body:not(:has(.rd-portal)) .carPage .fullscreenVehiclePhoto{
     min-height:240px!important;
   }
 }
+
+
+/* Inventory launch lock: show the whole car, keep the information block minimal. */
+body:not(:has(.rd-portal)) .inventorySection .swipeGallery,
+body:not(:has(.rd-portal)) .inventoryListingSection .swipeGallery{
+  height:260px!important;
+  background:#f4f6f8!important;
+}
+body:not(:has(.rd-portal)) .inventorySection .swipeGallery img,
+body:not(:has(.rd-portal)) .inventoryListingSection .swipeGallery img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  background:#f4f6f8!important;
+  cursor:zoom-in!important;
+}
+body:not(:has(.rd-portal)) .compactVehicleBody{padding:9px 11px 10px!important}
+body:not(:has(.rd-portal)) .compactVehicleBody h3{margin:0 0 4px!important;font-size:18px!important;line-height:1.15!important}
+body:not(:has(.rd-portal)) .vehicleTitleLink{color:inherit!important;text-decoration:none!important}
+body:not(:has(.rd-portal)) .compactVehicleBody small{display:block!important;margin:0!important;font-size:11px!important;line-height:1.35!important}
+body:not(:has(.rd-portal)) .compactPriceRow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:5px 0 7px}
+body:not(:has(.rd-portal)) .compactPriceRow strong{margin:0!important;font-size:20px!important;line-height:1.05!important}
+body:not(:has(.rd-portal)) .vehicleDetailsLink{font-size:11px;font-weight:800;color:#334155;text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+body:not(:has(.rd-portal)) .compactVehicleBody .vehicleCardActions{gap:6px!important}
+body:not(:has(.rd-portal)) .compactVehicleBody .vehicleCardActions button{min-height:36px!important;padding:7px 8px!important;font-size:10px!important}
+@media(max-width:800px){
+  body:not(:has(.rd-portal)) .inventorySection .swipeGallery,
+  body:not(:has(.rd-portal)) .inventoryListingSection .swipeGallery{height:300px!important}
+  body:not(:has(.rd-portal)) .inventorySection .swipeHint,
+  body:not(:has(.rd-portal)) .inventoryListingSection .swipeHint{display:none!important}
+  body:not(:has(.rd-portal)) .compactVehicleBody{padding:8px 10px 9px!important}
+  body:not(:has(.rd-portal)) .compactVehicleBody h3{font-size:17px!important;margin-bottom:3px!important}
+  body:not(:has(.rd-portal)) .compactVehicleBody small{font-size:10px!important}
+  body:not(:has(.rd-portal)) .compactPriceRow{margin:4px 0 6px!important}
+  body:not(:has(.rd-portal)) .compactPriceRow strong{font-size:19px!important}
+}
