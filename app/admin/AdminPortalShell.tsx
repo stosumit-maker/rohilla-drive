@@ -155,7 +155,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
     </nav>
     <div className="rdPortalUtilities">
      <button onClick={loadCounts}>Refresh</button>
-     <a className="premium" href="/">Public Website</a>
+     <a className="premium" href="/">Home</a>
      <button onClick={signOut}>Sign Out</button>
     </div>
    </div>
