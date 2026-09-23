@@ -130,3 +130,30 @@ body:not(:has(.rd-portal)) .inventorySection .head .secondary{background:#fff!im
  body:not(:has(.rd-portal)) .inventorySection .head{align-items:flex-start;gap:12px}
  body:not(:has(.rd-portal)) .inventorySection .head .row{justify-content:flex-start}
 }
+
+
+/* Admin intake: immediate missing-field feedback, media visibility and automatic sale poster. */
+.adminInlineMissing{margin-top:12px;padding:12px;border:1px solid #d8b45c;border-radius:12px;background:#fffaf0;color:#34270b}
+.adminInlineMissing b{display:block;margin-bottom:4px}
+.adminInlineMissing p{margin:0 0 10px;font-size:12px}
+.adminInlineMissingGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.adminInlineMissingGrid label{display:grid;gap:4px;font-size:11px;font-weight:800}
+.adminInlineMissingGrid input{width:100%;min-width:0}
+.adminQuickPhoto{margin-top:12px}
+.adminAutoPoster{margin-top:14px;border:1px solid #d8dee7;border-radius:14px;padding:12px;background:#f8fafc}
+.adminAutoPosterHead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.adminAutoPosterHead>div{display:grid;gap:2px}
+.adminAutoPosterHead small{font-size:11px;line-height:1.4;color:#667085}
+.adminAutoPoster img{display:block;width:min(100%,340px);aspect-ratio:4/5;object-fit:contain;background:#0d1117;border-radius:10px;border:1px solid #d0d5dd}
+.adminAutoPoster p{font-size:12px;margin:0;color:#667085}
+.adminMediaRequirements label{position:relative}
+.adminMediaRequirements label small{display:block;margin:3px 0 6px;color:#667085;font-size:10px}
+.vehicleSpinStage{touch-action:none;user-select:none;cursor:grab}
+.vehicleSpinStage:active{cursor:grabbing}
+.vehicleSpinStage img{pointer-events:none;user-select:none}
+.vehicleSpinHint{display:block;text-align:center;margin:8px 0 2px;font-weight:700}
+@media(max-width:700px){
+ .adminInlineMissingGrid{grid-template-columns:1fr}
+ .adminAutoPosterHead{display:grid}
+ .adminAutoPoster img{width:100%}
+}
