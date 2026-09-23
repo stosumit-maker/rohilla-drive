@@ -157,3 +157,47 @@ body:not(:has(.rd-portal)) .inventorySection .head .secondary{background:#fff!im
  .adminAutoPosterHead{display:grid}
  .adminAutoPoster img{width:100%}
 }
+
+
+/* Compact public inventory cards: show the full vehicle instead of cropping it. */
+body:not(:has(.rd-portal)) .inventorySection{padding-top:34px;padding-bottom:34px}
+body:not(:has(.rd-portal)) .inventorySection .head{margin-bottom:14px}
+body:not(:has(.rd-portal)) .inventorySection .grid,
+body:not(:has(.rd-portal)) .inventoryListingSection .grid{
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:14px;
+}
+body:not(:has(.rd-portal)) .inventorySection .card,
+body:not(:has(.rd-portal)) .inventoryListingSection .card{
+  max-width:390px;
+}
+body:not(:has(.rd-portal)) .inventorySection .swipeGallery,
+body:not(:has(.rd-portal)) .inventoryListingSection .swipeGallery{
+  height:205px;
+  background:#f1f4f7;
+}
+body:not(:has(.rd-portal)) .inventorySection .swipeGallery img,
+body:not(:has(.rd-portal)) .inventoryListingSection .swipeGallery img{
+  object-fit:contain!important;
+  object-position:center;
+  background:#f1f4f7;
+}
+body:not(:has(.rd-portal)) .inventorySection .swipeHint,
+body:not(:has(.rd-portal)) .inventoryListingSection .swipeHint{margin:5px 0 0;font-size:11px}
+body:not(:has(.rd-portal)) .inventorySection .card .body,
+body:not(:has(.rd-portal)) .inventoryListingSection .card .body{padding:14px}
+body:not(:has(.rd-portal)) .inventorySection .card .body h3,
+body:not(:has(.rd-portal)) .inventoryListingSection .card .body h3{margin:9px 0 3px;font-size:19px}
+body:not(:has(.rd-portal)) .inventorySection .card .body strong,
+body:not(:has(.rd-portal)) .inventoryListingSection .card .body strong{font-size:21px;margin:8px 0}
+body:not(:has(.rd-portal)) .inventorySection .card .body small,
+body:not(:has(.rd-portal)) .inventoryListingSection .card .body small{margin-bottom:9px}
+@media(max-width:800px){
+ body:not(:has(.rd-portal)) .inventorySection{padding-top:26px;padding-bottom:28px}
+ body:not(:has(.rd-portal)) .inventorySection .grid,
+ body:not(:has(.rd-portal)) .inventoryListingSection .grid{grid-template-columns:1fr;gap:12px}
+ body:not(:has(.rd-portal)) .inventorySection .card,
+ body:not(:has(.rd-portal)) .inventoryListingSection .card{max-width:none}
+ body:not(:has(.rd-portal)) .inventorySection .swipeGallery,
+ body:not(:has(.rd-portal)) .inventoryListingSection .swipeGallery{height:195px}
+}
