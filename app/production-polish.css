@@ -1018,3 +1018,66 @@ body:not(:has(.rd-portal)) .fullscreenVehiclePhoto{
   user-select:none;
   -webkit-user-drag:none;
 }
+
+
+/* Stable premium vehicle gallery: every slide keeps the exact same frame size. */
+body:not(:has(.rd-portal)) .premiumVehicleMedia{
+  position:relative!important;
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:4/3!important;
+  overflow:hidden!important;
+  background:#f3f4f6!important;
+}
+body:not(:has(.rd-portal)) .premiumVehiclePhotoButton{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+  background:#f3f4f6!important;
+  line-height:0!important;
+}
+body:not(:has(.rd-portal)) .premiumVehicleMain{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  padding:0!important;
+  margin:0!important;
+  filter:none!important;
+  background:#f3f4f6!important;
+}
+body:not(:has(.rd-portal)) .carPage .detailViewer{
+  position:relative!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:4/3!important;
+  overflow:hidden!important;
+  background:#f3f4f6!important;
+}
+body:not(:has(.rd-portal)) .carPage .detailViewer>img{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  background:#f3f4f6!important;
+}
+@media(max-width:800px){
+  body:not(:has(.rd-portal)) .premiumVehicleMedia,
+  body:not(:has(.rd-portal)) .carPage .detailViewer{
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:4/3!important;
+  }
+}
