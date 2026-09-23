@@ -95,8 +95,14 @@ async function add(e:React.FormEvent){
   setPublishProgress({stage:'Creating secure draft…',done:0,total:files.length,percent:12});
   const {data,error}=await db.from('vehicles').insert({brand:f.brand,model:f.model,variant:f.variant,year:Number(f.year),km:Number(f.km),fuel:f.fuel,owner_count:Number(f.owner_count),asking_price:Number(f.price),city:f.city,public_notes:f.notes||'',status:'draft',client_submission_id:submissionId.current,registration_prefix:publicRegistrationPrefix(f.registration_number)||null,registration_fingerprint:regHash||null,inventory_owner_type:f.inventory_owner_type||'rohilla_inventory'}).select().single();
   if(error){
-   if((error as any)?.code==='23505'){setMsg('This vehicle submission was already received. Duplicate prevented.');setPublishProgress({stage:'Duplicate prevented',done:0,total:files.length,percent:100});await load();return}
+   if((error as any)?.code==='23505'){setMsg('This vehicle or registration is already active/submitted. Duplicate prevented.');setPublishProgress({stage:'Duplicate prevented',done:0,total:files.length,percent:100});await load();return}
    throw new Error(error.message);
+  }
+  const privateRegistration=await db.from('vehicle_private').upsert({id:data.id,registration_number:cleanRegistration(f.registration_number),registration_source:'admin_intake',registration_verified:false},{onConflict:'id'});
+  if(privateRegistration.error){
+   await db.from('vehicles').update({status:'archived'}).eq('id',data.id);
+   submissionId.current='';setAllowDuplicateOnce(false);
+   throw new Error('Vehicle registration could not be stored privately. The incomplete draft was hidden: '+privateRegistration.error.message);
   }
   setPublishProgress({stage:'Uploading vehicle photos…',done:0,total:files.length,percent:20});
   let media:string[]=[];
@@ -104,7 +110,7 @@ async function add(e:React.FormEvent){
   setPublishProgress({stage:'Finalizing listing…',done:files.length,total:files.length,percent:92});
   const published=await db.from('vehicles').update({status:'published'}).eq('id',data.id);if(published.error)throw new Error(published.error.message);
   setPublishProgress({stage:'Published. Preparing social queue…',done:files.length,total:files.length,percent:97});
-  const social=await db.from('social_posts').insert(['instagram','facebook','youtube'].map(platform=>({vehicle_id:data.id,platform,caption:`${data.brand} ${data.model} ${data.variant||''} | ₹${data.asking_price}`,media_urls:media,status:'queued'})));
+  const social=await db.from('social_posts').insert(['instagram','facebook','youtube'].map(platform=>({vehicle_id:data.id,platform,caption:null,media_urls:media,status:'queued'})));
   setF({});setFiles([]);setInteractiveFiles({});setQuickText('');setAllowDuplicateOnce(false);submissionId.current='';setPublishProgress({stage:'Vehicle published successfully',done:files.length,total:files.length,percent:100});
   setMsg(social.error?'Vehicle published. Social queue was not created, but the website listing is live.':'Vehicle published successfully. You can safely add the next car.');
   await load();

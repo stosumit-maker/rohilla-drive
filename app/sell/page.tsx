@@ -73,9 +73,10 @@ export default function SellVehicle(){
    submission_token:token,
    private_media_paths:paths,
    vehicle_registration_fingerprint:regHash,
+   vehicle_registration_number:cleanRegistration(f.registration_number),
    registration_prefix:regPrefix||null
   });
-  if(error){submitLock.current=false;setBusy(false);setProgress("");setMsg((error as any)?.code==="23505"?"This vehicle is already submitted or under review. Duplicate request blocked.":error.message);return}
+  if(error){submitLock.current=false;setBusy(false);setProgress("");setMsg((error as any)?.code==="23505"?"This registration is already active or already submitted to Rohilla Drive. Duplicate request blocked.":error.message);return}
 
   let uploaded=0;
   let uploadError="";
