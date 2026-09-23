@@ -15,14 +15,13 @@ import PortalCopyPolish from "./components/PortalCopyPolish";
 import { Analytics } from "@vercel/analytics/next";
 
 const site = "https://www.rohilladrive.com";
-const languages={"en-IN":"/en","hi-IN":"/hi","pa-IN":"/pa","kn-IN":"/kn","ta-IN":"/ta","te-IN":"/te","ml-IN":"/ml","mr-IN":"/mr","gu-IN":"/gu","bn-IN":"/bn","or-IN":"/or","ur-IN":"/ur","x-default":"/"};
 
 export const metadata: Metadata = {
   metadataBase: new URL(site),
   title: { default: "Used Cars in Ambala | Buy & Sell Cars | ROHILLA DRIVE", template: "%s | ROHILLA DRIVE" },
   description: "ROHILLA DRIVE by Rohilla Multibrand Cars, Ambala City — browse used cars, sell your car, send a car requirement and get vehicle assistance when needed.",
   applicationName: "ROHILLA DRIVE",
-  alternates: { canonical: "/", languages },
+  alternates: { canonical: "/" },
   manifest: "/manifest.webmanifest",
   openGraph: {
     type: "website",
@@ -74,7 +73,7 @@ const websiteSchema = {
   name: "ROHILLA DRIVE",
   alternateName: ["Rohilla Drive", "Rohilla Multibrand Cars", "rohilladrive.com"],
   publisher: { "@id": `${site}/#organization` },
-  inLanguage: ["en-IN", "hi-IN", "pa-IN", "kn-IN", "ta-IN", "te-IN", "ml-IN", "mr-IN", "gu-IN", "bn-IN", "or-IN", "ur-IN"],
+  inLanguage: "en-IN",
   potentialAction: {
     "@type": "SearchAction",
     target: `${site}/inventory?q={search_term_string}`,
