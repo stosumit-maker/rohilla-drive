@@ -59,7 +59,7 @@ export const trustedAssistAudiences:TrustedAssistAudience[]=[
     h1:"Car Assistance for Senior Citizens & Elderly Vehicle Owners",
     description:"ROHILLA Trusted Assist helps senior citizens and families coordinate vehicle service, inspection, battery/tyre issues, pickup/drop, roadside support and paperwork where available.",
     defaultProfile:"Senior citizen / elderly owner",
-    intro:"A vehicle problem should not require an elderly owner to visit multiple workshops, offices or service providers. ROHILLA Trusted Assist provides one enquiry point so a family or senior citizen can explain the requirement and request coordinated help.",
+    intro:"Need help with service, inspection, pickup/drop or paperwork? Share the vehicle details once and our team will help coordinate the next step.",
     situations:["Scheduled service or repair","Battery / tyre replacement","Inspection before a journey","Pickup / drop coordination","Roadside or breakdown support","RC / insurance assistance","Family managing the vehicle remotely","Selling an older or unused vehicle"],
     searchPhrases:["senior citizen car assistance","car service for elderly","vehicle help for senior citizens","car pickup service senior citizen","car maintenance assistance elderly"],
     faq:[
