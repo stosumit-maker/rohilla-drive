@@ -66,7 +66,7 @@ export const trustedAssistAudiences:TrustedAssistAudience[]=[
       ["Can a family member submit the request for a senior citizen?","Yes. A family member can submit the details and explain where the vehicle is located and what help is required."],
       ["Can pickup and drop be requested?","Yes, where a suitable provider and service area are available. Confirm the provider, timing, charges and handover process before proceeding."],
       ["Can roadside help be requested?","Yes. Roadside or breakdown assistance can be requested, subject to partner availability in the vehicle location."],
-      ["Can you help with selling an unused car?","Yes. You can request selling support or use the detailed seller workflow to submit vehicle information and private photos."],
+      ["Can you help me sell my car?","Yes. Share your car details and our team can guide you through the selling process."],
       ["Do I need to pay to submit the request?","No payment is required to send the enquiry. Any later service charge must be confirmed before work begins."]
     ]
   },
