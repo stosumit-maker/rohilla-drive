@@ -11,30 +11,30 @@ export default function TrustedAssistLanding({audience}:{audience:TrustedAssistA
     <section className="hero" style={{paddingTop:52,paddingBottom:52}}><div className="heroText">
       <span>{audience.eyebrow}</span>
       <h1>{audience.h1}</h1>
-      <p className="heroSub">Vehicle help when you cannot manage it in person.</p>
+      <p className="heroSub">Simple, coordinated help for your vehicle.</p>
       <p>{audience.intro}</p>
       <div className="row" style={{marginTop:18}}>
         <a className="call" href="#trusted-assist-enquiry">Request Trusted Assist</a>
         <a className="call" href="tel:+917015260003">Call 7015260003</a>
-        <a className="secondary" href="https://wa.me/917015260003">WhatsApp</a>
+        <a className="call secondary" href="https://wa.me/917015260003">WhatsApp</a>
       </div>
     </div></section>
 
-    <section className="section"><div className="head"><div><h2>When ROHILLA Trusted Assist can help</h2><p>For owners or families who cannot manage the vehicle in person.</p></div></div><div className="grid">
-      {audience.situations.map(x=><article className="card" key={x}><div className="body"><h3>{x}</h3><p>Submit the request, vehicle location and preferred contact time. The next step depends on local availability and your confirmation.</p></div></article>)}
+    <section className="section"><div className="head"><div><h2>How We Can Help</h2><p>Choose the support you need for the vehicle.</p></div></div><div className="grid">
+      {audience.situations.map(x=><article className="card" key={x}><div className="body"><h3>{x}</h3><p>Share the details once. We’ll help coordinate the next step.</p></div></article>)}
     </div></section>
 
     <TrustedAssistForm defaultProfile={audience.defaultProfile} source={`trusted_assist_${audience.key}`}/>
 
 
-    <section className="section dark"><div className="about">
-      <h2>ROHILLA Trusted Assist</h2>
-      <p>For NRI families, defence personnel, senior citizens, outstation owners, busy professionals and families managing a vehicle on someone else’s behalf.</p>
-      <p>Based in Ambala City. Support outside Ambala depends on vehicle location and service availability.</p>
-      <div className="row"><a className="call" href="/trusted-assist">Trusted Assist Overview</a><a className="call" href="/coverage">Coverage Areas</a><a className="secondary" href="/sell">Sell a Vehicle</a></div>
+    <section className="section dark trustedAssistSummary"><div className="about">
+      <h2>Trusted Vehicle Assistance</h2>
+      <p>One point of contact for service, inspection, pickup/drop, documents and vehicle sale support.</p>
+      <p>Based in Ambala City. Assistance in other locations is subject to availability.</p>
+      <div className="row"><a className="call" href="/trusted-assist">Trusted Assist Overview</a><a className="call" href="/coverage">Coverage Areas</a><a className="call secondary" href="/sell-car-ambala">Sell Your Car</a></div>
     </div></section>
 
-    <section className="section"><div className="head"><div><h2>{audience.h1} — FAQs</h2></div></div><div className="grid">
+    <section className="section trustedAssistFaq"><div className="head"><div><h2>Frequently Asked Questions</h2></div></div><div className="grid">
       {audience.faq.map(([q,a])=><article className="card" key={q}><div className="body"><h3>{q}</h3><p>{a}</p></div></article>)}
     </div></section>
   </main>;
