@@ -91,6 +91,12 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
     gateRef.current=window.setTimeout(gate,1000);
     return;
    }
+   const {data:aal}=await db.auth.mfa.getAuthenticatorAssuranceLevel();
+   if(aal?.currentLevel!=="aal2"){
+    if(path!=="/admin"){location.href="/admin";return;}
+    gateRef.current=window.setTimeout(gate,1000);
+    return;
+   }
    const {data:isAdmin}=await db.rpc("is_admin");
    if(!isAdmin||cancelled)return;
    setReady(true);
@@ -142,7 +148,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
 
  async function signOut(){
   clearAdminGate();
-  await db.auth.signOut();
+  setReady(false);
   location.href="/admin";
  }
 
@@ -173,7 +179,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
     <div className="rdPortalUtilities">
      <button onClick={loadCounts}>Refresh</button>
      <a className="premium" href="/">Home</a>
-     <button onClick={signOut}>Sign Out</button>
+     <button onClick={signOut}>Lock Admin</button>
     </div>
    </div>
    <div className="rdPortalOps"><div className="rdPortalOpsInner">
