@@ -91,11 +91,6 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
     gateRef.current=window.setTimeout(gate,1000);
     return;
    }
-   const {data:aal}=await db.auth.mfa.getAuthenticatorAssuranceLevel();
-   if(aal?.currentLevel!=="aal2"){
-    gateRef.current=window.setTimeout(gate,2500);
-    return;
-   }
    const {data:isAdmin}=await db.rpc("is_admin");
    if(!isAdmin||cancelled)return;
    setReady(true);
