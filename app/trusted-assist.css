@@ -6,3 +6,43 @@
 @keyframes trustedAssistSweep{0%,22%{left:-28%;opacity:0}35%{opacity:1}58%{left:112%;opacity:.72}72%,100%{left:112%;opacity:0}}
 @media(max-width:720px){.trustedCopy em{font-size:10px;line-height:1.25}.trustedAssistStrip{animation-duration:3.6s}.trustedAssistStrip:after{width:26%}}
 @media(prefers-reduced-motion:reduce){.trustedAssistStrip{animation:none}.trustedAssistStrip:after{display:none}}
+
+
+/* Trusted Assist customer-facing polish */
+.trustedAssistForm select{
+  width:100%;
+  min-height:52px;
+  padding:13px 14px;
+  border:1px solid #dbe1ea;
+  border-radius:12px;
+  background:#fff;
+  color:#0f172a;
+  font:inherit;
+}
+.trustedAssistForm input,
+.trustedAssistForm textarea{
+  border-radius:12px;
+}
+.trustedAssistSummary .about h2{
+  color:#fff!important;
+}
+.trustedAssistSummary .about p{
+  max-width:760px;
+  line-height:1.55;
+}
+.trustedAssistSummary .secondary,
+#trusted-assist-enquiry .secondary{
+  text-decoration:none!important;
+}
+.trustedAssistFaq .head h2{
+  font-size:clamp(28px,5vw,40px)!important;
+  line-height:1.08!important;
+}
+@media(max-width:720px){
+  #trusted-assist-enquiry .head h2{font-size:28px!important;line-height:1.08!important}
+  #trusted-assist-enquiry .head p{font-size:14px!important;line-height:1.45!important}
+  .trustedAssistForm select{min-height:50px;font-size:15px}
+  .trustedAssistSummary .about{padding-top:18px!important}
+  .trustedAssistSummary .about h2{font-size:28px!important;line-height:1.08!important}
+  .trustedAssistFaq .head h2{font-size:30px!important}
+}
