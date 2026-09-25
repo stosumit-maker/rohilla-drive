@@ -1131,3 +1131,47 @@ body:not(:has(.rd-portal)) .premiumVehicleExpand{
     aspect-ratio:auto!important;
   }
 }
+
+
+/* Final no-gap gallery lock: stable frame, edge-to-edge photo, no blur/letterboxing. */
+body:not(:has(.rd-portal)) .premiumVehicleMedia{
+  position:relative!important;
+  width:100%!important;
+  height:245px!important;
+  aspect-ratio:auto!important;
+  overflow:hidden!important;
+  background:#111827!important;
+}
+body:not(:has(.rd-portal)) .premiumVehiclePhotoButton{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+  background:#111827!important;
+}
+body:not(:has(.rd-portal)) .premiumVehicleBackdrop,
+body:not(:has(.rd-portal)) .premiumVehicleShade{
+  display:none!important;
+}
+body:not(:has(.rd-portal)) .premiumVehicleMain{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  margin:0!important;
+  padding:0!important;
+  filter:none!important;
+  background:transparent!important;
+}
+@media(max-width:800px){
+  body:not(:has(.rd-portal)) .premiumVehicleMedia{
+    height:235px!important;
+    aspect-ratio:auto!important;
+  }
+}
