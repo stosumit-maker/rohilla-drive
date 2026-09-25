@@ -40,20 +40,20 @@ export default function TrustedAssist(){
       <span>ROHILLA TRUSTED ASSIST</span>
       <h1>Need Help Managing Your Vehicle?</h1>
       <p className="heroSub">NRI families • Defence personnel • Senior citizens • Outstation owners • Busy professionals</p>
-      <p>Tell us what needs to be handled and where the vehicle is. We’ll contact you before anything moves forward.</p>
+      <p>Tell us what you need. We’ll contact you to confirm the next step.</p>
       <div className="row" style={{marginTop:18}}><a className="call" href="#trusted-assist-enquiry">Request Trusted Assist</a><a className="call" href="tel:+917015260003">Call 7015260003</a><a className="secondary" href="https://wa.me/917015260003">WhatsApp</a></div>
     </div></section>
 
-    <section className="section"><div className="head"><div><h2>Who It’s For</h2><p>Choose the situation closest to yours.</p></div></div><div className="grid">
+    <section className="section"><div className="head"><div><h2>Who We Help</h2><p>Choose the option that best matches your situation.</p></div></div><div className="grid">
       {trustedAssistAudiences.map(a=><article className="card" key={a.key}><div className="body"><label>{a.eyebrow}</label><h3>{a.h1}</h3><p>{a.description}</p><a className="textLink" href={a.path}>Open {a.h1} →</a></div></article>)}
     </div></section>
 
-    <section className="section compactSection"><div className="head"><div><h2>What you can request</h2><p>Actual availability depends on the vehicle location, provider availability and the type of work required.</p></div></div><div className="grid">{services.map(x=><article className="card" key={x}><div className="body"><h3>{x}</h3><p>Explain the requirement once. We contact you and coordinate the next step only after confirmation.</p></div></article>)}</div></section>
+    <section className="section compactSection"><div className="head"><div><h2>How We Can Help</h2><p>Service availability may vary by location.</p></div></div><div className="grid">{services.map(x=><article className="card" key={x}><div className="body"><h3>{x}</h3><p>Share the requirement once. We’ll confirm the next step with you.</p></div></article>)}</div></section>
 
-    <TrustedAssistForm defaultProfile="NRI / family outside India" source="trusted_assist_main"/>
+    <TrustedAssistForm defaultProfile="NRI / family abroad" source="trusted_assist_main"/>
 
-    <section className="section dark"><div className="about"><h2>Prefer WhatsApp?</h2><p>Message 7015260003 or request a callback.</p><div className="row"><a className="call" href="https://wa.me/917015260003">WhatsApp Now</a><a className="call" href="#trusted-assist-enquiry">Request Callback</a><a className="secondary" href="/coverage">Coverage Areas</a></div></div></section>
+    <section className="section dark"><div className="about"><h2>Prefer WhatsApp?</h2><p>Message 7015260003 or request a callback.</p><div className="row"><a className="call" href="https://wa.me/917015260003">WhatsApp Now</a><a className="call" href="#trusted-assist-enquiry">Request Callback</a><a className="call secondary" href="/coverage">Coverage Areas</a></div></div></section>
 
-    <section className="section"><div className="head"><div><h2>ROHILLA Trusted Assist — FAQs</h2></div></div><div className="grid">{faq.map(([q,a])=><article className="card" key={q}><div className="body"><h3>{q}</h3><p>{a}</p></div></article>)}</div></section>
+    <section className="section"><div className="head"><div><h2>Frequently Asked Questions</h2></div></div><div className="grid">{faq.map(([q,a])=><article className="card" key={q}><div className="body"><h3>{q}</h3><p>{a}</p></div></article>)}</div></section>
   </main>;
 }
