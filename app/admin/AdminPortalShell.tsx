@@ -5,6 +5,11 @@ import {usePathname} from "next/navigation";
 import {supabase} from "../supabaseClient";
 
 const VAPID_PUBLIC_KEY="BCu-RuCf1vdiAr6eUOnZRKYTaBTqAdmknc0LtfXQO1kH4IGBM6lcw3VlwN2D26cTWPo2Iei7SyQUcLeWiR5cGXA";
+const ADMIN_GATE_KEY="rohilla_admin_verified_at";
+const ADMIN_IDLE_MS=10*60*1000;
+function hasFreshAdminGate(){try{const t=Number(sessionStorage.getItem(ADMIN_GATE_KEY)||0);return t>0&&Date.now()-t<ADMIN_IDLE_MS}catch{return false}}
+function touchAdminGate(){try{sessionStorage.setItem(ADMIN_GATE_KEY,String(Date.now()))}catch{}}
+function clearAdminGate(){try{sessionStorage.removeItem(ADMIN_GATE_KEY)}catch{}}
 type Counts={sales:number;services:number;dealers:number;partners:number;verification:number;dealerVehicles:number;dealRooms:number};
 const emptyCounts:Counts={sales:0,services:0,dealers:0,partners:0,verification:0,dealerVehicles:0,dealRooms:0};
 const navLinks=[
@@ -50,6 +55,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  const [note,setNote]=useState("");
  const refreshRef=useRef<number|undefined>(undefined);
  const gateRef=useRef<number|undefined>(undefined);
+ const idleRef=useRef<number|undefined>(undefined);
  const current=navLinks.find(link=>link.href===path);
  const isInner=path!=="/admin";
 
@@ -79,7 +85,12 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
   let cancelled=false;
   async function gate(){
    const {data:{session}}=await db.auth.getSession();
-   if(!session||cancelled)return;
+   if(!session||cancelled){clearAdminGate();return;}
+   if(!hasFreshAdminGate()){
+    if(path!=="/admin"){location.href="/admin";return;}
+    gateRef.current=window.setTimeout(gate,1000);
+    return;
+   }
    const {data:aal}=await db.auth.mfa.getAuthenticatorAssuranceLevel();
    if(aal?.currentLevel!=="aal2"){
     gateRef.current=window.setTimeout(gate,2500);
@@ -94,6 +105,16 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
   gate();
   return()=>{cancelled=true;if(gateRef.current)window.clearTimeout(gateRef.current);if(refreshRef.current)window.clearInterval(refreshRef.current)};
  },[]);
+
+ useEffect(()=>{
+  if(!ready)return;
+  const lock=async()=>{clearAdminGate();await db.auth.signOut();location.href="/admin";};
+  const reset=()=>{touchAdminGate();if(idleRef.current)window.clearTimeout(idleRef.current);idleRef.current=window.setTimeout(lock,ADMIN_IDLE_MS);};
+  const events=["pointerdown","keydown","touchstart","scroll"] as const;
+  events.forEach(event=>window.addEventListener(event,reset,{passive:true}));
+  reset();
+  return()=>{events.forEach(event=>window.removeEventListener(event,reset));if(idleRef.current)window.clearTimeout(idleRef.current);};
+ },[ready]);
 
  async function enablePush(){
   try{
@@ -125,6 +146,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  }
 
  async function signOut(){
+  clearAdminGate();
   await db.auth.signOut();
   location.href="/admin";
  }
