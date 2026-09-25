@@ -5,24 +5,24 @@ import {supabase} from "../supabaseClient";
 import LegalConsent from "./LegalConsent";
 
 const profiles=[
-  "NRI / family outside India",
-  "Defence / armed forces personnel",
-  "Senior citizen / elderly owner",
-  "Outstation / remote vehicle owner",
-  "Busy professional / executive",
-  "Family managing a vehicle for someone else",
+  "NRI / family abroad",
+  "Defence personnel / family",
+  "Senior citizen",
+  "Outstation vehicle owner",
+  "Busy professional",
+  "Family member managing the vehicle",
   "Other"
 ];
 
 const needs=[
-  "Vehicle service / repair coordination",
-  "Inspection / condition check",
-  "Battery / tyre / breakdown help",
-  "Pickup / drop / vehicle movement",
-  "RC / insurance / document coordination",
-  "Periodic vehicle care / check-up",
-  "Pre-sale preparation / selling support",
-  "Other vehicle assistance"
+  "Service / repair",
+  "Vehicle inspection",
+  "Battery / tyre / breakdown",
+  "Pickup / drop",
+  "RC / insurance / documents",
+  "Periodic vehicle check",
+  "Prepare / sell the vehicle",
+  "Other assistance"
 ];
 
 export default function TrustedAssistForm({defaultProfile="NRI / family outside India",source="trusted_assist"}:{defaultProfile?:string;source?:string}){
@@ -86,28 +86,28 @@ export default function TrustedAssistForm({defaultProfile="NRI / family outside 
   }
 
   return <section className="section" id="trusted-assist-enquiry">
-    <div className="head"><div><h2>Need Help Managing Your Vehicle?</h2><p>Tell us what needs to be handled and where the vehicle is. We’ll contact you before any work starts.</p></div></div>
+    <div className="head"><div><h2>Need Vehicle Assistance?</h2><p>Share a few details. Our team will contact you to confirm the next step.</p></div></div>
     <div className="row" style={{marginBottom:14}}>
       <a className="call" href="tel:+917015260003">Call 7015260003</a>
       <a className="call" href="https://wa.me/917015260003">WhatsApp Now</a>
-      <a className="secondary" href="#trusted-assist-enquiry">Request Callback</a>
+      <a className="call secondary" href="#trusted-assist-enquiry">Get a Callback</a>
     </div>
     
-    <form className="adminForm" onSubmit={submit}>
+    <form className="adminForm trustedAssistForm" onSubmit={submit}>
       <input required placeholder="Your name" value={name} onChange={e=>setName(e.target.value)}/>
       <input required inputMode="tel" placeholder="Mobile number" value={phone} onChange={e=>setPhone(e.target.value)}/>
-      <input inputMode="tel" placeholder="WhatsApp number if different (optional)" value={whatsapp} onChange={e=>setWhatsapp(e.target.value)}/>
+      <input inputMode="tel" placeholder="WhatsApp number (if different)" value={whatsapp} onChange={e=>setWhatsapp(e.target.value)}/>
       <select value={profile} onChange={e=>setProfile(e.target.value)}>{profiles.map(x=><option key={x}>{x}</option>)}</select>
       <select value={need} onChange={e=>setNeed(e.target.value)}>{needs.map(x=><option key={x}>{x}</option>)}</select>
-      <input placeholder="Where are you currently? (e.g. Dubai / Pune / posted outstation)" value={currentLocation} onChange={e=>setCurrentLocation(e.target.value)}/>
+      <input placeholder="Your current city / location (optional)" value={currentLocation} onChange={e=>setCurrentLocation(e.target.value)}/>
       <input required placeholder="Vehicle location / city" value={vehicleLocation} onChange={e=>setVehicleLocation(e.target.value)}/>
-      <input placeholder="Vehicle / model (optional)" value={vehicle} onChange={e=>setVehicle(e.target.value)}/>
-      <input placeholder="Preferred call time (optional)" value={preferredTime} onChange={e=>setPreferredTime(e.target.value)}/>
-      <textarea placeholder="What needs to be managed or checked?" value={notes} onChange={e=>setNotes(e.target.value)}/>
+      <input placeholder="Car make & model (optional)" value={vehicle} onChange={e=>setVehicle(e.target.value)}/>
+      <input placeholder="Best time to call (optional)" value={preferredTime} onChange={e=>setPreferredTime(e.target.value)}/>
+      <textarea placeholder="Tell us briefly what you need" value={notes} onChange={e=>setNotes(e.target.value)}/>
       <LegalConsent/>
-      <button disabled={busy}>{busy?"Saving…":"Send Request"}</button>
+      <button disabled={busy}>{busy?"Saving…":"Request Assistance"}</button>
     </form>
     {msg&&<div className="notice" style={{marginTop:12}}>{msg}</div>}
-    <p style={{fontSize:13,color:"#64748b",marginTop:12}}>We’ll confirm the provider, scope and estimate with you before any work starts.</p>
+    <p style={{fontSize:13,color:"#64748b",marginTop:12}}>We’ll confirm the work and estimated cost with you before proceeding.</p>
   </section>;
 }
