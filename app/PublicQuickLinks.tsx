@@ -5,7 +5,8 @@ import {useState} from "react";
 const base={display:"block",padding:"10px 12px",borderRadius:12,fontWeight:900,textDecoration:"none",fontSize:13,textAlign:"left"} as const;
 export default function PublicQuickLinks(){
  const path=usePathname();const [open,setOpen]=useState(false);const [shareNote,setShareNote]=useState("");
- const focusedAssistPages=["/trusted-assist","/nri-car-care-india","/defence-personnel-vehicle-assistance","/senior-citizen-car-assistance","/remote-car-assistance"];\n if(path.startsWith("/admin")||path.startsWith("/dealer")||path.startsWith("/partner")||path.startsWith("/reset-password")||focusedAssistPages.includes(path))return null;
+ const focusedAssistPages=["/trusted-assist","/nri-car-care-india","/defence-personnel-vehicle-assistance","/senior-citizen-car-assistance","/remote-car-assistance"];
+ if(path.startsWith("/admin")||path.startsWith("/dealer")||path.startsWith("/partner")||path.startsWith("/reset-password")||focusedAssistPages.includes(path))return null;
  async function share(){const url=window.location.href;const title=document.title||"ROHILLA DRIVE";const text=path.startsWith("/cars/")?"View this vehicle on ROHILLA DRIVE":"Explore cars and vehicle assistance on ROHILLA DRIVE.";try{if(navigator.share){await navigator.share({title,text,url});return}await navigator.clipboard.writeText(`${text}\n${url}`);setShareNote("Link copied.");window.setTimeout(()=>setShareNote(""),1800)}catch{}}
  function back(){setOpen(false);window.history.back()}
  return <div style={{position:"fixed",left:12,bottom:14,zIndex:9000,display:"flex",flexDirection:"column",gap:8,alignItems:"flex-start",maxWidth:"calc(100vw - 24px)"}}>
