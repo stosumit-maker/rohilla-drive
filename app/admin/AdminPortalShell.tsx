@@ -108,7 +108,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
 
  useEffect(()=>{
   if(!ready)return;
-  const lock=async()=>{clearAdminGate();await db.auth.signOut();location.href="/admin";};
+  const lock=()=>{clearAdminGate();setReady(false);location.href="/admin";};
   const reset=()=>{touchAdminGate();if(idleRef.current)window.clearTimeout(idleRef.current);idleRef.current=window.setTimeout(lock,ADMIN_IDLE_MS);};
   const events=["pointerdown","keydown","touchstart","scroll"] as const;
   events.forEach(event=>window.addEventListener(event,reset,{passive:true}));
