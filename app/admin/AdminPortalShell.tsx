@@ -5,11 +5,6 @@ import {usePathname} from "next/navigation";
 import {supabase} from "../supabaseClient";
 
 const VAPID_PUBLIC_KEY="BCu-RuCf1vdiAr6eUOnZRKYTaBTqAdmknc0LtfXQO1kH4IGBM6lcw3VlwN2D26cTWPo2Iei7SyQUcLeWiR5cGXA";
-const ADMIN_GATE_KEY="rohilla_admin_verified_at";
-const ADMIN_IDLE_MS=10*60*1000;
-function hasFreshAdminGate(){try{const t=Number(sessionStorage.getItem(ADMIN_GATE_KEY)||0);return t>0&&Date.now()-t<ADMIN_IDLE_MS}catch{return false}}
-function touchAdminGate(){try{sessionStorage.setItem(ADMIN_GATE_KEY,String(Date.now()))}catch{}}
-function clearAdminGate(){try{sessionStorage.removeItem(ADMIN_GATE_KEY)}catch{}}
 type Counts={sales:number;services:number;dealers:number;partners:number;verification:number;dealerVehicles:number;dealRooms:number};
 const emptyCounts:Counts={sales:0,services:0,dealers:0,partners:0,verification:0,dealerVehicles:0,dealRooms:0};
 const navLinks=[
@@ -54,8 +49,6 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  const [pushEnabled,setPushEnabled]=useState(false);
  const [note,setNote]=useState("");
  const refreshRef=useRef<number|undefined>(undefined);
- const gateRef=useRef<number|undefined>(undefined);
- const idleRef=useRef<number|undefined>(undefined);
  const current=navLinks.find(link=>link.href===path);
  const isInner=path!=="/admin";
 
@@ -85,18 +78,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
   let cancelled=false;
   async function gate(){
    const {data:{session}}=await db.auth.getSession();
-   if(!session||cancelled){clearAdminGate();return;}
-   if(!hasFreshAdminGate()){
-    if(path!=="/admin"){location.href="/admin";return;}
-    gateRef.current=window.setTimeout(gate,1000);
-    return;
-   }
-   const {data:aal}=await db.auth.mfa.getAuthenticatorAssuranceLevel();
-   if(aal?.currentLevel!=="aal2"){
-    if(path!=="/admin"){location.href="/admin";return;}
-    gateRef.current=window.setTimeout(gate,1000);
-    return;
-   }
+   if(!session||cancelled)return;
    const {data:isAdmin}=await db.rpc("is_admin");
    if(!isAdmin||cancelled)return;
    setReady(true);
@@ -104,18 +86,8 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
    refreshRef.current=window.setInterval(loadCounts,30000);
   }
   gate();
-  return()=>{cancelled=true;if(gateRef.current)window.clearTimeout(gateRef.current);if(refreshRef.current)window.clearInterval(refreshRef.current)};
+  return()=>{cancelled=true;if(refreshRef.current)window.clearInterval(refreshRef.current)};
  },[]);
-
- useEffect(()=>{
-  if(!ready)return;
-  const lock=()=>{clearAdminGate();setReady(false);location.href="/admin";};
-  const reset=()=>{touchAdminGate();if(idleRef.current)window.clearTimeout(idleRef.current);idleRef.current=window.setTimeout(lock,ADMIN_IDLE_MS);};
-  const events=["pointerdown","keydown","touchstart","scroll"] as const;
-  events.forEach(event=>window.addEventListener(event,reset,{passive:true}));
-  reset();
-  return()=>{events.forEach(event=>window.removeEventListener(event,reset));if(idleRef.current)window.clearTimeout(idleRef.current);};
- },[ready]);
 
  async function enablePush(){
   try{
@@ -147,8 +119,8 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
  }
 
  async function signOut(){
-  clearAdminGate();
   setReady(false);
+  await db.auth.signOut();
   location.href="/admin";
  }
 
@@ -179,7 +151,7 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
     <div className="rdPortalUtilities">
      <button onClick={loadCounts}>Refresh</button>
      <a className="premium" href="/">Home</a>
-     <button onClick={signOut}>Lock Admin</button>
+     <button onClick={signOut}>Sign Out</button>
     </div>
    </div>
    <div className="rdPortalOps"><div className="rdPortalOpsInner">
@@ -188,6 +160,6 @@ export default function AdminLayout({children}:{children:React.ReactNode}){
    </div></div>
   </div>}
   {ready&&isInner&&<div className="rdPortalContextBar" data-no-translate style={contextStyle}><a href="/admin" aria-label="Back to Administration Dashboard" style={backStyle}>← Back to Dashboard</a><span style={sectionStyle}>Current section: {current?.label||"Administration Console"}</span></div>}
-  {(ready||path==="/admin")?children:<main className="section"><div className="auth"><h1>ROHILLA DRIVE</h1><h2>Administrator Authentication Required</h2><p>Complete administrator sign-in and multi-factor authentication before opening this section.</p><a className="call" href="/admin">Go to Administration Sign In</a></div></main>}
+  {(ready||path==="/admin"||path==="/admin/reset-password")?children:<main className="section"><div className="auth"><h1>ROHILLA DRIVE</h1><h2>Administrator Authentication Required</h2><p>Complete administrator sign-in before opening this section.</p><a className="call" href="/admin">Go to Administration Sign In</a></div></main>}
  </div>;
 }
