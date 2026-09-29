@@ -1,28 +1,47 @@
 "use client";
 import {useEffect,useRef,useState} from 'react'; import {supabase} from '../supabaseClient'; import AdminVehiclePoster from '../components/AdminVehiclePoster';
-export default function Admin(){const db=supabase();const [session,setSession]=useState<any>(null);const [accessDenied,setAccessDenied]=useState(false);const [cars,setCars]=useState<any[]>([]);const [apps,setApps]=useState<any[]>([]);const [partnerApps,setPartnerApps]=useState<any[]>([]);const [partners,setPartners]=useState<any[]>([]);const [requests,setRequests]=useState<any[]>([]);const [salesLeads,setSalesLeads]=useState<any[]>([]);const [msg,setMsg]=useState('');const [files,setFiles]=useState<File[]>([]);const [f,setF]=useState<any>({});const [editing,setEditing]=useState<any>(null);const [editFiles,setEditFiles]=useState<File[]>([]);const [otpEmail,setOtpEmail]=useState('');const [otpSent,setOtpSent]=useState(false);const [mfaCode,setMfaCode]=useState('');const [mfaBusy,setMfaBusy]=useState(false);const [quickText,setQuickText]=useState('');const [soldVehicleId,setSoldVehicleId]=useState('');const [saleVehicle,setSaleVehicle]=useState<any>(null);const [saleForm,setSaleForm]=useState<any>({inventory_owner_type:'rohilla_inventory',sale_outcome:'sold_by_rohilla',sold_notes:''});const [interactiveFiles,setInteractiveFiles]=useState<Record<string,File[]>>({});const [validationTouched,setValidationTouched]=useState(false);const [publishing,setPublishing]=useState(false);const [publishProgress,setPublishProgress]=useState({stage:'Ready',done:0,total:0,percent:0});const [duplicateWarning,setDuplicateWarning]=useState<any>(null);const [allowDuplicateOnce,setAllowDuplicateOnce]=useState(false);const publishLock=useRef(false);const submissionId=useRef('');
-useEffect(()=>{db.auth.getSession().then(async({data})=>{if(data.session){await ensureAdmin(data.session)}else setSession(null)})},[]);
+const ADMIN_GATE_KEY='rohilla_admin_verified_at';
+const ADMIN_GATE_MS=10*60*1000;
+function hasFreshAdminGate(){try{const t=Number(sessionStorage.getItem(ADMIN_GATE_KEY)||0);return t>0&&Date.now()-t<ADMIN_GATE_MS}catch{return false}}
+function markAdminGate(){try{sessionStorage.setItem(ADMIN_GATE_KEY,String(Date.now()))}catch{}}
+function clearAdminGate(){try{sessionStorage.removeItem(ADMIN_GATE_KEY)}catch{}}
+export default function Admin(){const db=supabase();const [session,setSession]=useState<any>(null);const [accessDenied,setAccessDenied]=useState(false);const [cars,setCars]=useState<any[]>([]);const [apps,setApps]=useState<any[]>([]);const [partnerApps,setPartnerApps]=useState<any[]>([]);const [partners,setPartners]=useState<any[]>([]);const [requests,setRequests]=useState<any[]>([]);const [salesLeads,setSalesLeads]=useState<any[]>([]);const [msg,setMsg]=useState('');const [files,setFiles]=useState<File[]>([]);const [f,setF]=useState<any>({});const [editing,setEditing]=useState<any>(null);const [editFiles,setEditFiles]=useState<File[]>([]);const [otpEmail,setOtpEmail]=useState('');const [otpSent,setOtpSent]=useState(false);const [mfaMode,setMfaMode]=useState<'none'|'setup'|'challenge'>('none');const [mfaFactor,setMfaFactor]=useState<any>(null);const [mfaData,setMfaData]=useState<any>(null);const [mfaCode,setMfaCode]=useState('');const [mfaBusy,setMfaBusy]=useState(false);const [quickText,setQuickText]=useState('');const [soldVehicleId,setSoldVehicleId]=useState('');const [saleVehicle,setSaleVehicle]=useState<any>(null);const [saleForm,setSaleForm]=useState<any>({inventory_owner_type:'rohilla_inventory',sale_outcome:'sold_by_rohilla',sold_notes:''});const [interactiveFiles,setInteractiveFiles]=useState<Record<string,File[]>>({});const [validationTouched,setValidationTouched]=useState(false);const [publishing,setPublishing]=useState(false);const [publishProgress,setPublishProgress]=useState({stage:'Ready',done:0,total:0,percent:0});const [duplicateWarning,setDuplicateWarning]=useState<any>(null);const [allowDuplicateOnce,setAllowDuplicateOnce]=useState(false);const publishLock=useRef(false);const submissionId=useRef('');
+useEffect(()=>{db.auth.getSession().then(async({data})=>{if(data.session){await ensureSecureAdmin(data.session)}else{setSession(null);clearAdminGate()}})},[]);
 async function load(){const [a,b,c,d,e,g]=await Promise.all([db.from('vehicles').select('*,vehicle_photos(id,url,path,sort_order)').order('created_at',{ascending:false}),db.from('dealer_applications').select('*').order('created_at',{ascending:false}),db.from('collaboration_requests').select('*').order('created_at',{ascending:false}),db.from('profiles').select('id,name,phone,business_name,service_categories,city,active').eq('role','partner').order('created_at',{ascending:false}),db.from('service_requests').select('id,customer_name,customer_phone,category,customer_location,vehicle_location,details,preferred_time,status,assigned_partner_id,created_at,vehicle:vehicles(brand,model,variant,year)').order('created_at',{ascending:false}),db.from('leads').select('id,vehicle_id,customer_name,customer_phone,requirement,message,status,source,enquiry_type,new_or_used,created_at').order('created_at',{ascending:false})]);setCars(a.data||[]);setApps(b.data||[]);setPartnerApps(c.data||[]);setPartners(d.data||[]);setRequests((e.data||[]).map((x:any)=>({...x,vehicle:Array.isArray(x.vehicle)?x.vehicle[0]||null:x.vehicle})));setSalesLeads(g.data||[]);}
-async function ensureAdmin(sess:any){
+async function ensureSecureAdmin(sess:any){
  setMsg('Checking administrator access…');
  const {data:profile,error:profileErr}=await db.from('profiles').select('role,active').eq('id',sess.user.id).single();
  if(profileErr||!profile||!profile.active||!['owner','admin'].includes(profile.role)){
-  setAccessDenied(true);setSession(null);await db.auth.signOut();setMsg('This account does not have administrator access.');return;
+  setAccessDenied(true);setSession(null);clearAdminGate();await db.auth.signOut();setMsg('This account does not have administrator access.');return;
  }
  const {data:isAdmin,error:adminErr}=await db.rpc('is_admin');
  if(adminErr||!isAdmin){
-  setAccessDenied(true);setSession(null);await db.auth.signOut();setMsg('This account is not authorised for the Administration Console.');return;
+  setAccessDenied(true);setSession(null);clearAdminGate();await db.auth.signOut();setMsg('This account is not authorised for the Administration Console.');return;
  }
- setAccessDenied(false);setSession(sess);setOtpSent(false);setMfaCode('');setMsg('');
- await load();
+ setAccessDenied(false);setSession(sess);setOtpSent(false);
+ const {data:fac,error:facErr}=await db.auth.mfa.listFactors();
+ if(facErr){setMsg(facErr.message);return}
+ const verified=(fac?.totp||[]).find((x:any)=>x.status==='verified');
+ if(!verified){
+  const {data,error}=await db.auth.mfa.enroll({factorType:'totp',friendlyName:'ROHILLA DRIVE Administrator'});
+  if(error){setMsg(error.message);return}
+  setMfaData(data);setMfaMode('setup');setMsg('Set up your free Authenticator once, then enter the 6-digit code.');return;
+ }
+ setMfaFactor(verified);
+ const {data:aal,error:aalErr}=await db.auth.mfa.getAuthenticatorAssuranceLevel();
+ if(aalErr){setMsg(aalErr.message);return}
+ if(aal?.currentLevel==='aal2'&&hasFreshAdminGate()){
+  setMfaMode('none');setMsg('');setMfaCode('');await load();return;
+ }
+ setMfaMode('challenge');setMsg('Enter the 6-digit code from your Authenticator app.');
 }
 async function sendOtp(e:React.FormEvent<HTMLFormElement>){
- e.preventDefault();setAccessDenied(false);setMfaBusy(true);setMsg('Sending secure sign-in email…');
+ e.preventDefault();clearAdminGate();setAccessDenied(false);setMfaBusy(true);setMsg('Sending secure sign-in email…');
  await db.auth.signOut();
- const {error}=await db.auth.signInWithOtp({email:otpEmail.trim(),options:{shouldCreateUser:false,emailRedirectTo:`${location.origin}/admin?otp=1`}});
+ const {error}=await db.auth.signInWithOtp({email:otpEmail.trim(),options:{shouldCreateUser:false,emailRedirectTo:`${location.origin}/admin`}});
  setMfaBusy(false);
  if(error){setMsg(error.message);return}
- setOtpSent(true);setMsg('Check your email. Enter the 6-digit code if shown, or tap the secure sign-in link.');
+ setOtpSent(true);setMsg('Check your email. Use the sign-in code or link, then Authenticator will handle future unlocks.');
 }
 async function verifyEmailOtp(e:React.FormEvent<HTMLFormElement>){
  e.preventDefault();if(mfaCode.length!==6)return;
@@ -30,9 +49,29 @@ async function verifyEmailOtp(e:React.FormEvent<HTMLFormElement>){
  const {data,error}=await db.auth.verifyOtp({email:otpEmail.trim(),token:mfaCode,type:'email'});
  setMfaBusy(false);
  if(error||!data.session){setMsg(error?.message||'Code could not be verified.');return}
- await ensureAdmin(data.session);
+ setMfaCode('');await ensureSecureAdmin(data.session);
 }
-async function signOutAdmin(){setSession(null);await db.auth.signOut();location.href='/admin'}
+async function verifySetup(){
+ if(!mfaData?.id||mfaCode.length!==6)return;
+ setMfaBusy(true);
+ const {error}=await db.auth.mfa.challengeAndVerify({factorId:mfaData.id,code:mfaCode});
+ setMfaBusy(false);
+ if(error){setMsg(error.message);return}
+ markAdminGate();setMfaMode('none');setMfaData(null);setMfaCode('');setMsg('');
+ const {data:{session:nextSession}}=await db.auth.getSession();
+ if(nextSession){setSession(nextSession);await load()}
+}
+async function verifyChallenge(){
+ if(!mfaFactor?.id||mfaCode.length!==6)return;
+ setMfaBusy(true);
+ const {error}=await db.auth.mfa.challengeAndVerify({factorId:mfaFactor.id,code:mfaCode});
+ setMfaBusy(false);
+ if(error){setMsg(error.message);return}
+ markAdminGate();setMfaMode('none');setMfaCode('');setMsg('');
+ const {data:{session:nextSession}}=await db.auth.getSession();
+ if(nextSession){setSession(nextSession);await load()}
+}
+async function signOutAdmin(){clearAdminGate();setMfaMode('challenge');setMfaCode('');setMsg('Admin locked. Enter your Authenticator code to unlock.')}
 function cleanRegistration(value:any){return String(value||'').toUpperCase().replace(/[^A-Z0-9]/g,'')}
 function publicRegistrationPrefix(value:any){const s=cleanRegistration(value);return s.match(/^[A-Z]{2}\d{1,2}/)?.[0]||s.match(/^\d{2}BH/)?.[0]||''}
 async function registrationFingerprint(value:any){const s=cleanRegistration(value);if(!s)return '';const bytes=new TextEncoder().encode(s);const digest=await crypto.subtle.digest('SHA-256',bytes);return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('')}
@@ -160,9 +199,11 @@ const publishedCars=cars.filter(c=>c.status==='published').length;
 const openSales=salesLeads.filter(l=>!['closed','lost','completed'].includes(String(l.status||'new'))).length;
 const openServices=requests.filter(r=>!['completed','closed','cancelled'].includes(String(r.status||'new'))).length;
 const pendingApprovals=apps.filter(a=>['new','reviewing'].includes(String(a.status||'new'))).length+partnerApps.filter(a=>['new','reviewing'].includes(String(a.status||'new'))).length;
-if(accessDenied)return <main><div className="auth"><h1>ROHILLA DRIVE</h1><h2>Administration Console</h2><p>{msg}</p><button onClick={()=>{setAccessDenied(false);setOtpSent(false);setMfaCode('');setMsg('')}}>Try Another Email</button></div></main>;
-if(!session)return <main><div className="auth"><h1>ROHILLA DRIVE</h1><h2>Administration Console</h2><p>Sign in with your administrator email. No Authenticator app is required.</p>{!otpSent?<form onSubmit={sendOtp}><input name="email" type="email" placeholder="Administrator email" value={otpEmail} onChange={e=>setOtpEmail(e.target.value)} required/><button disabled={mfaBusy}>{mfaBusy?'Sending…':'Send Email OTP / Link'}</button></form>:<form onSubmit={verifyEmailOtp}><p>We sent a secure sign-in email to <b>{otpEmail}</b>.</p><input autoFocus inputMode="numeric" maxLength={6} placeholder="6-digit email OTP" value={mfaCode} onChange={e=>setMfaCode(e.target.value.replace(/\D/g,'').slice(0,6))}/><button disabled={mfaBusy||mfaCode.length!==6}>{mfaBusy?'Verifying…':'Verify Email OTP'}</button><button type="button" className="secondary" onClick={()=>{setOtpSent(false);setMfaCode('');setMsg('')}}>Use Another Email</button></form>}<p>{msg}</p></div></main>;
-return <main><header><div className="brand"><b>ROHILLA DRIVE</b><small>Administration Console</small></div><div className="row"><a className="call" href="/admin/verification">Verification Operations</a><button onClick={()=>signOutAdmin()}>Sign Out</button></div></header>
+if(accessDenied)return <main><div className="auth"><h1>ROHILLA DRIVE</h1><h2>Administration Console</h2><p>{msg}</p><button onClick={()=>{setAccessDenied(false);setOtpSent(false);setMsg('')}}>Try Another Email</button></div></main>;
+if(!session)return <main><div className="auth"><h1>ROHILLA DRIVE</h1><h2>Administration Console</h2><p>New device / signed-out access only. After this, the free Authenticator app is used for Admin unlock.</p>{!otpSent?<form onSubmit={sendOtp}><input name="email" type="email" placeholder="Administrator email" value={otpEmail} onChange={e=>setOtpEmail(e.target.value)} required/><button disabled={mfaBusy}>{mfaBusy?'Sending…':'Send Sign-In Email'}</button></form>:<form onSubmit={verifyEmailOtp}><input autoFocus inputMode="numeric" maxLength={6} placeholder="Email code (if provided)" value={mfaCode} onChange={e=>setMfaCode(e.target.value.replace(/\D/g,'').slice(0,6))}/><button disabled={mfaBusy||mfaCode.length!==6}>{mfaBusy?'Verifying…':'Verify Email Code'}</button><button type="button" className="secondary" onClick={()=>{setOtpSent(false);setMfaCode('');setMsg('')}}>Use Another Email</button></form>}<p>{msg}</p></div></main>;
+if(mfaMode==='setup')return <main><div className="auth"><h1>Free Authenticator Setup</h1><p>Scan this QR once in Google Authenticator or Microsoft Authenticator. There is no per-code charge.</p>{mfaData?.totp?.qr_code&&<img src={mfaData.totp.qr_code} alt="Authenticator QR code" style={{width:220,height:220,background:'#fff',padding:12,borderRadius:12}}/>}<input inputMode="numeric" maxLength={6} placeholder="6-digit Authenticator code" value={mfaCode} onChange={e=>setMfaCode(e.target.value.replace(/\D/g,'').slice(0,6))}/><button disabled={mfaBusy||mfaCode.length!==6} onClick={verifySetup}>{mfaBusy?'Verifying…':'Enable Authenticator'}</button><p>{msg}</p></div></main>;
+if(mfaMode==='challenge')return <main><div className="auth"><h1>ROHILLA DRIVE</h1><h2>Admin Unlock</h2><p>Enter the free 6-digit code from your Authenticator app.</p><input autoFocus inputMode="numeric" maxLength={6} placeholder="6-digit Authenticator code" value={mfaCode} onChange={e=>setMfaCode(e.target.value.replace(/\D/g,'').slice(0,6))}/><button disabled={mfaBusy||mfaCode.length!==6} onClick={verifyChallenge}>{mfaBusy?'Verifying…':'Unlock Admin'}</button><p>{msg}</p></div></main>;
+return <main><header><div className="brand"><b>ROHILLA DRIVE</b><small>Administration Console</small></div><div className="row"><a className="call" href="/admin/verification">Verification Operations</a><button onClick={()=>signOutAdmin()}>Lock Admin</button></div></header>
 <section className="section adminDashboardIntro">
  <div className="adminEyebrow">ADMINISTRATION</div>
  <div className="adminDashboardHeading"><div><h1>Operations Dashboard</h1><p>Your fastest actions stay at the top: paste vehicle details, publish inventory and mark sold cars without hunting through menus.</p></div><div className="adminHeaderActions"><a href="#quick-add">Quick Add Vehicle</a><a className="secondaryAction" href="#quick-sold">Mark Vehicle Sold</a></div></div>
