@@ -20,6 +20,7 @@ async function login(e:React.FormEvent<HTMLFormElement>){
  e.preventDefault();setAccessDenied(false);setMfaBusy(true);setMsg('Signing in…');
  const phone=adminPhone.replace(/\D/g,'');
  if(phone!=='7015260003'){setMfaBusy(false);setMsg('Use the authorised administrator mobile number.');return}
+ if(/^\d{6}$/.test(adminPassword)){setMfaBusy(false);setMsg('Google Authenticator code is not your password. Tap “Set Password First / Forgot Password” below.');return}
  const {data,error}=await db.auth.signInWithPassword({email:'stosumit@gmail.com',password:adminPassword});
  setMfaBusy(false);
  if(error||!data.session){setMsg(error?.message||'Sign-in failed.');return}
@@ -32,8 +33,8 @@ async function startPasswordRecovery(){
  setMfaBusy(true);setMsg('Preparing secure password reset…');
  const {error}=await db.auth.resetPasswordForEmail('stosumit@gmail.com',{redirectTo:'https://www.rohilladrive.com/admin/reset-password'});
  setMfaBusy(false);
- if(error){setMsg(error.message);return}
- setMsg('Password reset link sent. Open it, verify Google Authenticator, then set the new password.');
+ if(error){setMsg(String(error.message||'').toLowerCase().includes('rate limit')?'Recovery email limit is temporarily reached. Do not keep retrying; wait for the limit to clear, then tap this once.':error.message);return}
+ setMsg('Recovery link sent. Open it, enter the current Google Authenticator code, then the New Password screen will appear.');
 }
 async function signOutAdmin(){await db.auth.signOut();location.href='/admin'}
 function cleanRegistration(value:any){return String(value||'').toUpperCase().replace(/[^A-Z0-9]/g,'')}
@@ -164,7 +165,7 @@ const openSales=salesLeads.filter(l=>!['closed','lost','completed'].includes(Str
 const openServices=requests.filter(r=>!['completed','closed','cancelled'].includes(String(r.status||'new'))).length;
 const pendingApprovals=apps.filter(a=>['new','reviewing'].includes(String(a.status||'new'))).length+partnerApps.filter(a=>['new','reviewing'].includes(String(a.status||'new'))).length;
 if(accessDenied)return <main><div className="auth"><h1>ROHILLA DRIVE</h1><h2>Administration Console</h2><p>{msg}</p><button onClick={()=>{setAccessDenied(false);setMsg('')}}>Back to Sign In</button></div></main>;
-if(!session)return <main><div className="auth"><h1>ROHILLA DRIVE</h1><h2>Administration Console</h2><p>Simple admin access: mobile number + password. Google Authenticator is kept only for password recovery.</p><form onSubmit={login}><input name="phone" inputMode="tel" placeholder="Mobile number" value={adminPhone} onChange={e=>setAdminPhone(e.target.value.replace(/\D/g,'').slice(0,10))} required/><input name="password" type="password" placeholder="Password" value={adminPassword} onChange={e=>setAdminPassword(e.target.value)} autoComplete="current-password" required/><button disabled={mfaBusy}>{mfaBusy?'Please wait…':'Sign In'}</button></form><button type="button" className="secondary" disabled={mfaBusy} onClick={startPasswordRecovery}>Set / Forgot Password</button><p>{msg}</p></div></main>;
+if(!session)return <main><div className="auth"><h1>ROHILLA DRIVE</h1><h2>Administration Console</h2><p>Normal login: mobile number + your saved password. The 6-digit Google Authenticator code is only for password recovery.</p><form onSubmit={login}><input name="phone" inputMode="tel" placeholder="Mobile number" value={adminPhone} onChange={e=>setAdminPhone(e.target.value.replace(/\D/g,'').slice(0,10))} required/><input name="password" type="password" placeholder="Your saved password — not Authenticator code" value={adminPassword} onChange={e=>setAdminPassword(e.target.value)} autoComplete="current-password" required/><button disabled={mfaBusy}>{mfaBusy?'Please wait…':'Sign In'}</button></form><button type="button" className="secondary" disabled={mfaBusy} onClick={startPasswordRecovery}>Set Password First / Forgot Password</button><p>{msg}</p></div></main>;
 return <main><header><div className="brand"><b>ROHILLA DRIVE</b><small>Administration Console</small></div><div className="row"><a className="call" href="/admin/verification">Verification Operations</a><button onClick={()=>signOutAdmin()}>Sign Out</button></div></header>
 <section className="section adminDashboardIntro">
  <div className="adminEyebrow">ADMINISTRATION</div>
