@@ -23,8 +23,8 @@ export async function requirePortalActor(req:Request,allowed:(PortalActor["role"
  if(profileError||!profile?.active)return {error:Response.json({error:"Active portal access required"},{status:403})};
  const role=canonicalRole(profile.role);if(!role)return {error:Response.json({error:"This account does not have a supported portal role"},{status:403})};
  if(role==="admin"){
-  const [{data:aal},{data:isAdmin}]=await Promise.all([db.auth.mfa.getAuthenticatorAssuranceLevel(),db.rpc("is_admin")]);
-  if(aal?.currentLevel!=="aal2"||!isAdmin)return {error:Response.json({error:"Admin authenticator verification required"},{status:403})};
+  const {data:isAdmin}=await db.rpc("is_admin");
+  if(!isAdmin)return {error:Response.json({error:"Administrator authorization required"},{status:403})};
  }
  if(!allowed.includes(role))return {error:Response.json({error:"This portal role is not authorised for this action"},{status:403})};
  return {actor:{user,role,db}};
