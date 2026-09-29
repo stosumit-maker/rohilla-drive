@@ -14,8 +14,8 @@ async function ensureSecureAdmin(sess:any){
  if(profileErr||!profile||!profile.active||!['owner','admin'].includes(profile.role)){
   setAccessDenied(true);setSession(null);clearAdminGate();await db.auth.signOut();setMsg('This account does not have administrator access.');return;
  }
- const {data:isAdmin,error:adminErr}=await db.rpc('is_admin');
- if(adminErr||!isAdmin){
+ const {data:isAdminIdentity,error:adminErr}=await db.rpc('is_admin_identity');
+ if(adminErr||!isAdminIdentity){
   setAccessDenied(true);setSession(null);clearAdminGate();await db.auth.signOut();setMsg('This account is not authorised for the Administration Console.');return;
  }
  setAccessDenied(false);setSession(sess);setOtpSent(false);
