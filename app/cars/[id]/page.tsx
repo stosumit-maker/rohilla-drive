@@ -29,15 +29,15 @@ export async function generateMetadata({params}:{params:Promise<Params>}):Promis
  const name=carName(c);
  const price=c.asking_price!=null?`₹${Number(c.asking_price).toLocaleString("en-IN")}`:"Price on request";
  const place=c.city||"Ambala";
- const description=`${name} used car in ${place}. ${c.km!=null?Number(c.km).toLocaleString("en-IN")+" km, ":""}${c.fuel||""}${c.transmission?", "+c.transmission:""}. Asking price ${price}. View photos and enquire with ROHILLA DRIVE by Rohilla Multibrand Cars.`;
+ const description=`${name} used car for sale in ${place}. ${c.km!=null?Number(c.km).toLocaleString("en-IN")+" km, ":""}${c.fuel||""}${c.transmission?", "+c.transmission:""}. Asking price ${price}. View this second hand car, photos and details from Rohilla Multibrand Cars.`;
  const images=[...(c.vehicle_photos||[])].sort((a:any,b:any)=>(a.sort_order||0)-(b.sort_order||0)).map((x:any)=>x.url).filter(Boolean);
  return {
-  title:`${name} Used Car in ${place} | ${price}`,
+  title:`${name} Used Car for Sale in ${place} | ${price}`,
   description,
   alternates:{canonical:`/cars/${id}`},
   robots:{index:true,follow:true},
-  openGraph:{title:`${name} Used Car | ROHILLA DRIVE`,description,url:`/cars/${id}`,type:"website",images},
-  twitter:{card:images.length?"summary_large_image":"summary",title:`${name} Used Car | ROHILLA DRIVE`,description,images}
+  openGraph:{title:`${name} Used Car for Sale in ${place} | Rohilla Multibrand Cars`,description,url:`/cars/${id}`,type:"website",images},
+  twitter:{card:images.length?"summary_large_image":"summary",title:`${name} Used Car for Sale in ${place}`,description,images}
  };
 }
 
