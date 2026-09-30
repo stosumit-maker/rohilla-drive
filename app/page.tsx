@@ -18,10 +18,10 @@ export const metadata:Metadata={
 
 export default async function Page(){
  const db=supabase();
- const {data}=await db.from("vehicles")
-  .select("id,brand,model,variant,year,km,fuel,owner_count,asking_price,city,public_notes,vehicle_photos(url,sort_order)")
+ const {data,count}=await db.from("vehicles")
+  .select("id,brand,model,variant,year,km,fuel,owner_count,asking_price,city,public_notes,vehicle_photos(url,sort_order)",{count:"exact"})
   .eq("status","published")
   .order("created_at",{ascending:false})
-  .limit(6);
- return <HomeClient initialCars={(data||[]) as any[]}/>;
+  .limit(8);
+ return <HomeClient initialCars={(data||[]) as any[]} totalCars={count??(data||[]).length}/>;
 }
