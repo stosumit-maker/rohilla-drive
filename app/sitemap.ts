@@ -10,6 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: site, lastModified: refreshed, changeFrequency: "daily", priority: 1 },
     { url: `${site}/ambala`, lastModified: refreshed, changeFrequency: "weekly", priority: 1 },
     { url: `${site}/used-cars-ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 1 },
+    { url: `${site}/used-car-dealer-baldev-nagar-ambala`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.99 },
     { url: `${site}/used-cars-under-5-lakh-ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.99 },
     { url: `${site}/find-car-ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.99 },
     { url: `${site}/sell-car-ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.99 },
