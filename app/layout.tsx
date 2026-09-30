@@ -44,10 +44,10 @@ export const viewport = { width: "device-width", initialScale: 1, maximumScale: 
 
 const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": ["Organization", "AutomotiveBusiness", "AutoDealer"],
+  "@type": ["Organization", "AutomotiveBusiness"],
   "@id": `${site}/#organization`,
   name: "ROHILLA DRIVE",
-  alternateName: ["Rohilla Drive", "Rohilla Multibrand Cars", "rohilladrive.com"],
+  alternateName: ["Rohilla Drive", "rohilladrive.com"],
   description: "ROHILLA DRIVE by Rohilla Multibrand Cars in Ambala City, Haryana, focuses on buying and selling cars, vehicle enquiries and supporting automotive assistance.",
   url: `${site}/`,
   mainEntityOfPage: `${site}/about`,
