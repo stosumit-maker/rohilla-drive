@@ -25,6 +25,8 @@ const faqs=[
   ["Can I buy a second hand car in Ambala through ROHILLA DRIVE?","Yes. Published inventory can be browsed online. Each vehicle page shows the details currently available and provides an enquiry route for follow-up."],
   ["Can I sell my used car in Ambala?","Yes. The Sell / List workflow lets an individual seller submit vehicle details and private photos for review."],
   ["Do you provide car services in Ambala?","ROHILLA DRIVE coordinates supported automotive services through its network, including categories such as inspection, workshop, detailing, roadside assistance and RC/RTO assistance."],
+  ["Where is Rohilla Multibrand Cars in Ambala?","Rohilla Multibrand Cars serves customers from Baldev Nagar, Ambala City, Haryana."],
+  ["Do you buy used cars in Ambala?","Yes. Car owners can submit vehicle details through the Sell Your Car workflow for review and follow-up."],
   ["How can I contact ROHILLA DRIVE in Ambala?",`Call or WhatsApp ${phone}, or use the enquiry forms on rohilladrive.com.`]
 ];
 
@@ -33,14 +35,13 @@ export default function AmbalaHub(){
     "@context":"https://schema.org",
     "@type":["AutoDealer","AutomotiveBusiness"],
     "@id":`${site}/ambala#autodealer`,
-    name:"ROHILLA DRIVE by Rohilla Multibrand Cars",
-    alternateName:["Rohilla Multibrand Cars","ROHILLA DRIVE Ambala"],
+    name:"Rohilla Multibrand Cars",
+    alternateName:["Rohilla Multibrand Cars Ambala","Rohilla Multibrand Cars Baldev Nagar","ROHILLA DRIVE Ambala"],
     url:`${site}/ambala`,
     telephone:phone,
-    description:"Vehicle sales, selling assistance, verification and connected automotive services in Ambala City, Haryana.",
-    address:{"@type":"PostalAddress",addressLocality:"Ambala City",addressRegion:"Haryana",addressCountry:"IN"},
+    description:"Used and second hand car dealer in Baldev Nagar, Ambala City, Haryana, with published pre-owned inventory and direct vehicle enquiries.",
+    address:{"@type":"PostalAddress",streetAddress:"Baldev Nagar",addressLocality:"Ambala City",addressRegion:"Haryana",addressCountry:"IN"},
     areaServed:[{"@type":"City",name:"Ambala"},{"@type":"AdministrativeArea",name:"Haryana"}],
-    parentOrganization:{"@id":`${site}/#organization`},
     hasMap:"https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars",
     sameAs:["https://www.instagram.com/rohillamultibrandcars/","https://www.facebook.com/profile.php?id=100094277025442","https://youtube.com/@sumitrohilla983","https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars"]
   };
