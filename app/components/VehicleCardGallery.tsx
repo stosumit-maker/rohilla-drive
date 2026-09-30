@@ -67,7 +67,7 @@ export default function VehicleCardGallery({photos,title}:{photos:Photo[];title:
  return <>
   <div className="premiumVehicleMedia" onTouchStart={touchStart} onTouchEnd={touchEnd}>
    <button type="button" className="premiumVehiclePhotoButton" onClick={()=>{setZoom(1);setOpen(true)}} aria-label={`Open ${title} photo ${active+1} of ${count}`}>
-    <img className="premiumVehicleMain" src={current.url} alt={`${title} photo ${active+1}`}/>
+    <img className="premiumVehicleMain" src={current.url} alt={`${title} photo ${active+1}`} loading="lazy" decoding="async"/>
     <span className="premiumVehicleExpand">View photo</span>
    </button>
    {count>1&&<>
