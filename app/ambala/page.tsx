@@ -3,7 +3,7 @@ import AmbalaLeadFunnel from "../components/AmbalaLeadFunnel";
 
 export const metadata:Metadata={
   title:{absolute:"Used Car Dealer in Ambala | Rohilla Multibrand Cars"},
-  description:"Rohilla Multibrand Cars is a used car dealer in Ambala City. Browse current second hand cars, view prices and photos, sell your car or send a direct vehicle requirement through ROHILLA DRIVE.",
+  description:"Rohilla Multibrand Cars is a used car dealer and second hand car showroom in Ambala City. Browse pre-owned cars for sale, budget cars and live inventory or sell your car.",
   alternates:{canonical:"/ambala"},
   openGraph:{title:"Used Car Dealer in Ambala | Rohilla Multibrand Cars",description:"Browse used and second hand cars in Ambala City, view published prices and photos, or send a direct enquiry to Rohilla Multibrand Cars.",url:"/ambala",type:"website"},
   twitter:{card:"summary_large_image",title:"ROHILLA DRIVE Ambala",description:"Used cars, vehicle selling, verification and automotive assistance in Ambala City."}
@@ -63,7 +63,7 @@ export default function AmbalaHub(){
 
     <section className="section compactSection"><div className="about">
       <h2>Local Used-Car Dealer in Ambala</h2>
-      <p>Rohilla Multibrand Cars is an Ambala City used-car business with online inventory through ROHILLA DRIVE. Customers in Ambala City, Baldev Nagar and nearby areas can browse published vehicles, compare asking prices and send a direct enquiry before visiting.</p>
+      <p>Rohilla Multibrand Cars is an Ambala City used-car business and second hand car showroom with online inventory through ROHILLA DRIVE. Customers in Ambala City, Baldev Nagar and nearby areas can browse pre-owned cars for sale, compare asking prices and send a direct enquiry before visiting.</p><p><b>Popular car searches:</b> used cars in Ambala, second hand cars in Ambala, pre-owned cars, budget used cars, first-owner cars and sell car in Ambala.</p>
       <div className="row"><a className="call" href="/used-cars-ambala">Used Cars in Ambala</a><a className="call" href="/sell-car-ambala">Sell Your Car in Ambala</a><a className="secondary" href="/used-car-dealer-baldev-nagar-ambala">Baldev Nagar Dealer Page</a><a className="secondary" href="/find-car-ambala">Find a Car for Me</a></div>
     </div></section>
 
