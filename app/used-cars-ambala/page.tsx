@@ -6,7 +6,7 @@ export const revalidate=300;
 
 export const metadata:Metadata={
   title:"Used Cars in Ambala | Second Hand Cars for Sale",
-  description:"Browse current used and second hand cars in Ambala City from ROHILLA DRIVE by Rohilla Multibrand Cars. View price, year, fuel, kilometres, photos and enquire directly.",
+  description:"Browse used cars for sale in Ambala City from Rohilla Multibrand Cars — second hand cars, pre-owned cars, budget cars and first-owner cars with prices, kilometres and photos.",
   alternates:{canonical:"/used-cars-ambala"},
   openGraph:{
     title:"Used Cars in Ambala | ROHILLA DRIVE",
@@ -84,7 +84,7 @@ export default async function UsedCarsAmbala(){
       <div className="heroText">
         <span>ROHILLA MULTIBRAND CARS • AMBALA CITY</span>
         <h1>Used Cars & Second Hand Cars for Sale in Ambala</h1>
-        <p className="heroSub">Second hand cars • Pre-owned cars • Direct vehicle enquiry</p>
+        <p className="heroSub">Second hand cars • Pre-owned cars • Used cars for sale • Direct vehicle enquiry</p>
         <p>Browse current used cars in Ambala with price, year, kilometres, fuel and photos.</p>
         <div className="row" style={{marginTop:18}}>
           <a className="call" href="/inventory?city=Ambala%20City">Browse Full Inventory</a>
@@ -103,6 +103,16 @@ export default async function UsedCarsAmbala(){
         <a className="photo real" href={`/cars/${car.id}`} aria-label={`Open ${car.brand} ${car.model} details`}>{first?<img src={first} alt={`${car.year||""} ${car.brand} ${car.model} used car in Ambala`}/>:<span>Vehicle photo unavailable</span>}</a>
         <div className="body"><label>USED CAR • AMBALA</label><h2 style={{fontSize:22}}>{car.brand} {car.model}</h2>{car.variant&&<p>{car.variant}</p>}<small>{car.year||"Year on request"}{car.km!=null?` • ${Number(car.km).toLocaleString("en-IN")} km`:""}{car.fuel?` • ${car.fuel}`:""}{car.owner_count?` • ${car.owner_count} Owner`:""}</small>{car.registration_prefix&&<small style={{display:"block",marginTop:5}}>Registration: {car.registration_prefix}</small>}{car.asking_price!=null&&<strong>₹{Number(car.asking_price).toLocaleString("en-IN")}</strong>}<a className="call" href={`/cars/${car.id}`} style={{display:"block",textAlign:"center"}}>View Car Details</a><div className="row" style={{marginTop:8,gap:6}}><a className="call" href={`/cars/${car.id}?enquire=1`} style={{flex:1,textAlign:"center",padding:"9px 8px",fontSize:11}}>Enquire / WhatsApp</a><a className="secondary" href={`/cars/${car.id}?book=1`} style={{flex:1,textAlign:"center",padding:"9px 8px",fontSize:11,borderRadius:10,fontWeight:800,textDecoration:"none"}}>Book Now</a></div></div>
       </article>})}</div>:<div className="notice"><b>Looking for a specific car?</b> <a href="/find-car-ambala">Tell us the model and budget — save your requirement →</a></div>}
+    </section>
+
+    <section className="section compactSection">
+      <div className="head"><div><h2>Popular Used-Car Searches in Ambala</h2><p>Quick links for common searches such as budget cars, first-owner cars and second hand cars for sale.</p></div></div>
+      <div className="grid">
+        <article className="card"><div className="body"><h3>Used Cars Under ₹3 Lakh</h3><p>Low-budget second hand cars currently published for Ambala.</p><a href="/used-cars-under-3-lakh-ambala">Cars under ₹3 lakh →</a></div></article>
+        <article className="card"><div className="body"><h3>Used Cars Under ₹5 Lakh</h3><p>Budget pre-owned cars with live asking prices.</p><a href="/used-cars-under-5-lakh-ambala">Cars under ₹5 lakh →</a></div></article>
+        <article className="card"><div className="body"><h3>First Owner Used Cars</h3><p>Browse current first-owner cars in Ambala.</p><a href="/first-owner-used-cars-ambala">First-owner cars →</a></div></article>
+        <article className="card"><div className="body"><h3>Sell a Used Car in Ambala</h3><p>Send your car details for direct follow-up.</p><a href="/sell-car-ambala">Sell your car →</a></div></article>
+      </div>
     </section>
 
     <section className="section compactSection">
