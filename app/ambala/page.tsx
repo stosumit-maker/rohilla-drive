@@ -2,10 +2,10 @@ import type {Metadata} from "next";
 import AmbalaLeadFunnel from "../components/AmbalaLeadFunnel";
 
 export const metadata:Metadata={
-  title:"Used Car Dealer in Ambala | Buy, Sell & Vehicle Services",
-  description:"ROHILLA DRIVE by Rohilla Multibrand Cars in Ambala City: used and second hand cars, car selling, new-vehicle assistance, verification, RC support and connected automotive services.",
+  title:{absolute:"Used Car Dealer in Ambala | Rohilla Multibrand Cars"},
+  description:"Rohilla Multibrand Cars is a used car dealer in Ambala City. Browse current second hand cars, view prices and photos, sell your car or send a direct vehicle requirement through ROHILLA DRIVE.",
   alternates:{canonical:"/ambala"},
-  openGraph:{title:"ROHILLA DRIVE Ambala | Cars & Automotive Services",description:"Buy or sell vehicles and access automotive assistance through Rohilla Multibrand Cars in Ambala City.",url:"/ambala",type:"website"},
+  openGraph:{title:"Used Car Dealer in Ambala | Rohilla Multibrand Cars",description:"Browse used and second hand cars in Ambala City, view published prices and photos, or send a direct enquiry to Rohilla Multibrand Cars.",url:"/ambala",type:"website"},
   twitter:{card:"summary_large_image",title:"ROHILLA DRIVE Ambala",description:"Used cars, vehicle selling, verification and automotive assistance in Ambala City."}
 };
 
@@ -53,9 +53,9 @@ export default function AmbalaHub(){
 
     <section className="hero" style={{paddingTop:52,paddingBottom:52}}><div className="heroText">
       <span>ROHILLA DRIVE • AMBALA CITY, HARYANA</span>
-      <h1>Cars in Ambala — Buy, Sell & More</h1>
+      <h1>Used Car Dealer in Ambala — Rohilla Multibrand Cars</h1>
       <p className="heroSub">Buy • Sell • Verify • New Vehicles • Automotive Services</p>
-      <p>Browse used cars, sell your car, find a new car or request vehicle services in Ambala.</p>
+      <p>Browse current second hand cars in Ambala with published prices and photos, sell your car, or send us the exact model and budget you need.</p>
       <div className="row" style={{marginTop:18}}><a className="call" href="/find-car-ambala">Find My Car</a><a className="call" href="/used-cars-ambala">Used Cars in Ambala</a><a className="call" href="/sell">Sell Your Car</a><a className="secondary" href="/inventory">Browse Inventory</a></div>
     </div></section>
 
