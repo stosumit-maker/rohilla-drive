@@ -80,7 +80,7 @@ export default async function CarPage({params}:{params:Promise<Params>}){
    price:Number(c.asking_price),
    availability:"https://schema.org/InStock",
    itemCondition:"https://schema.org/UsedCondition",
-   seller:{"@id":`${site}/#organization`}
+   seller:{"@id":`${site}/ambala#autodealer`}
   }:undefined
  };
  const breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[
