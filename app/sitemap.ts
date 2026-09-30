@@ -42,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const db = supabase();
-    const { data, error } = await db.from("vehicles").select("id,created_at").eq("status", "published").order("created_at", { ascending: false });
+    const { data, error } = await db.from("vehicles").select("id,created_at,brand,model,city").eq("status", "published").order("created_at", { ascending: false });
     if (error) throw error;
     const vehiclePages: MetadataRoute.Sitemap = (data || []).map((car: any) => ({
       url: `${site}/cars/${car.id}`,
@@ -50,7 +50,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily",
       priority: 0.9,
     }));
-    return [...staticPages, ...vehiclePages];
+    const slugify=(v:string)=>v.toLowerCase().trim().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+    const seen=new Set<string>();
+    const modelPages: MetadataRoute.Sitemap = (data || []).filter((car:any)=>String(car.city||"").toLowerCase().includes("ambala")&&car.brand&&car.model).flatMap((car:any)=>{
+      const slug=slugify(`${car.brand}-${car.model}`);
+      if(seen.has(slug)) return [];
+      seen.add(slug);
+      return [{url:`${site}/used-cars-ambala/${slug}`,lastModified:car.created_at?new Date(car.created_at):refreshed,changeFrequency:"daily" as const,priority:0.94}];
+    });
+    return [...staticPages, ...modelPages, ...vehiclePages];
   } catch {
     return staticPages;
   }
