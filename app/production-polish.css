@@ -80,8 +80,8 @@ body:not(:has(.rd-portal)) .floatingWa{box-shadow:0 8px 22px rgba(15,23,42,.16)!
  body:not(:has(.rd-portal)) .publicAccessBar{justify-content:flex-start;gap:6px;padding:7px 4%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch}
  body:not(:has(.rd-portal)) .publicAccessBar::-webkit-scrollbar{display:none}
  body:not(:has(.rd-portal)) .publicAccessBar span{display:none} body:not(:has(.rd-portal)) .publicAccessBar a{flex:0 0 auto}
- body:not(:has(.rd-portal)) footer{padding-bottom:96px!important}
- body:not(:has(.rd-portal)) .legalFooter{padding-bottom:96px!important}
+ body:not(:has(.rd-portal)) footer{padding-bottom:18px!important}
+ body:not(:has(.rd-portal)) .legalFooter{padding-bottom:72px!important}
  body:not(:has(.rd-portal)) .hero{padding:38px 5% 42px!important}
  body:not(:has(.rd-portal)) .hero h1{font-size:36px!important;line-height:1.02!important;letter-spacing:-1px}
  body:not(:has(.rd-portal)) .heroText .heroSub{font-size:14px!important}
@@ -1253,5 +1253,37 @@ body:not(:has(.rd-portal)) .inventoryNeedCarButton{
   body:not(:has(.rd-portal)) .compactAbout{
     padding-top:22px!important;
     padding-bottom:22px!important;
+  }
+}
+
+
+/* Compact public footer — remove duplicate mobile dead space. */
+@media(max-width:720px){
+  body:not(:has(.rd-portal)) footer{
+    display:block!important;
+    padding:18px 5% 18px!important;
+  }
+  body:not(:has(.rd-portal)) footer .rdFooterLogo{
+    width:138px!important;
+    margin:0 0 8px!important;
+  }
+  body:not(:has(.rd-portal)) footer .footerCopy p{
+    margin:4px 0!important;
+    font-size:12px!important;
+    line-height:1.4!important;
+  }
+  body:not(:has(.rd-portal)) footer .premiumPhone{
+    margin-top:6px!important;
+    padding:8px 12px!important;
+    font-size:15px!important;
+  }
+  body:not(:has(.rd-portal)) footer .footerSocial{
+    margin:9px 0 0!important;
+  }
+  body:not(:has(.rd-portal)) footer .footerSocial .socialIcons{
+    gap:8px!important;
+  }
+  body:not(:has(.rd-portal)) .legalFooter{
+    padding:13px 12px 72px!important;
   }
 }
