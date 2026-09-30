@@ -23,6 +23,7 @@ type Car={
 
 const site="https://www.rohilladrive.com";
 const phone="+91-7015260003";
+const googleBusinessProfile="https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars";
 const faqs=[
   ["Where can I find used cars in Ambala?","ROHILLA DRIVE publishes its current pre-owned vehicle inventory online. You can check available cars, key details and photos, then send an enquiry for the vehicle you want to inspect or discuss."],
   ["Can I see second hand car prices before contacting you?","Yes. Published listings show the asking price along with available details such as model year, kilometres, fuel type, ownership count and city."],
@@ -56,11 +57,26 @@ export default async function UsedCarsAmbala(){
       itemListElement:cars.map((car,index)=>({"@type":"ListItem",position:index+1,url:`${site}/cars/${car.id}`,name:`${car.year||""} ${car.brand} ${car.model} ${car.variant||""}`.trim()}))
     }
   };
+  const usedCarsDealerSchema={
+    "@context":"https://schema.org",
+    "@type":["AutoDealer","AutomotiveBusiness"],
+    "@id":`${site}/ambala#autodealer`,
+    name:"Rohilla Multibrand Cars",
+    alternateName:["ROHILLA DRIVE","Rohilla Drive"],
+    url:`${site}/ambala`,
+    telephone:phone,
+    description:"Used and second hand car dealership in Ambala City, Haryana, with published inventory and direct vehicle enquiries through ROHILLA DRIVE.",
+    address:{"@type":"PostalAddress",addressLocality:"Ambala City",addressRegion:"Haryana",addressCountry:"IN"},
+    areaServed:[{"@type":"City",name:"Ambala"},{"@type":"AdministrativeArea",name:"Haryana"}],
+    hasMap:googleBusinessProfile,
+    sameAs:["https://www.instagram.com/rohillamultibrandcars/","https://www.facebook.com/profile.php?id=100094277025442","https://youtube.com/@sumitrohilla983",googleBusinessProfile]
+  };
   const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:faqs.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))};
   const breadcrumbSchema={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"ROHILLA DRIVE",item:site},{"@type":"ListItem",position:2,name:"Ambala",item:`${site}/ambala`},{"@type":"ListItem",position:3,name:"Used Cars in Ambala",item:`${site}/used-cars-ambala`} ]};
 
   return <main>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(collectionSchema)}}/>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(usedCarsDealerSchema)}}/>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumbSchema)}}/>
 
@@ -98,7 +114,7 @@ export default async function UsedCarsAmbala(){
       </div>
     </section>
 
-    <section className="section dark"><div className="about"><h2>Rohilla Multibrand Cars — Ambala City</h2><p>ROHILLA DRIVE is the online vehicle and mobility platform of Rohilla Multibrand Cars in Ambala City, Haryana. Customers can browse published pre-owned vehicles, submit a car for sale, request new-vehicle assistance and access connected automotive services.</p><p><b>Phone / WhatsApp:</b> {phone}</p><div className="row"><a className="call" href="/ambala">Ambala Vehicle Hub</a><a className="call" href="/sell">Sell / List a Vehicle</a><a className="call" href="/verify">Vehicle Verification</a></div></div></section>
+    <section className="section dark"><div className="about"><h2>Rohilla Multibrand Cars — Ambala City</h2><p>ROHILLA DRIVE is the online vehicle and mobility platform of Rohilla Multibrand Cars in Ambala City, Haryana. Customers can browse published pre-owned vehicles, submit a car for sale, request new-vehicle assistance and access connected automotive services.</p><p><b>Phone / WhatsApp:</b> {phone}</p><p><a className="textLink" href={googleBusinessProfile} target="_blank" rel="noopener noreferrer">View Rohilla Multibrand Cars on Google →</a></p><div className="row"><a className="call" href="/ambala">Ambala Vehicle Hub</a><a className="call" href="/sell">Sell / List a Vehicle</a><a className="call" href="/verify">Vehicle Verification</a></div></div></section>
 
     <section className="section"><div className="head"><div><h2>Used Cars in Ambala — FAQs</h2></div></div><div className="grid">{faqs.map(([q,a])=><article className="card" key={q}><div className="body"><h3>{q}</h3><p>{a}</p></div></article>)}</div></section>
   </main>;
