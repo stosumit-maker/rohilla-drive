@@ -1175,3 +1175,83 @@ body:not(:has(.rd-portal)) .premiumVehicleMain{
     aspect-ratio:auto!important;
   }
 }
+
+
+/* Customer homepage compact flow — inventory first, low-friction mobile navigation. */
+body:not(:has(.rd-portal)) .inventoryBottomActions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:14px 0 0;
+}
+body:not(:has(.rd-portal)) .inventoryAllButton,
+body:not(:has(.rd-portal)) .inventoryNeedCarButton{
+  min-height:46px;
+  border-radius:12px;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-weight:850;
+  text-decoration:none;
+}
+body:not(:has(.rd-portal)) .inventoryAllButton{
+  background:#111827;
+  color:#fff;
+  border:1px solid #111827;
+}
+body:not(:has(.rd-portal)) .inventoryNeedCarButton{
+  background:#fff;
+  color:#111827;
+  border:1px solid #cbd5e1;
+}
+@media(max-width:800px){
+  body:not(:has(.rd-portal)) .inventorySection{
+    padding-top:20px!important;
+    padding-bottom:18px!important;
+  }
+  body:not(:has(.rd-portal)) .inventorySection .head{
+    margin-bottom:12px!important;
+  }
+  body:not(:has(.rd-portal)) .inventorySection .grid{
+    gap:12px!important;
+  }
+  body:not(:has(.rd-portal)) .inventoryBottomActions{
+    grid-template-columns:1fr;
+    gap:8px;
+    margin-top:12px;
+  }
+  body:not(:has(.rd-portal)) .inventoryAllButton{
+    width:100%;
+    min-height:50px;
+    font-size:15px;
+  }
+  body:not(:has(.rd-portal)) .inventoryNeedCarButton{
+    width:100%;
+    min-height:44px;
+    font-size:13px;
+  }
+  body:not(:has(.rd-portal)) #services.section{
+    padding-top:20px!important;
+    padding-bottom:20px!important;
+  }
+  body:not(:has(.rd-portal)) #services .head{
+    margin-bottom:12px!important;
+  }
+  body:not(:has(.rd-portal)) #services .compactServices{
+    gap:8px!important;
+  }
+  body:not(:has(.rd-portal)) #services .compactServices button{
+    min-height:58px!important;
+    padding:10px 12px!important;
+  }
+  body:not(:has(.rd-portal)) .actionSection{
+    padding-top:16px!important;
+    padding-bottom:16px!important;
+  }
+  body:not(:has(.rd-portal)) .compactAbout{
+    padding-top:22px!important;
+    padding-bottom:22px!important;
+  }
+}
