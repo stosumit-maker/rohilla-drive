@@ -24,6 +24,7 @@ type Car={
 const site="https://www.rohilladrive.com";
 const phone="+91-7015260003";
 const googleBusinessProfile="https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars";
+function modelSlug(brand:string,model:string){return `${brand}-${model}`.toLowerCase().trim().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");}
 const faqs=[
   ["Where can I find used cars in Ambala?","ROHILLA DRIVE publishes its current pre-owned vehicle inventory online. You can check available cars, key details and photos, then send an enquiry for the vehicle you want to inspect or discuss."],
   ["Can I see second hand car prices before contacting you?","Yes. Published listings show the asking price along with available details such as model year, kilometres, fuel type, ownership count and city."],
@@ -104,6 +105,11 @@ export default async function UsedCarsAmbala(){
         <div className="body"><label>USED CAR • AMBALA</label><h2 style={{fontSize:22}}>{car.brand} {car.model}</h2>{car.variant&&<p>{car.variant}</p>}<small>{car.year||"Year on request"}{car.km!=null?` • ${Number(car.km).toLocaleString("en-IN")} km`:""}{car.fuel?` • ${car.fuel}`:""}{car.owner_count?` • ${car.owner_count} Owner`:""}</small>{car.registration_prefix&&<small style={{display:"block",marginTop:5}}>Registration: {car.registration_prefix}</small>}{car.asking_price!=null&&<strong>₹{Number(car.asking_price).toLocaleString("en-IN")}</strong>}<a className="call" href={`/cars/${car.id}`} style={{display:"block",textAlign:"center"}}>View Car Details</a><div className="row" style={{marginTop:8,gap:6}}><a className="call" href={`/cars/${car.id}?enquire=1`} style={{flex:1,textAlign:"center",padding:"9px 8px",fontSize:11}}>Enquire / WhatsApp</a><a className="secondary" href={`/cars/${car.id}?book=1`} style={{flex:1,textAlign:"center",padding:"9px 8px",fontSize:11,borderRadius:10,fontWeight:800,textDecoration:"none"}}>Book Now</a></div></div>
       </article>})}</div>:<div className="notice"><b>Looking for a specific car?</b> <a href="/find-car-ambala">Tell us the model and budget — save your requirement →</a></div>}
     </section>
+
+    {cars.length>0&&<section className="section compactSection">
+      <div className="head"><div><h2>Browse by Current Model</h2><p>Search live second hand cars in Ambala by the model currently in stock.</p></div></div>
+      <div className="row" style={{gap:10,flexWrap:"wrap"}}>{Array.from(new Map(cars.map(c=>[`${c.brand} ${c.model}`,c])).values()).map(c=><a className="secondary" key={`${c.brand}-${c.model}`} href={`/used-cars-ambala/${modelSlug(c.brand,c.model)}`}>{c.brand} {c.model} used cars →</a>)}</div>
+    </section>}
 
     <section className="section compactSection">
       <div className="head"><div><h2>Popular Used-Car Searches in Ambala</h2><p>Quick links for common searches such as budget cars, first-owner cars and second hand cars for sale.</p></div></div>
