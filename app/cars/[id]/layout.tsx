@@ -23,25 +23,25 @@ export async function generateMetadata({
     const title = `${car.year || ""} ${car.brand} ${car.model} ${car.variant || ""}`.replace(/\s+/g, " ").trim();
     const price = car.asking_price ? `₹${Number(car.asking_price).toLocaleString("en-IN")}` : "Price on request";
     const details=[car.fuel,(car as any).transmission,(car as any).owner_count?`${(car as any).owner_count} Owner`:null,car.km!=null?`${Number(car.km).toLocaleString("en-IN")} km`:null,car.city].filter(Boolean).join(" • ");
-    const description = `${title} for sale${car.city ? ` in ${car.city}` : ""}. ${price}${details?` • ${details}`:""}. View photos, vehicle details and enquire with ROHILLA DRIVE.`;
+    const description = `${title} used car for sale${car.city ? ` in ${car.city}` : " in Ambala"}. ${price}${details?` • ${details}`:""}. View second hand car photos, vehicle details and enquire with Rohilla Multibrand Cars.`;
     const photos = [...((car as any).vehicle_photos || [])].sort((a: any, b: any) => (a.sort_order || 0) - (b.sort_order || 0));
     const image = photos[0]?.url;
     const canonical = `${site}/cars/${id}`;
 
     return {
-      title,
+      title: `${title} Used Car for Sale${car.city ? ` in ${car.city}` : " in Ambala"}`,
       description,
       alternates: { canonical },
       openGraph: {
         type: "website",
         url: canonical,
-        title,
+        title: `${title} Used Car for Sale${car.city ? ` in ${car.city}` : " in Ambala"}`,
         description,
         images: image ? [{ url: image, alt: title }] : undefined,
       },
       twitter: {
         card: "summary_large_image",
-        title,
+        title: `${title} Used Car for Sale${car.city ? ` in ${car.city}` : " in Ambala"}`,
         description,
         images: image ? [image] : undefined,
       },
