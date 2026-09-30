@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 const site = "https://www.rohilladrive.com";
+const googleBusinessProfile = "https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars";
 
 export const metadata: Metadata = {
   title: { absolute: "About ROHILLA DRIVE | Official Automotive Network" },
@@ -14,9 +15,29 @@ export const metadata: Metadata = {
   },
 };
 
+const dealerSchema = {
+  "@context": "https://schema.org",
+  "@type": ["AutoDealer", "AutomotiveBusiness"],
+  "@id": `${site}/ambala#autodealer`,
+  name: "Rohilla Multibrand Cars",
+  alternateName: ["ROHILLA DRIVE", "Rohilla Drive"],
+  url: `${site}/ambala`,
+  telephone: "+91-7015260003",
+  address: { "@type": "PostalAddress", addressLocality: "Ambala City", addressRegion: "Haryana", addressCountry: "IN" },
+  areaServed: [{ "@type": "City", name: "Ambala" }, { "@type": "AdministrativeArea", name: "Haryana" }],
+  hasMap: googleBusinessProfile,
+  sameAs: [
+    "https://www.instagram.com/rohillamultibrandcars/",
+    "https://www.facebook.com/profile.php?id=100094277025442",
+    "https://youtube.com/@sumitrohilla983",
+    googleBusinessProfile
+  ]
+};
+
 export default function AboutRohillaDrive() {
   return (
     <main style={{maxWidth:980,margin:"0 auto",padding:"110px 20px 56px",fontFamily:"Arial,Helvetica,sans-serif"}}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(dealerSchema)}}/>
       <section style={{background:"#0b1220",color:"white",borderRadius:24,padding:"34px 28px",marginBottom:22}}>
         <p style={{fontWeight:900,letterSpacing:1,color:"#55d6be",marginTop:0}}>OFFICIAL WEBSITE • ROHILLADRIVE.COM</p>
         <h1 style={{fontSize:"clamp(34px,6vw,62px)",lineHeight:1.04,margin:"10px 0 16px"}}>ROHILLA DRIVE</h1>
@@ -53,6 +74,7 @@ export default function AboutRohillaDrive() {
           <a href="https://www.instagram.com/rohillamultibrandcars/" target="_blank" rel="noreferrer">Instagram</a>
           <a href="https://www.facebook.com/profile.php?id=100094277025442" target="_blank" rel="noreferrer">Facebook</a>
           <a href="https://youtube.com/@sumitrohilla983" target="_blank" rel="noreferrer">YouTube</a>
+          <a href={googleBusinessProfile} target="_blank" rel="noreferrer">Google Business Profile</a>
         </p>
         <p style={{color:"#4b5563",lineHeight:1.55,marginBottom:0}}>Final price, stock, finance, insurance, service availability and delivery are confirmed by the relevant seller or authorised provider.</p>
       </section>
