@@ -118,7 +118,7 @@ export default function Home({initialCars=[]}:{initialCars?:Vehicle[]}){
 
  <section className="section compactSection localSearchLinks" aria-label="Cars and vehicle services in Ambala">
   <div className="head compactHead"><div><h2>Popular Links</h2><p>Quick access to cars and vehicle services.</p></div></div>
-  <div className="joinActions"><a href="/used-cars-ambala">Used Cars in Ambala</a><a href="/used-cars-under-5-lakh-ambala">Cars Under ₹5 Lakh</a><a href="/find-car-ambala">Find a Car</a><a href="/sell-car-ambala">Sell Your Car</a><a href="/verify">Vehicle Verification</a><a href="/car-services/ambala">Vehicle Services</a></div>
+  <div className="joinActions"><a href="/used-cars-ambala">Used Cars in Ambala</a><a href="/used-car-dealer-baldev-nagar-ambala">Used Car Dealer in Baldev Nagar</a><a href="/used-cars-under-5-lakh-ambala">Cars Under ₹5 Lakh</a><a href="/find-car-ambala">Find a Car</a><a href="/sell-car-ambala">Sell Your Car</a><a href="/verify">Vehicle Verification</a><a href="/car-services/ambala">Vehicle Services</a></div>
  </section>
 
  <section className="section compactSection" id="services">
