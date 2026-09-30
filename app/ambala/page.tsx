@@ -41,7 +41,8 @@ export default function AmbalaHub(){
     address:{"@type":"PostalAddress",addressLocality:"Ambala City",addressRegion:"Haryana",addressCountry:"IN"},
     areaServed:[{"@type":"City",name:"Ambala"},{"@type":"AdministrativeArea",name:"Haryana"}],
     parentOrganization:{"@id":`${site}/#organization`},
-    sameAs:["https://www.instagram.com/rohillamultibrandcars/","https://www.facebook.com/profile.php?id=100094277025442","https://youtube.com/@sumitrohilla983"]
+    hasMap:"https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars",
+    sameAs:["https://www.instagram.com/rohillamultibrandcars/","https://www.facebook.com/profile.php?id=100094277025442","https://youtube.com/@sumitrohilla983","https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars"]
   };
   const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:faqs.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))};
   const breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"ROHILLA DRIVE",item:site},{"@type":"ListItem",position:2,name:"Ambala",item:`${site}/ambala`} ]};
@@ -69,7 +70,7 @@ export default function AmbalaHub(){
       <article className="card"><div className="body"><h3>Verified partner workflow</h3><p>Service requests are handled through approved business access where required.</p></div></article>
     </div></section>
 
-    <section className="section dark"><div className="about"><h2>Rohilla Multibrand Cars, Ambala City</h2><p>Rohilla Drive is the online platform of Rohilla Multibrand Cars, Ambala City.</p><p><b>Phone / WhatsApp:</b> {phone}</p><div className="row"><a className="call" href="/used-cars-ambala">Second Hand Cars in Ambala</a><a className="call" href="/new-vehicles">New Vehicle Assistance</a><a className="call" href="/business-hub">Business Hub</a></div></div></section>
+    <section className="section dark"><div className="about"><h2>Rohilla Multibrand Cars, Ambala City</h2><p>Rohilla Drive is the online platform of Rohilla Multibrand Cars, Ambala City.</p><p><b>Phone / WhatsApp:</b> {phone}</p><p><a className="textLink" href="https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars" target="_blank" rel="noopener noreferrer">View Rohilla Multibrand Cars on Google →</a></p><div className="row"><a className="call" href="/used-cars-ambala">Second Hand Cars in Ambala</a><a className="call" href="/new-vehicles">New Vehicle Assistance</a><a className="call" href="/business-hub">Business Hub</a></div></div></section>
 
     <section className="section"><div className="head"><div><h2>ROHILLA DRIVE Ambala — FAQs</h2></div></div><div className="grid">{faqs.map(([q,a])=><article className="card" key={q}><div className="body"><h3>{q}</h3><p>{a}</p></div></article>)}</div></section>
   </main>;
