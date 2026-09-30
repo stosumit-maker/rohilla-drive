@@ -95,48 +95,31 @@ export default function Home({initialCars=[],totalCars=initialCars.length}:{init
   </div>
  </section>
 
- <div className="publicAccessBar">
-  <span>For Businesses</span><a href="/business-hub">Business Hub</a><a href="/dealer">Dealer Sign In</a><a href="/partner">Partner Sign In</a>
- </div>
-
- <section className="quickLead leadCapture" aria-label="Quick vehicle enquiry">
-  <div className="quickLeadCopy"><span>QUICK ENQUIRY</span><h2>Get a Callback for Your Car Requirement</h2><p>Name and mobile are enough to start. Car, budget and location can be added if you want.</p><div className="quickLeadBtns"><a className="secondary" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_quick_lead"})}>Call 7015260003</a><button type="button" className="secondary" onClick={()=>whatsapp("Hello Rohilla Drive, I have a vehicle requirement in Ambala.")}>WhatsApp</button></div></div>
-  <form className="quickLeadForm" data-source="homepage_quick_lead" onSubmit={submitLead}>
-   <select value={leadType} onChange={e=>{const type=e.target.value;setLeadType(type);setLeadMessage(type==='vehicle sale'?'I want to sell my car. Please contact me for the next steps.':type==='new car purchase'?'I am looking for a new car. Please help with model, price and availability.':type==='vehicle service'?'I need vehicle service / inspection assistance. Please contact me.':'I am looking for a used car. Please contact me with suitable options.')}} aria-label="Requirement type"><option value="vehicle purchase">Find a Car</option><option value="vehicle sale">Sell My Car</option><option value="new car purchase">New Cars</option><option value="vehicle service">Vehicle Service / Inspection</option></select>
-   <input value={leadName} onChange={e=>setLeadName(e.target.value)} placeholder="Your name" required/>
-   <input value={leadPhone} onChange={e=>setLeadPhone(e.target.value)} placeholder="Mobile number" inputMode="tel" required/>
-   <input value={leadLocation} onChange={e=>setLeadLocation(e.target.value)} placeholder="City / Location (optional)"/>
-   <textarea value={leadMessage} onChange={e=>setLeadMessage(e.target.value)} rows={3} placeholder="Car, budget or requirement (optional)"/>
-   <button type="submit" disabled={leadBusy}>{leadBusy?'Submitting…':'Get Callback & Continue on WhatsApp'}</button>
-  </form>
- </section>
-
  <section className="section inventorySection" id="inventory" style={{paddingBottom:24}}>
   <div className="head"><div><h2>Used Cars Available Now in Ambala & Nearby</h2><p>{loading?"Loading available cars...":cars.length?(publishedCount>cars.length?`Showing latest ${cars.length} of ${publishedCount} published cars.`:`${publishedCount} published car${publishedCount===1?"":"s"} available now.`):"No cars are published right now. Send your requirement and we will contact you with suitable options."}</p></div><div className="row"><button className="secondary" onClick={()=>openLead("vehicle purchase")}>Find a Car</button><a className="textLink" href="/inventory">{publishedCount>0?`View All ${publishedCount} Cars →`:"View All Cars →"}</a></div></div>
   {loading?<p>Loading cars...</p>:cars.length===0?<div className="card"><div className="body"><h3>Looking for a specific car?</h3><p>Tell us the model, budget and location. We will follow up with suitable options.</p><button onClick={()=>openLead("vehicle purchase")}>Send Requirement</button></div></div>:<>
    <div className="grid">{cars.map(car=>{const photos=[...(car.vehicle_photos||[])].sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));return <article className="card compactVehicleCard" key={car.id}><VehicleCardGallery photos={photos} title={`${car.brand} ${car.model} ${car.variant||""}`.trim()}/><div className="body compactVehicleBody"><h3><a className="vehicleTitleLink" href={`/cars/${car.id}`}>{car.brand} {car.model}{car.variant?` ${car.variant}`:""}</a></h3><small>{car.year} • {Number(car.km).toLocaleString("en-IN")} km • {car.fuel}{car.owner_count?` • ${car.owner_count} Owner`:""}</small><div className="compactPriceRow"><strong>₹{Number(car.asking_price).toLocaleString("en-IN")}</strong><a className="vehicleDetailsLink" href={`/cars/${car.id}`}>Details →</a></div><div className="row vehicleCardActions"><button style={{flex:1}} onClick={()=>openVehicleEnquiry(car)}>Enquire / WhatsApp</button><button className="secondary bookVehicleButton" style={{flex:1}} onClick={()=>setBookingVehicle(car)}>Book Now</button></div></div></article>})}</div>
-   <div className="row" style={{justifyContent:"center",gap:10,flexWrap:"wrap",marginTop:14}}>
-    <a className="call" href="/inventory" style={{textDecoration:"none",minWidth:170,textAlign:"center"}}>{publishedCount>0?`View All ${publishedCount} Cars →`:"View All Cars →"}</a>
-    <button className="secondary" style={{minWidth:170}} onClick={()=>openLead("vehicle purchase")}>Can’t Find Your Car? Tell Us</button>
+   <div className="inventoryBottomActions">
+    <a className="inventoryAllButton" href="/inventory">{publishedCount>0?`View All Inventory (${publishedCount} Cars) →`:"View All Inventory →"}</a>
+    <button className="inventoryNeedCarButton" onClick={()=>openLead("vehicle purchase")}>Can’t Find Your Car? Tell Us</button>
    </div>
   </>}
  </section>
 
  <section className="section compactSection" id="services" style={{paddingTop:28}}>
   <div className="head compactHead"><div><h2>Vehicle Services</h2><p>Inspection, RC transfer, repairs, detailing and more.</p></div><div className="row"><a className="textLink" href="/car-services/ambala">View Vehicle Services →</a></div></div>
-  <div className="compactServices">{services.map(s=><button key={s[1]} onClick={()=>openServiceLead(s[2])}><PremiumIcon name={s[0]}/><b>{s[1]}</b></button>)}</div>
+  <div className="compactServices">{services.slice(0,4).map(s=><button key={s[1]} onClick={()=>openServiceLead(s[2])}><PremiumIcon name={s[0]}/><b>{s[1]}</b></button>)}</div>
  </section>
 
  <section className="section actionSection">
   <a className="trustedAssistStrip" href="/trusted-assist"><span className="trustedIcon"><PremiumIcon name="trusted"/></span><span className="trustedCopy"><b>ROHILLA TRUSTED ASSIST</b><em>Help with your vehicle when you cannot manage it yourself.</em><small>NRI / remote owners • Defence personnel • Senior citizens • Outstation support</small></span><span className="trustedCta">View Trusted Assist →</span></a>
-  <div className="joinStrip"><div><b>Dealer or automotive service business?</b><span> Rohilla Drive also has dedicated business access for dealers and service partners.</span></div><div className="joinActions"><a href="/business-hub">Business Hub</a><a href="/join/preowned">Dealer Registration</a><a href="/join/partner">Service Partner Registration</a></div></div>
  </section>
 
  <section className="section dark compactAbout" id="about">
   <div className="about"><h2>ROHILLA DRIVE</h2><p className="brandPromise">Cars first. Simple vehicle help when you need it.</p><p>Rohilla Drive by Rohilla Multibrand Cars, Ambala City. Buy, sell and get vehicle assistance from one place.</p><p><a className="call" href="/coverage">View Service Coverage</a></p></div>
  </section>
 
- <footer><img className="rdFooterLogo" src="/rohilla-drive-logo.svg" alt="Rohilla Drive"/><div className="footerCopy"><p>Buy • Sell • Vehicle Assistance<br/>by Rohilla Multibrand Cars • Ambala City</p><p><a className="premiumPhone" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_footer"})}><span>CALL</span>7015260003</a></p><div className="footerSocial">{socialLinks}</div></div></footer>
+ <footer><img className="rdFooterLogo" src="/rohilla-drive-logo.svg" alt="Rohilla Drive"/><div className="footerCopy"><p>Buy • Sell • Vehicle Assistance<br/>by Rohilla Multibrand Cars • Ambala City</p><p><a className="textLink" href="/business-hub">Business Access</a></p><p><a className="premiumPhone" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_footer"})}><span>CALL</span>7015260003</a></p><div className="footerSocial">{socialLinks}</div></div></footer>
  <button className="floatingWa" onClick={()=>whatsapp("Hello Rohilla Drive, I want to enquire about a car or vehicle service.")}>WhatsApp</button>
  {leadOpen&&<div className="overlay"><div className="modal"><button className="x" onClick={resetLead}>×</button><h2>{leadType==='new car purchase'?'New Cars':leadType==='vehicle purchase'?'Find a Car':leadType==='vehicle sale'?'Sell Your Car':leadType==='Rohilla Trusted Assist'?'Rohilla Trusted Assist':`Request ${leadType}`}</h2><p>{leadType==='Rohilla Trusted Assist'?"Tell us what needs to be managed. We will confirm the requirement with you before any work proceeds.":['vehicle purchase','vehicle sale','new car purchase'].includes(leadType)?(leadType==='new car purchase'?"Tell us the brand, model or budget you have in mind. We will help with available options.":"Tell us your requirement and our team will contact you."):"Your request is saved with Rohilla Drive and our team will coordinate the next step."}</p><form data-source="homepage_modal" onSubmit={submitLead}><input value={leadName} onChange={e=>setLeadName(e.target.value)} placeholder="Your name" required/><input value={leadPhone} onChange={e=>setLeadPhone(e.target.value)} placeholder="Mobile number" inputMode="tel" required/><input value={leadLocation} onChange={e=>setLeadLocation(e.target.value)} placeholder="City / Location (optional)"/><input value={leadTime} onChange={e=>setLeadTime(e.target.value)} placeholder="Preferred time (optional)"/><textarea value={leadMessage} onChange={e=>setLeadMessage(e.target.value)} rows={5} required/><button type="submit" disabled={leadBusy}>{leadBusy?'Submitting…':'Save Requirement & Continue on WhatsApp'}</button></form></div></div>}
  {bookingVehicle&&<VehicleEnquiryModal vehicle={bookingVehicle} source="homepage_vehicle_card" mode="booking" onClose={()=>setBookingVehicle(null)}/>} 
