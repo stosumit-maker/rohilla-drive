@@ -41,7 +41,8 @@ export default function AmbalaHub(){
     telephone:phone,
     description:"Used and second hand car dealer in Baldev Nagar, Ambala City, Haryana, with published pre-owned inventory and direct vehicle enquiries.",
     address:{"@type":"PostalAddress",streetAddress:"Baldev Nagar",addressLocality:"Ambala City",addressRegion:"Haryana",addressCountry:"IN"},
-    areaServed:[{"@type":"City",name:"Ambala"},{"@type":"AdministrativeArea",name:"Haryana"}],
+    areaServed:[{"@type":"City",name:"Ambala"},{"@type":"Place",name:"Baldev Nagar, Ambala"},{"@type":"AdministrativeArea",name:"Haryana"}],
+    knowsAbout:["used cars in Ambala","second hand cars in Ambala","pre-owned cars","car sale and purchase","vehicle enquiries"],
     hasMap:"https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars",
     sameAs:["https://www.instagram.com/rohillamultibrandcars/","https://www.facebook.com/profile.php?id=100094277025442","https://youtube.com/@sumitrohilla983","https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars"]
   };
@@ -58,6 +59,12 @@ export default function AmbalaHub(){
       <p className="heroSub">Buy • Sell • Verify • New Vehicles • Automotive Services</p>
       <p>Browse current second hand cars in Ambala with published prices and photos, sell your car, or send us the exact model and budget you need.</p>
       <div className="row" style={{marginTop:18}}><a className="call" href="/find-car-ambala">Find My Car</a><a className="call" href="/used-cars-ambala">Used Cars in Ambala</a><a className="call" href="/sell">Sell Your Car</a><a className="secondary" href="/inventory">Browse Inventory</a></div>
+    </div></section>
+
+    <section className="section compactSection"><div className="about">
+      <h2>Local Used-Car Dealer in Ambala</h2>
+      <p>Rohilla Multibrand Cars is an Ambala City used-car business with online inventory through ROHILLA DRIVE. Customers in Ambala City, Baldev Nagar and nearby areas can browse published vehicles, compare asking prices and send a direct enquiry before visiting.</p>
+      <div className="row"><a className="call" href="/used-cars-ambala">Used Cars in Ambala</a><a className="call" href="/sell-car-ambala">Sell Your Car in Ambala</a><a className="secondary" href="/find-car-ambala">Find a Car for Me</a></div>
     </div></section>
 
     <AmbalaLeadFunnel source="ambala_hub" defaultMode="buy"/>
