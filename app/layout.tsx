@@ -66,6 +66,27 @@ const organizationSchema = {
   ],
 };
 
+const dealerSchema = {
+  "@context": "https://schema.org",
+  "@type": ["AutoDealer", "AutomotiveBusiness"],
+  "@id": `${site}/ambala#autodealer`,
+  name: "Rohilla Multibrand Cars",
+  alternateName: ["ROHILLA DRIVE", "Rohilla Drive"],
+  url: `${site}/ambala`,
+  telephone: "+91-7015260003",
+  description: "Used and second hand car dealership in Ambala City, Haryana, with published inventory and direct vehicle enquiries through ROHILLA DRIVE.",
+  address: { "@type": "PostalAddress", addressLocality: "Ambala City", addressRegion: "Haryana", addressCountry: "IN" },
+  areaServed: [{ "@type": "City", name: "Ambala" }, { "@type": "AdministrativeArea", name: "Haryana" }],
+  hasMap: "https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars",
+  parentOrganization: { "@id": `${site}/#organization` },
+  sameAs: [
+    "https://www.instagram.com/rohillamultibrandcars/",
+    "https://www.facebook.com/profile.php?id=100094277025442",
+    "https://youtube.com/@sumitrohilla983",
+    "https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars"
+  ],
+};
+
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -85,6 +106,7 @@ const websiteSchema = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return <html lang="en"><body>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(dealerSchema) }} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
     <Script
       id="metricool-tracker"
