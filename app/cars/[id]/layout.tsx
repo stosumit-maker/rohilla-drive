@@ -73,7 +73,7 @@ export default async function VehicleLayout({ children, params }: { children: Re
       vehicleTransmission:(car as any).transmission||undefined,
       image:photos.map((x:any)=>x.url).filter(Boolean),
       description:car.public_notes||undefined,
-      offers:car.asking_price?{"@type":"Offer",priceCurrency:"INR",price:Number(car.asking_price),availability:"https://schema.org/InStock",url:`${site}/cars/${id}`,seller:{"@id":`${site}/#organization`}}:undefined
+      offers:car.asking_price?{"@type":"Offer",priceCurrency:"INR",price:Number(car.asking_price),availability:"https://schema.org/InStock",url:`${site}/cars/${id}`,seller:{"@id":`${site}/ambala#autodealer`}}:undefined
     };
     return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/>{children}</>;
   }catch{return children}
