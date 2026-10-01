@@ -55,7 +55,7 @@ const organizationSchema = {
   telephone: "+91-7015260003",
   contactPoint: [{ "@type": "ContactPoint", telephone: "+91-7015260003", contactType: "customer service", areaServed: "IN", availableLanguage: ["English", "Hindi", "Punjabi"] }],
   areaServed: [{"@type":"City","name":"Ambala"},{"@type":"AdministrativeArea","name":"Haryana"},{"@type":"AdministrativeArea","name":"Chandigarh"},{"@type":"AdministrativeArea","name":"Punjab"},{"@type":"AdministrativeArea","name":"Rajasthan"},{"@type":"Country","name":"India"}],
-  address: { "@type": "PostalAddress", streetAddress: "Baldev Nagar", addressLocality: "Ambala City", addressRegion: "Haryana", addressCountry: "IN" },
+  address: { "@type": "PostalAddress", streetAddress: "Near TR Sawhney Maruti Showroom, Jaggi Garden, Tagore Garden, Baldev Nagar", addressLocality: "Ambala", addressRegion: "Haryana", postalCode: "134007", addressCountry: "IN" },
   knowsAbout: ["used cars","second hand cars","new cars","vehicle selling","car service","car repair","car inspection","car detailing","RC transfer","RTO assistance","car finance","car insurance","roadside assistance","car tyres","car battery","EV services","vehicle logistics","self-drive rental","vehicle verification","automotive services","vehicle mobility","NRI car care India","remote vehicle assistance","defence personnel vehicle assistance","senior citizen car assistance","outstation car assistance","vehicle care while owner is abroad"],
   sameAs: [
     "https://www.instagram.com/rohillamultibrandcars/",
@@ -75,7 +75,7 @@ const dealerSchema = {
   url: `${site}/ambala`,
   telephone: "+91-7015260003",
   description: "Used and second hand car dealer in Baldev Nagar, Ambala City, Haryana, with published pre-owned inventory and direct vehicle enquiries through ROHILLA DRIVE.",
-  address: { "@type": "PostalAddress", addressLocality: "Ambala City", addressRegion: "Haryana", addressCountry: "IN" },
+  address: { "@type": "PostalAddress", streetAddress: "Near TR Sawhney Maruti Showroom, Jaggi Garden, Tagore Garden, Baldev Nagar", addressLocality: "Ambala", addressRegion: "Haryana", postalCode: "134007", addressCountry: "IN" },
   areaServed: [{ "@type": "City", name: "Ambala" }, { "@type": "Place", name: "Baldev Nagar, Ambala" }, { "@type": "AdministrativeArea", name: "Haryana" }],
   hasMap: "https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars",
   knowsAbout: ["used cars in Ambala", "second hand cars in Ambala", "pre-owned cars", "car sale and purchase", "used car buyer", "vehicle enquiries"],
