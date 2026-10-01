@@ -41,7 +41,7 @@ export default function AmbalaHub(){
     telephone:phone,
     description:"Used and second hand car dealer in Baldev Nagar, Ambala City, Haryana, with published pre-owned inventory and direct vehicle enquiries.",
     address:{"@type":"PostalAddress",streetAddress:"Baldev Nagar",addressLocality:"Ambala City",addressRegion:"Haryana",addressCountry:"IN"},
-    areaServed:[{"@type":"City",name:"Ambala"},{"@type":"Place",name:"Baldev Nagar, Ambala"},{"@type":"AdministrativeArea",name:"Haryana"}],
+    areaServed:[{"@type":"City",name:"Ambala"},{"@type":"Place",name:"Ambala City"},{"@type":"Place",name:"Ambala Cantt"},{"@type":"Place",name:"Baldev Nagar, Ambala"},{"@type":"Place",name:"Naraingarh"},{"@type":"Place",name:"Barara"},{"@type":"Place",name:"Saha"},{"@type":"Place",name:"Mullana"},{"@type":"Place",name:"Shahzadpur"},{"@type":"City",name:"Yamunanagar"},{"@type":"Place",name:"Jagadhri"},{"@type":"City",name:"Kurukshetra"},{"@type":"Place",name:"Pehowa"},{"@type":"City",name:"Kaithal"},{"@type":"City",name:"Panchkula"},{"@type":"AdministrativeArea",name:"Haryana"}],
     knowsAbout:["used cars in Ambala","second hand cars in Ambala","pre-owned cars","car sale and purchase","vehicle enquiries"],
     hasMap:"https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars",
     sameAs:["https://www.instagram.com/rohillamultibrandcars/","https://www.facebook.com/profile.php?id=100094277025442","https://youtube.com/@sumitrohilla983","https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars"]
@@ -63,7 +63,7 @@ export default function AmbalaHub(){
 
     <section className="section compactSection"><div className="about">
       <h2>Local Used-Car Dealer in Ambala</h2>
-      <p>Rohilla Multibrand Cars is an Ambala City used-car business and second hand car showroom with online inventory through ROHILLA DRIVE. Customers in Ambala City, Baldev Nagar and nearby areas can browse pre-owned cars for sale, compare asking prices and send a direct enquiry before visiting.</p><p><b>Popular car searches:</b> used cars in Ambala, second hand cars in Ambala, pre-owned cars, budget used cars, first-owner cars and sell car in Ambala.</p>
+      <p>Rohilla Multibrand Cars is an Ambala City used-car business and second hand car showroom with online inventory through ROHILLA DRIVE. Customers in Ambala City, Ambala Cantt, Baldev Nagar, Naraingarh, Barara, Saha, Mullana and Shahzadpur can browse pre-owned cars for sale, compare asking prices and send a direct enquiry before visiting.</p><p>We also accept buyer and seller requirements from nearby North Haryana and Tricity markets including Yamunanagar, Jagadhri, Kurukshetra, Thanesar, Shahbad, Ladwa, Pehowa, Kaithal, Panchkula, Pinjore and Kalka. Our physical dealership remains in Ambala; these are customer service and enquiry coverage areas.</p><p><b>Popular car searches:</b> used cars in Ambala, second hand cars in Ambala, pre-owned cars, budget used cars, first-owner cars and sell car in Ambala.</p>
       <div className="row"><a className="call" href="/used-cars-ambala">Used Cars in Ambala</a><a className="call" href="/sell-car-ambala">Sell Your Car in Ambala</a><a className="secondary" href="/used-car-dealer-baldev-nagar-ambala">Baldev Nagar Dealer Page</a><a className="secondary" href="/find-car-ambala">Find a Car for Me</a></div>
     </div></section>
 
