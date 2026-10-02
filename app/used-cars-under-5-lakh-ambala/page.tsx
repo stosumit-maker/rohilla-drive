@@ -34,8 +34,11 @@ export default async function UsedCarsUnderFiveLakhAmbala(){
   ];
   const faqSchema={"@context":"https://schema.org","@type":"FAQPage","mainEntity":faq.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))};
 
+  const breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"ROHILLA DRIVE",item:site},{"@type":"ListItem",position:2,name:"Used Cars in Ambala",item:`${site}/used-cars-ambala`},{"@type":"ListItem",position:3,name:"Used Cars Under 5 Lakh in Ambala",item:`${site}/used-cars-under-5-lakh-ambala`} ]};
+
   return <main>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(listSchema)}}/>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumb)}}/>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faqSchema)}}/>
     <section className="hero" style={{paddingTop:52,paddingBottom:52}}><div className="heroText">
       <span>BUDGET USED CARS • AMBALA CITY</span>
