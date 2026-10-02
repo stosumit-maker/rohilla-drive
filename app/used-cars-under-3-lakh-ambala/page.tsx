@@ -27,8 +27,11 @@ export default async function UsedCarsUnderThreeLakhAmbala(){
 
   const schema={"@context":"https://schema.org","@type":"CollectionPage","@id":`${site}/used-cars-under-3-lakh-ambala#page`,name:"Used Cars Under 3 Lakh in Ambala",url:`${site}/used-cars-under-3-lakh-ambala`,about:{"@id":`${site}/ambala#autodealer`},mainEntity:{"@type":"ItemList",numberOfItems:cars.length,itemListElement:cars.map((c,i)=>({"@type":"ListItem",position:i+1,url:`${site}/cars/${c.id}`,name:[c.year,c.brand,c.model,c.variant].filter(Boolean).join(" ")}))}};
 
+  const breadcrumb={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"ROHILLA DRIVE",item:site},{"@type":"ListItem",position:2,name:"Used Cars in Ambala",item:`${site}/used-cars-ambala`},{"@type":"ListItem",position:3,name:"Used Cars Under 3 Lakh in Ambala",item:`${site}/used-cars-under-3-lakh-ambala`} ]};
+
   return <main>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumb)}}/>
     <section className="hero" style={{paddingTop:52,paddingBottom:52}}><div className="heroText">
       <span>LOW BUDGET USED CARS • AMBALA CITY</span>
       <h1>Used Cars Under ₹3 Lakh in Ambala</h1>
