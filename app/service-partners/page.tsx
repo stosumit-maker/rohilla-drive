@@ -1,6 +1,8 @@
 import type {Metadata} from "next";
 import {supabase} from "../supabaseClient";
 
+const site="https://www.rohilladrive.com";
+
 export const revalidate=300;
 export const metadata:Metadata={
  title:"Automotive Service Partners | Rohilla Drive",
@@ -13,7 +15,9 @@ export default async function ServicePartners(){
  const {data}=await db.from("network_partners").select("id,business_name,city,category,subcategories,service_area").eq("active",true).order("business_name");
  const partners=(data||[]) as any[];
  const categories=["Workshop / Repairs","Car Inspection / Verification","Car Detailing","RC / RTO Assistance","Roadside Assistance","Tyres / Battery","Insurance","Finance DSA","Vehicle Delivery / Logistics"];
+ const schema={"@context":"https://schema.org","@type":"CollectionPage","@id":`${site}/service-partners#directory`,name:"Automotive Service Partners | Rohilla Drive",url:`${site}/service-partners`,description:"Automotive service partner discovery on Rohilla Drive.",mainEntity:{"@type":"ItemList",numberOfItems:partners.length,itemListElement:partners.map((p:any,i:number)=>({"@type":"ListItem",position:i+1,name:p.business_name,item:{"@type":"AutomotiveBusiness",name:p.business_name,address:p.city||undefined,areaServed:p.service_area||p.city||undefined}}))}};
  return <main>
+  <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/>
   <section className="hero"><div className="heroText"><span>ROHILLA DRIVE NETWORK</span><h1>Automotive Service Partners</h1><p>Find vehicle services through the Rohilla Drive network. Approved businesses can join and receive eligible customer requirements.</p><div className="row"><a className="call" href="/join/partner">List Your Automotive Business</a><a className="secondary" href="/business-hub">Business Hub</a></div></div></section>
   <section className="section"><div className="head"><div><h2>Browse Services</h2><p>Choose the service you need.</p></div></div><div className="grid">{categories.map(c=><article className="card" key={c}><div className="body"><h3>{c}</h3><p>Send your requirement and Rohilla Drive will route it through the supported service workflow.</p><a className="textLink" href="/car-services/ambala">Request Service →</a></div></article>)}</div></section>
   <section className="section compactSection"><div className="head"><div><h2>Network Businesses</h2><p>{partners.length?partners.length+" active partner"+(partners.length===1?"":"s")+" currently listed.":"Approved partners will appear here as the network is activated."}</p></div></div>
