@@ -36,8 +36,10 @@ export default async function ModelUsedCarsAmbala({params}:{params:Promise<{slug
   const first=cars[0];
   const name=`${first.brand} ${first.model}`;
   const schema={"@context":"https://schema.org","@type":"CollectionPage","@id":`${site}/used-cars-ambala/${slug}#page`,name:`${name} Used Cars in Ambala`,url:`${site}/used-cars-ambala/${slug}`,about:{"@id":`${site}/ambala#autodealer`},mainEntity:{"@type":"ItemList",numberOfItems:cars.length,itemListElement:cars.map((c,i)=>({"@type":"ListItem",position:i+1,url:`${site}/cars/${c.id}`,name:[c.year,c.brand,c.model,c.variant].filter(Boolean).join(" ")}))}};
+  const breadcrumbSchema={"@context":"https://schema.org","@type":"BreadcrumbList",itemListElement:[{"@type":"ListItem",position:1,name:"ROHILLA DRIVE",item:site},{"@type":"ListItem",position:2,name:"Used Cars in Ambala",item:`${site}/used-cars-ambala`},{"@type":"ListItem",position:3,name:`${name} Used Cars in Ambala`,item:`${site}/used-cars-ambala/${slug}`} ]};
   return <main>
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(breadcrumbSchema)}}/>
     <section className="hero" style={{paddingTop:52,paddingBottom:52}}><div className="heroText">
       <span>USED {first.model.toUpperCase()} • AMBALA CITY</span>
       <h1>{name} Used Cars for Sale in Ambala</h1>
@@ -52,6 +54,7 @@ export default async function ModelUsedCarsAmbala({params}:{params:Promise<{slug
         <div className="body"><label>USED CAR • AMBALA</label><h2 style={{fontSize:22}}>{c.year} {c.brand} {c.model}</h2>{c.variant&&<p>{c.variant}</p>}<small>{c.km!=null?`${Number(c.km).toLocaleString("en-IN")} km`:""}{c.fuel?` • ${c.fuel}`:""}{c.owner_count?` • ${c.owner_count} Owner`:""}</small>{c.asking_price!=null&&<strong>₹{Number(c.asking_price).toLocaleString("en-IN")}</strong>}<a className="call" href={`/cars/${c.id}`} style={{display:"block",textAlign:"center"}}>View Car Details</a></div>
       </article>})}</div>
     </section>
+    <section className="section compactSection"><div className="head"><div><h2>More Ways to Find a Car</h2><p>Browse current Rohilla Drive inventory or search common Ambala used-car categories.</p></div></div><div className="row" style={{gap:10,flexWrap:"wrap"}}><a className="secondary" href="/inventory">All Cars</a><a className="secondary" href="/used-cars-under-3-lakh-ambala">Cars Under ₹3 Lakh</a><a className="secondary" href="/used-cars-under-5-lakh-ambala">Cars Under ₹5 Lakh</a><a className="secondary" href="/first-owner-used-cars-ambala">First Owner Cars</a><a className="secondary" href="/dealers">Dealer Network</a></div></section>
     <section className="section compactSection"><div className="about"><h2>Looking for another {first.model}?</h2><p>Send your preferred year, fuel, transmission and budget. Rohilla Multibrand Cars can follow up when a suitable option is available.</p><div className="row"><a className="call" href="/find-car-ambala">Send Requirement</a><a className="secondary" href="/sell-car-ambala">Sell Your Car</a></div></div></section>
   </main>;
 }
