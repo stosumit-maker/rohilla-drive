@@ -71,7 +71,7 @@ const dealerSchema = {
   "@type": ["AutoDealer", "AutomotiveBusiness"],
   "@id": `${site}/ambala#autodealer`,
   name: "Rohilla Multibrand Cars",
-  alternateName: ["ROHILLA DRIVE", "Rohilla Drive"],
+  alternateName: ["Rohilla Multibrand Cars Ambala", "Rohilla Cars Ambala"],
   url: `${site}/ambala`,
   telephone: "+91-7015260003",
   description: "Used and second hand car dealer in Baldev Nagar, Ambala City, Haryana, with published pre-owned inventory and direct vehicle enquiries through ROHILLA DRIVE.",
@@ -85,6 +85,7 @@ const dealerSchema = {
     "https://youtube.com/@sumitrohilla983",
     "https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars"
   ],
+  parentOrganization: { "@id": `${site}/#organization` },
 };
 
 const websiteSchema = {
