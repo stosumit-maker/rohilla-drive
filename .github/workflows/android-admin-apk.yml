@@ -1,0 +1,81 @@
+name: Android Admin APK Preview
+
+on:
+  push:
+    branches:
+      - android-admin-apk-2026-09-11
+    paths:
+      - "android-admin-app/**"
+      - ".github/workflows/android-admin-apk.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  ANDROID_HOME: /usr/local/lib/android/sdk
+  ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+
+jobs:
+  build-android-package:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: android-admin-app
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Accept Android SDK licenses
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+
+      - name: Install Android platform
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.13"
+
+      - name: Verify live Admin Console
+        run: |
+          curl --fail --location --silent --show-error https://www.rohilladrive.com/admin -o /dev/null
+
+      - name: Run Android lint
+        run: |
+          gradle :app:lintDebug --stacktrace
+
+      - name: Build preview APK
+        run: |
+          gradle :app:assembleDebug --stacktrace
+
+      - name: Build unsigned release APK and AAB
+        run: |
+          gradle :app:assembleRelease :app:bundleRelease --stacktrace
+
+      - name: Upload preview APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: rohilla-drive-admin-preview-apk
+          path: android-admin-app/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload unsigned release package
+        uses: actions/upload-artifact@v4
+        with:
+          name: rohilla-drive-admin-unsigned-release
+          path: |
+            android-admin-app/app/build/outputs/apk/release/app-release-unsigned.apk
+            android-admin-app/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 14
