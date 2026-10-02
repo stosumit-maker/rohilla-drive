@@ -32,6 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${site}/sell`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.95 },
     { url: `${site}/business-hub`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.9 },
     { url: `${site}/dealers`, lastModified: refreshed, changeFrequency: "daily", priority: 0.96 },
+    { url: `${site}/dealers/rohilla-multibrand-cars`, lastModified: refreshed, changeFrequency: "daily", priority: 0.99 },
     { url: `${site}/service-partners`, lastModified: refreshed, changeFrequency: "daily", priority: 0.95 },
     { url: `${site}/join/oem`, lastModified: refreshed, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site}/join/preowned`, lastModified: refreshed, changeFrequency: "monthly", priority: 0.8 },
