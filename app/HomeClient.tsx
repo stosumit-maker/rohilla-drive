@@ -65,7 +65,7 @@ export default function Home({initialCars=[],totalCars=initialCars.length}:{init
  return <main>
  <header>
   <div className="brand"><img className="rdLogo" src="/rohilla-drive-logo.svg" alt="Rohilla Drive"/></div>
-  <nav><a href="/inventory">Cars</a><a href="/sell-car-ambala">Sell Your Car</a><a href="#services">Services</a><a href="#about">About</a></nav>
+  <nav><a href="/inventory">Cars</a><a href="/dealers">Dealers</a><a href="/service-partners">Partners</a><a href="/sell-car-ambala">Sell Your Car</a><a href="#services">Services</a></nav>
   <div className="topActions"><a className="call" href="tel:7015260003" onClick={()=>track("Call Click",{surface:"homepage_header"})}>Call</a>{socialLinks}<button className="waTop" onClick={()=>whatsapp("Hello Rohilla Drive, I want to know about available cars.")}>WhatsApp</button></div>
  </header>
 
@@ -92,6 +92,8 @@ export default function Home({initialCars=[],totalCars=initialCars.length}:{init
    <a href="/sell-car-ambala"><PremiumIcon name="sell"/><b>Sell Your Car</b></a>
    <a href="/assistant"><PremiumIcon name="find"/><b>Find a Car</b></a>
    <a href="/new-cars/ambala"><PremiumIcon name="new"/><b>New Cars</b></a>
+   <a href="/dealers"><PremiumIcon name="car"/><b>Dealer Network</b></a>
+   <a href="/service-partners"><PremiumIcon name="wrench"/><b>Service Partners</b></a>
   </div>
  </section>
 
