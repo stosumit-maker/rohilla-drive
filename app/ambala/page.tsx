@@ -40,7 +40,7 @@ export default function AmbalaHub(){
     url:`${site}/ambala`,
     telephone:phone,
     description:"Used and second hand car dealer in Baldev Nagar, Ambala City, Haryana, with published pre-owned inventory and direct vehicle enquiries.",
-    address:{"@type":"PostalAddress",streetAddress:"Baldev Nagar",addressLocality:"Ambala City",addressRegion:"Haryana",addressCountry:"IN"},
+    address:{"@type":"PostalAddress",streetAddress:"Near TR Sawhney Maruti Showroom, Jaggi Garden, Tagore Garden, Baldev Nagar",addressLocality:"Ambala",addressRegion:"Haryana",postalCode:"134007",addressCountry:"IN"},
     areaServed:[{"@type":"City",name:"Ambala"},{"@type":"Place",name:"Ambala City"},{"@type":"Place",name:"Ambala Cantt"},{"@type":"Place",name:"Baldev Nagar, Ambala"},{"@type":"Place",name:"Naraingarh"},{"@type":"Place",name:"Barara"},{"@type":"Place",name:"Saha"},{"@type":"Place",name:"Mullana"},{"@type":"Place",name:"Shahzadpur"},{"@type":"City",name:"Yamunanagar"},{"@type":"Place",name:"Jagadhri"},{"@type":"City",name:"Kurukshetra"},{"@type":"Place",name:"Pehowa"},{"@type":"City",name:"Kaithal"},{"@type":"City",name:"Panchkula"},{"@type":"AdministrativeArea",name:"Haryana"}],
     knowsAbout:["used cars in Ambala","second hand cars in Ambala","pre-owned cars","car sale and purchase","vehicle enquiries"],
     hasMap:"https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars",
@@ -58,7 +58,7 @@ export default function AmbalaHub(){
       <h1>Used Car Dealer in Ambala — Rohilla Multibrand Cars</h1>
       <p className="heroSub">Buy • Sell • Verify • New Vehicles • Automotive Services</p>
       <p>Browse current second hand cars in Ambala with published prices and photos, sell your car, or send us the exact model and budget you need.</p>
-      <div className="row" style={{marginTop:18}}><a className="call" href="/find-car-ambala">Find My Car</a><a className="call" href="/used-cars-ambala">Used Cars in Ambala</a><a className="call" href="/sell">Sell Your Car</a><a className="secondary" href="/inventory">Browse Inventory</a></div>
+      <div className="row" style={{marginTop:18}}><a className="call" href={`https://wa.me/917015260003?text=${encodeURIComponent("Hello Rohilla Multibrand Cars, I am looking for a used car in Ambala.")}`}>WhatsApp Now</a><a className="call" href="/find-car-ambala">Find My Car</a><a className="call" href="/used-cars-ambala">Used Cars in Ambala</a><a className="call" href="/sell">Sell Your Car</a><a className="secondary" href="/inventory">Browse Inventory</a></div>
     </div></section>
 
     <section className="section compactSection"><div className="about">
