@@ -67,7 +67,7 @@ export default async function UsedCarsAmbala(){
     url:`${site}/ambala`,
     telephone:phone,
     description:"Used and second hand car dealership in Ambala City, Haryana, with published inventory and direct vehicle enquiries through ROHILLA DRIVE.",
-    address:{"@type":"PostalAddress",addressLocality:"Ambala City",addressRegion:"Haryana",addressCountry:"IN"},
+    address:{"@type":"PostalAddress",streetAddress:"Near TR Sawhney Maruti Showroom, Jaggi Garden, Tagore Garden, Baldev Nagar",addressLocality:"Ambala",addressRegion:"Haryana",postalCode:"134007",addressCountry:"IN"},
     areaServed:[{"@type":"City",name:"Ambala"},{"@type":"AdministrativeArea",name:"Haryana"}],
     hasMap:googleBusinessProfile,
     sameAs:["https://www.instagram.com/rohillamultibrandcars/","https://www.facebook.com/profile.php?id=100094277025442","https://youtube.com/@sumitrohilla983",googleBusinessProfile]
