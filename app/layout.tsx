@@ -18,8 +18,8 @@ const site = "https://www.rohilladrive.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site),
-  title: { default: "Used Cars in Ambala | Buy & Sell Cars | ROHILLA DRIVE", template: "%s | ROHILLA DRIVE" },
-  description: "ROHILLA DRIVE by Rohilla Multibrand Cars, Ambala City — browse used cars, sell your car, send a car requirement and get vehicle assistance when needed.",
+  title: { default: "Used & Second Hand Cars in Ambala | Rohilla Multibrand Cars", template: "%s | ROHILLA DRIVE" },
+  description: "Rohilla Multibrand Cars in Ambala City — browse current used and second hand cars, compare live inventory, sell your car and send a vehicle requirement through ROHILLA DRIVE.",
   applicationName: "ROHILLA DRIVE",
   alternates: { canonical: "/" },
   manifest: "/manifest.webmanifest",
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
     url: `${site}/`,
     siteName: "ROHILLA DRIVE",
     title: "Used Cars in Ambala | Buy & Sell Cars | ROHILLA DRIVE",
-    description: "Browse used cars, sell your car and send your vehicle requirement in Ambala through ROHILLA DRIVE by Rohilla Multibrand Cars.",
+    description: "Browse current used and second hand cars in Ambala through ROHILLA DRIVE by Rohilla Multibrand Cars, with live vehicle inventory and direct enquiries.",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "ROHILLA DRIVE official website" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Used Cars in Ambala | Buy & Sell Cars | ROHILLA DRIVE",
-    description: "Used cars, car selling and vehicle enquiries in Ambala from ROHILLA DRIVE by Rohilla Multibrand Cars.",
+    description: "Used and second hand cars in Ambala, car selling and vehicle enquiries from Rohilla Multibrand Cars through ROHILLA DRIVE.",
     images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
