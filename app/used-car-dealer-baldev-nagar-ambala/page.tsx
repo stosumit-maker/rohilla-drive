@@ -56,9 +56,9 @@ export default function BaldevNagarDealerPage(){
     <section className="hero" style={{paddingTop:52,paddingBottom:52}}>
       <div className="heroText">
         <span>ROHILLA MULTIBRAND CARS • BALDEV NAGAR • AMBALA CITY</span>
-        <h1>Used Car Dealer in Baldev Nagar, Ambala</h1>
+        <h1>Used &amp; Second Hand Car Dealer in Ambala</h1>
         <p className="heroSub">Used Cars • Second Hand Cars • Buy & Sell</p>
-        <p>Browse current published cars from Rohilla Multibrand Cars and send a direct enquiry through ROHILLA DRIVE.</p>
+        <p>Rohilla Multibrand Cars serves Baldev Nagar and Ambala City with current used cars, second hand cars and direct vehicle enquiries through ROHILLA DRIVE.</p>
         <div className="row" style={{marginTop:18}}>
           <a className="call" href="/used-cars-ambala">Browse Used Cars</a>
           <a className="call" href="/sell-car-ambala">Sell Your Car</a>
