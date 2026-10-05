@@ -97,6 +97,16 @@ export default function Home({initialCars=[],totalCars=initialCars.length}:{init
   </div>
  </section>
 
+ <section className="section compactSection" aria-label="Ambala used car dealer links" style={{paddingTop:22,paddingBottom:8}}>
+  <div className="head compactHead"><div><h2>Rohilla Multibrand Cars — Used Car Dealer in Ambala</h2><p>Browse current second hand cars in Ambala, budget cars and first-owner cars backed by published inventory.</p></div><a className="textLink" href="/used-car-dealer-baldev-nagar-ambala">Used Car Dealer in Ambala →</a></div>
+  <div className="row" style={{gap:10,flexWrap:"wrap"}}>
+    <a className="secondary" href="/used-cars-ambala">Used Cars in Ambala →</a>
+    <a className="secondary" href="/used-cars-ambala">Second Hand Cars in Ambala →</a>
+    <a className="secondary" href="/used-cars-under-5-lakh-ambala">Used Cars Under ₹5 Lakh →</a>
+    <a className="secondary" href="/first-owner-used-cars-ambala">First Owner Used Cars →</a>
+  </div>
+ </section>
+
  <section className="section inventorySection" id="inventory" style={{paddingBottom:24}}>
   <div className="head"><div><h2>Used Cars Available Now in Ambala & Nearby</h2><p>{loading?"Loading available cars...":cars.length?(publishedCount>cars.length?`Showing latest ${cars.length} of ${publishedCount} published cars.`:`${publishedCount} published car${publishedCount===1?"":"s"} available now.`):"No cars are published right now. Send your requirement and we will contact you with suitable options."}</p></div><div className="row"><button className="secondary" onClick={()=>openLead("vehicle purchase")}>Find a Car</button><a className="textLink" href="/inventory">{publishedCount>0?`View All ${publishedCount} Cars →`:"View All Cars →"}</a></div></div>
   {loading?<p>Loading cars...</p>:cars.length===0?<div className="card"><div className="body"><h3>Looking for a specific car?</h3><p>Tell us the model, budget and location. We will follow up with suitable options.</p><button onClick={()=>openLead("vehicle purchase")}>Send Requirement</button></div></div>:<>
