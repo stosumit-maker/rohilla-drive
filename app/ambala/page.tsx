@@ -2,10 +2,10 @@ import type {Metadata} from "next";
 import AmbalaLeadFunnel from "../components/AmbalaLeadFunnel";
 
 export const metadata:Metadata={
-  title:{absolute:"Used Car Dealer in Ambala | Rohilla Multibrand Cars"},
-  description:"Rohilla Multibrand Cars is a used car dealer and second hand car showroom in Ambala City. Browse pre-owned cars for sale, budget cars and live inventory or sell your car.",
+  title:{absolute:"Used & Second Hand Car Dealer in Ambala | Rohilla Multibrand Cars"},
+  description:"Rohilla Multibrand Cars is a used and second hand car dealer in Ambala City. Browse current pre-owned cars, published prices and live inventory, or sell your car through ROHILLA DRIVE.",
   alternates:{canonical:"/ambala"},
-  openGraph:{title:"Used Car Dealer in Ambala | Rohilla Multibrand Cars",description:"Browse used and second hand cars in Ambala City, view published prices and photos, or send a direct enquiry to Rohilla Multibrand Cars.",url:"/ambala",type:"website"},
+  openGraph:{title:"Used & Second Hand Car Dealer in Ambala | Rohilla Multibrand Cars",description:"Browse used and second hand cars in Ambala City, view published prices and photos, or send a direct enquiry to Rohilla Multibrand Cars.",url:"/ambala",type:"website"},
   twitter:{card:"summary_large_image",title:"ROHILLA DRIVE Ambala",description:"Used cars, vehicle selling, verification and automotive assistance in Ambala City."}
 };
 
