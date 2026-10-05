@@ -5,8 +5,8 @@ const phone="+91-7015260003";
 const googleProfile="https://www.google.com/search?kgmid=/g/11v13gyn6y&q=Rohilla+Multibrand+Cars";
 
 export const metadata:Metadata={
-  title:"Used Car Dealer in Baldev Nagar, Ambala | Rohilla Multibrand Cars",
-  description:"Rohilla Multibrand Cars in Baldev Nagar, Ambala City. Browse current used cars, sell your car or send a direct vehicle requirement through ROHILLA DRIVE.",
+  title:"Used Car Dealer in Ambala | Rohilla Multibrand Cars",
+  description:"Rohilla Multibrand Cars is a used car dealer in Ambala City. Browse current used and second hand cars, sell your car or send a direct vehicle requirement through ROHILLA DRIVE.",
   alternates:{canonical:"/used-car-dealer-baldev-nagar-ambala"},
   openGraph:{
     title:"Rohilla Multibrand Cars | Used Car Dealer in Baldev Nagar, Ambala",
@@ -75,7 +75,7 @@ export default function BaldevNagarDealerPage(){
       </div>
     </section>
     <section className="section dark"><div className="about">
-      <h2>Used Cars in Baldev Nagar & Ambala</h2>
+      <h2>Used & Second Hand Cars in Baldev Nagar & Ambala</h2>
       <p>Rohilla Multibrand Cars serves used-car buyers and sellers in Baldev Nagar and across Ambala City.</p>
       <p><b>Phone / WhatsApp:</b> {phone}</p>
       <div className="row"><a className="call" href="/ambala">Ambala Vehicle Hub</a><a className="call" href="/inventory">All Inventory</a></div>
