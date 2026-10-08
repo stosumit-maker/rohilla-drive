@@ -22,10 +22,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${site}/defence-personnel-vehicle-assistance`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.96 },
     { url: `${site}/senior-citizen-car-assistance`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.96 },
     { url: `${site}/remote-car-assistance`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.96 },
-    ...marketLocations.filter(x=>!x.legacyBuyPath).map(x=>({url:`${site}${buyPath(x)}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:x.hub?0.96:0.9})),
-    ...marketLocations.filter(x=>!x.legacySellPath).map(x=>({url:`${site}${sellPath(x)}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:x.hub?0.94:0.88})),
-    ...marketLocations.map(x=>({url:`${site}/car-services/${x.slug}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:x.hub?0.95:0.89})),
-    ...marketLocations.map(x=>({url:`${site}/new-cars/${x.slug}`,lastModified:refreshed,changeFrequency:"weekly" as const,priority:x.hub?0.95:0.89})),
+    // Keep the XML sitemap focused on the genuine operating market.
+    // Other market routes remain accessible, but are not promoted to Google
+    // through the sitemap until they have stronger local inventory/content signals.
+    { url: `${site}/used-cars/ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.98 },
+    { url: `${site}/sell-car/ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.96 },
+    { url: `${site}/car-services/ambala`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${site}/new-cars/ambala`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.9 },
     { url: `${site}/about`, lastModified: refreshed, changeFrequency: "monthly", priority: 0.95 },
     { url: `${site}/inventory`, lastModified: refreshed, changeFrequency: "daily", priority: 0.98 },
     { url: `${site}/assistant`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.95 },
