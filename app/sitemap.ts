@@ -26,6 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Other market routes remain accessible, but are not promoted to Google
     // through the sitemap until they have stronger local inventory/content signals.
     { url: `${site}/used-cars/ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.98 },
+    { url: `${site}/used-cars/haryana`, lastModified: refreshed, changeFrequency: "daily", priority: 0.97 },
     { url: `${site}/sell-car/ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.96 },
     { url: `${site}/car-services/ambala`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.95 },
     { url: `${site}/new-cars/ambala`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.9 },
