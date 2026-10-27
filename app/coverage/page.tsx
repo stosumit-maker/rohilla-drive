@@ -4,7 +4,19 @@ import {buyPath,marketLocations,sellPath} from "../lib/market-locations";
 export const metadata:Metadata={
   title:"ROHILLA DRIVE Coverage | Haryana, Chandigarh, Punjab & Rajasthan",
   description:"Explore ROHILLA DRIVE used-car buyer and seller enquiry coverage across every Haryana district, Chandigarh, nearby Punjab markets and selected Rajasthan markets.",
-  alternates:{canonical:"/coverage"}
+  alternates:{canonical:"/coverage"},
+  openGraph:{
+    type:"website",
+    url:"https://www.rohilladrive.com/coverage",
+    siteName:"ROHILLA DRIVE",
+    title:"ROHILLA DRIVE Coverage | Haryana, Chandigarh, Punjab & Rajasthan",
+    description:"Explore ROHILLA DRIVE used-car buyer and seller enquiry coverage across every Haryana district, Chandigarh, nearby Punjab markets and selected Rajasthan markets."
+  },
+  twitter:{
+    card:"summary_large_image",
+    title:"ROHILLA DRIVE Coverage | Haryana, Chandigarh, Punjab & Rajasthan",
+    description:"Explore ROHILLA DRIVE buyer and seller enquiry coverage across Haryana and nearby north Indian markets."
+  }
 };
 
 const regions=["Haryana","Chandigarh","Punjab","Rajasthan"] as const;
