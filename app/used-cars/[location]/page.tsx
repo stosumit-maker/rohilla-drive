@@ -18,7 +18,8 @@ export async function generateMetadata({params}:{params:Promise<Params>}):Promis
   const loc=getMarketLocation(location);
   if(!loc)return {};
   const title=`Used Cars in ${loc.name} | Buy & Sell Second Hand Cars`;
-  const description=`Looking for used cars in ${loc.name}, ${loc.state}? Browse current ROHILLA DRIVE inventory where available or submit your exact model, budget and timing. Sellers can also send a car-for-sale enquiry.`;
+  const locationLabel=loc.name===loc.state?loc.name:`${loc.name}, ${loc.state}`;
+  const description=`Looking for used cars in ${locationLabel}? Browse current ROHILLA DRIVE inventory where available or submit your exact model, budget and timing. Sellers can also send a car-for-sale enquiry.`;
   const canonical=buyPath(loc);
   return {title,description,alternates:{canonical},openGraph:{title:`Used Cars in ${loc.name} | ROHILLA DRIVE`,description,url:canonical,type:"website"},twitter:{card:"summary_large_image",title,description}};
 }
@@ -48,7 +49,7 @@ export default async function RegionalUsedCars({params}:{params:Promise<Params>}
     ["Is there a fee to send a buying or selling enquiry?","No payment is required to submit the enquiry form on this page."],
     ["How will I be contacted?","Your requirement is saved with the contact details you provide, and you can continue the same enquiry on WhatsApp or call 7015260003."]
   ];
-  const schema={"@context":"https://schema.org","@type":"CollectionPage","@id":`${site}${canonical}#page`,name:`Used Cars in ${loc.name}`,url:`${site}${canonical}`,description:`Used-car discovery and buyer/seller enquiry page for ${loc.name}, ${loc.state}.`,isPartOf:{"@id":`${site}/#website`},mainEntity:{"@type":"ItemList",numberOfItems:cars.length,itemListElement:cars.map((car,index)=>({"@type":"ListItem",position:index+1,url:`${site}/cars/${car.id}`,name:`${car.year||""} ${car.brand} ${car.model} ${car.variant||""}`.trim()}))}};
+  const schema={"@context":"https://schema.org","@type":"CollectionPage","@id":`${site}${canonical}#page`,name:`Used Cars in ${loc.name}`,url:`${site}${canonical}`,description:`Used-car discovery and buyer/seller enquiry page for ${loc.name===loc.state?loc.name:`${loc.name}, ${loc.state}`}.`,isPartOf:{"@id":`${site}/#website`},mainEntity:{"@type":"ItemList",numberOfItems:cars.length,itemListElement:cars.map((car,index)=>({"@type":"ListItem",position:index+1,url:`${site}/cars/${car.id}`,name:`${car.year||""} ${car.brand} ${car.model} ${car.variant||""}`.trim()}))}};
   const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:faqs.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))};
 
   return <main>
