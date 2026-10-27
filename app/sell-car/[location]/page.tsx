@@ -14,7 +14,8 @@ export async function generateMetadata({params}:{params:Promise<Params>}):Promis
   const loc=getMarketLocation(location);
   if(!loc)return {};
   const title=`Sell Car in ${loc.name} | Used Car Selling Enquiry`;
-  const description=`Want to sell your car in ${loc.name}, ${loc.state}? Send ROHILLA DRIVE your model, expected price and contact details for direct follow-up, or submit full details and private photos.`;
+  const locationLabel=loc.name===loc.state?loc.name:`${loc.name}, ${loc.state}`;
+  const description=`Want to sell your car in ${locationLabel}? Send ROHILLA DRIVE your model, expected price and contact details for direct follow-up, or submit full details and private photos.`;
   const canonical=sellPath(loc);
   return {title,description,alternates:{canonical},openGraph:{title:`Sell Your Car in ${loc.name} | ROHILLA DRIVE`,description,url:canonical,type:"website"},twitter:{card:"summary_large_image",title,description}};
 }
@@ -34,7 +35,7 @@ export default async function RegionalSellCar({params}:{params:Promise<Params>})
     ["Is the selling price guaranteed?","No. Final valuation and transaction terms depend on the actual vehicle, condition, documents, inspection and market demand."],
     ["Can I also buy another car?","Yes. Use the regional used-car page to browse current inventory or save your exact model and budget requirement."]
   ];
-  const pageSchema={"@context":"https://schema.org","@type":"WebPage","@id":`${site}${canonical}#page`,name:`Sell Car in ${loc.name}`,url:`${site}${canonical}`,description:`Used-car seller enquiry page for ${loc.name}, ${loc.state}.`,isPartOf:{"@id":`${site}/#website`}};
+  const pageSchema={"@context":"https://schema.org","@type":"WebPage","@id":`${site}${canonical}#page`,name:`Sell Car in ${loc.name}`,url:`${site}${canonical}`,description:`Used-car seller enquiry page for ${loc.name===loc.state?loc.name:`${loc.name}, ${loc.state}`}.`,isPartOf:{"@id":`${site}/#website`}};
   const faqSchema={"@context":"https://schema.org","@type":"FAQPage",mainEntity:faqs.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}}))};
 
   return <main>

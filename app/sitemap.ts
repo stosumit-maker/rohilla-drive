@@ -22,11 +22,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${site}/defence-personnel-vehicle-assistance`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.96 },
     { url: `${site}/senior-citizen-car-assistance`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.96 },
     { url: `${site}/remote-car-assistance`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.96 },
-    // Keep the XML sitemap focused on the genuine operating market.
-    // Other market routes remain accessible, but are not promoted to Google
-    // through the sitemap until they have stronger local inventory/content signals.
-    { url: `${site}/used-cars/ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.98 },
-    { url: `${site}/sell-car/ambala`, lastModified: refreshed, changeFrequency: "daily", priority: 0.96 },
     { url: `${site}/car-services/ambala`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.95 },
     { url: `${site}/new-cars/ambala`, lastModified: refreshed, changeFrequency: "weekly", priority: 0.9 },
     { url: `${site}/about`, lastModified: refreshed, changeFrequency: "monthly", priority: 0.95 },
@@ -64,7 +59,35 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       seen.add(slug);
       return [{url:`${site}/used-cars-ambala/${slug}`,lastModified:car.created_at?new Date(car.created_at):refreshed,changeFrequency:"daily" as const,priority:0.94}];
     });
-    return [...staticPages, ...modelPages, ...vehiclePages];
+    // Keep regional pages discoverable without listing every thin city page.
+    // Always expose the Haryana hub; add city pages when published inventory
+    // actually matches that market. Ambala's legacy URLs above already have
+    // dedicated canonical pages and must not appear here as redirecting URLs.
+    const haryanaHub = marketLocations.filter((loc) => loc.slug === "haryana");
+    const inventoryBackedMarkets = marketLocations.filter((loc) =>
+      loc.region === "Haryana" &&
+      !loc.hub &&
+      !loc.legacyBuyPath &&
+      (data || []).some((car: any) => {
+        const city = String(car.city || "").toLowerCase();
+        return loc.aliases.some((alias) => city.includes(alias.toLowerCase()));
+      })
+    );
+    const regionalPages: MetadataRoute.Sitemap = [...haryanaHub, ...inventoryBackedMarkets].flatMap((loc) => [
+      {
+        url: `${site}${buyPath(loc)}`,
+        lastModified: refreshed,
+        changeFrequency: "daily" as const,
+        priority: loc.hub ? 0.9 : 0.82,
+      },
+      {
+        url: `${site}${sellPath(loc)}`,
+        lastModified: refreshed,
+        changeFrequency: "weekly" as const,
+        priority: loc.hub ? 0.85 : 0.75,
+      },
+    ]);
+    return [...staticPages, ...regionalPages, ...modelPages, ...vehiclePages];
   } catch {
     return staticPages;
   }
